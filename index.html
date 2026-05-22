@@ -3,1185 +3,1474 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TTV New Build Calculator — Tide & Timber Ventures</title>
+<title>TTV Site Analyzer — Tide & Timber Ventures</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #1a2535;
-  --navy-mid: #243044;
-  --navy-light: #2e3d56;
-  --teal: #2e9c8f;
-  --teal-light: #3ab8a8;
-  --teal-dim: rgba(46,156,143,0.15);
-  --amber: #e8a94d;
-  --amber-dim: rgba(232,169,77,0.12);
-  --red: #e05c5c;
-  --red-dim: rgba(224,92,92,0.12);
-  --green: #4caf82;
-  --green-dim: rgba(76,175,130,0.12);
-  --text: #e8edf4;
-  --text-mid: #8fa3bc;
-  --text-dim: #4d6580;
-  --border: rgba(255,255,255,0.07);
-  --border-bright: rgba(255,255,255,0.13);
-  --card: rgba(255,255,255,0.035);
-  --card-hover: rgba(255,255,255,0.06);
-  --input-bg: rgba(255,255,255,0.06);
-  --radius: 10px;
-  --radius-sm: 6px;
+  --navy:#1a2535;--navy-mid:#243044;--navy-light:#2e3d56;
+  --teal:#2e9c8f;--teal-light:#3ab8a8;--teal-dim:rgba(46,156,143,0.15);
+  --amber:#e8a94d;--amber-dim:rgba(232,169,77,0.12);
+  --red:#e05c5c;--red-dim:rgba(224,92,92,0.12);
+  --green:#4caf82;--green-dim:rgba(76,175,130,0.12);
+  --text:#e8edf4;--text-mid:#8fa3bc;--text-dim:#4d6580;
+  --border:rgba(255,255,255,0.07);--border-bright:rgba(255,255,255,0.13);
+  --card:rgba(255,255,255,0.035);--input-bg:rgba(255,255,255,0.06);
+  --radius:10px;--radius-sm:6px;
 }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* HEADER */
+.hdr{border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:rgba(26,37,53,0.97);position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
+.hdr-brand{display:flex;align-items:center;gap:10px}
+.hdr-logo{width:30px;height:30px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:15px;color:#fff}
+.hdr-title{font-family:'DM Serif Display',serif;font-size:17px}
+.hdr-sub{font-size:10px;color:var(--text-mid);margin-top:1px}
+.hdr-badge{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);background:var(--teal-dim);border:1px solid rgba(46,156,143,0.3);padding:3px 8px;border-radius:20px}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--navy);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 14px;
-  line-height: 1.5;
-}
+/* STEP NAV */
+.step-nav{display:flex;align-items:stretch;background:var(--navy-mid);border-bottom:1px solid var(--border)}
+.step-btn{flex:1;padding:12px 8px;text-align:center;cursor:pointer;border:none;background:transparent;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.04em;transition:all 0.2s;border-bottom:2px solid transparent;position:relative}
+.step-btn:hover{color:var(--text-mid);background:rgba(255,255,255,0.03)}
+.step-btn.active{color:var(--teal-light);border-bottom-color:var(--teal);background:rgba(46,156,143,0.06)}
+.step-btn.done{color:var(--text-mid)}
+.step-btn.done::after{content:'✓';position:absolute;top:8px;right:10px;font-size:9px;color:var(--green)}
+.step-num{display:block;font-family:'DM Mono',monospace;font-size:16px;color:inherit;margin-bottom:2px}
+.step-btn.active .step-num{color:var(--teal-light)}
 
-/* ── HEADER ── */
-.header {
-  border-bottom: 1px solid var(--border);
-  padding: 18px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(26,37,53,0.95);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(8px);
-}
-.header-brand { display: flex; align-items: center; gap: 12px; }
-.header-logo {
-  width: 32px; height: 32px;
-  background: var(--teal);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'DM Serif Display', serif;
-  font-size: 16px; color: white; font-weight: 400;
-}
-.header-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); }
-.header-sub { font-size: 11px; color: var(--text-mid); margin-top: 1px; letter-spacing: 0.04em; }
-.header-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; color: var(--teal);
-  background: var(--teal-dim);
-  border: 1px solid rgba(46,156,143,0.3);
-  padding: 3px 8px; border-radius: 20px;
-  letter-spacing: 0.06em;
-}
+/* PAGES */
+.page{display:none;max-width:1100px;margin:0 auto;padding:28px 24px 60px}
+.page.active{display:block}
 
-/* ── LAYOUT ── */
-.main { max-width: 1280px; margin: 0 auto; padding: 28px 24px 60px; }
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.card-title{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.card-title .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
 
-.grid-top {
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.grid-mid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.grid-scenarios {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-.grid-bottom {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-}
+/* FORM */
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:11px;color:var(--text-mid);margin-bottom:5px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;background:var(--input-bg);border:1px solid var(--border-bright);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;padding:8px 10px;outline:none;transition:border-color 0.15s}
+.field input:focus,.field select:focus{border-color:var(--teal);background:rgba(46,156,143,0.08)}
+.field select option{background:var(--navy-mid)}
+.input-wrap{position:relative;display:flex;align-items:center}
+.input-wrap .pfx{position:absolute;left:10px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);pointer-events:none}
+.input-wrap .sfx{position:absolute;right:10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);pointer-events:none}
+.input-wrap input{padding-left:20px}
+.input-wrap input.sfx-pad{padding-right:32px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.note{font-size:10px;color:var(--text-dim);margin-top:4px;line-height:1.4}
+.warn{font-size:11px;color:var(--amber);padding:8px 10px;background:var(--amber-dim);border-left:2px solid var(--amber);border-radius:4px;margin-top:8px;line-height:1.4}
+.err{font-size:11px;color:var(--red);padding:8px 10px;background:var(--red-dim);border-left:2px solid var(--red);border-radius:4px;margin-top:8px}
+.ok{font-size:11px;color:var(--green);padding:8px 10px;background:var(--green-dim);border-left:2px solid var(--green);border-radius:4px;margin-top:8px}
 
-/* ── CARDS ── */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-.card-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-.card-label .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--teal);
-  flex-shrink: 0;
-}
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-lbl{font-size:12px;color:var(--text-mid)}
+.tog{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog-track{position:absolute;inset:0;background:var(--border-bright);border-radius:20px;transition:background 0.2s}
+.tog input:checked+.tog-track{background:var(--teal)}
+.tog-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform 0.2s;pointer-events:none}
+.tog input:checked~.tog-thumb{transform:translateX(16px)}
 
-/* ── FORM ELEMENTS ── */
-.field { margin-bottom: 14px; }
-.field:last-child { margin-bottom: 0; }
-.field label {
-  display: block;
-  font-size: 11px;
-  color: var(--text-mid);
-  margin-bottom: 5px;
-  font-weight: 500;
-}
-.field input, .field select {
-  width: 100%;
-  background: var(--input-bg);
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  padding: 8px 10px;
-  outline: none;
-  transition: border-color 0.15s, background 0.15s;
-  -webkit-appearance: none;
-}
-.field input:focus, .field select:focus {
-  border-color: var(--teal);
-  background: rgba(46,156,143,0.08);
-}
-.field select option { background: var(--navy-mid); color: var(--text); }
-.field select { cursor: pointer; }
+/* LINK CARD */
+.link-card{border:1px solid var(--border-bright);border-radius:var(--radius-sm);padding:12px 14px;margin-top:10px;background:rgba(255,255,255,0.03)}
+.link-card-title{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.link-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)}
+.link-row:last-child{border-bottom:none}
+.link-row-label{font-size:11px;color:var(--text-mid)}
+.link-btn{font-size:10px;font-family:'DM Mono',monospace;color:var(--teal);background:var(--teal-dim);border:1px solid rgba(46,156,143,0.25);padding:3px 8px;border-radius:4px;text-decoration:none;cursor:pointer;transition:background 0.15s;white-space:nowrap}
+.link-btn:hover{background:rgba(46,156,143,0.25)}
 
-/* input with prefix/suffix */
-.input-wrap { position: relative; display: flex; align-items: center; }
-.input-wrap .prefix {
-  position: absolute; left: 10px;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px; color: var(--text-dim);
-  pointer-events: none;
-}
-.input-wrap .suffix {
-  position: absolute; right: 10px;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; color: var(--text-dim);
-  pointer-events: none;
-}
-.input-wrap input { padding-left: 20px; }
-.input-wrap input.has-suffix { padding-right: 32px; }
+/* BUILDABLE AREA DISPLAY */
+.area-display{background:linear-gradient(135deg,rgba(46,156,143,0.1),rgba(26,37,53,0.5));border:1px solid rgba(46,156,143,0.25);border-radius:var(--radius);padding:20px;margin-top:16px}
+.area-big{font-family:'DM Serif Display',serif;font-size:42px;color:var(--teal-light);line-height:1}
+.area-unit{font-size:14px;color:var(--text-mid);margin-top:4px}
+.area-dims{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);margin-top:8px}
+.area-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
+.area-item{text-align:center;padding:10px;background:rgba(255,255,255,0.04);border-radius:6px}
+.area-item-val{font-family:'DM Mono',monospace;font-size:15px;color:var(--text)}
+.area-item-lbl{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:3px}
 
-/* two col row */
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+/* SETBACK DIAGRAM */
+.sb-diagram{position:relative;width:100%;max-width:360px;margin:16px auto 0;aspect-ratio:1.2}
+.sb-outer{position:absolute;inset:0;border:1px dashed var(--text-dim);border-radius:4px}
+.sb-inner{position:absolute;border:2px solid var(--teal);border-radius:3px;background:rgba(46,156,143,0.12)}
+.sb-label{position:absolute;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-mid)}
+.sb-lot-lbl{position:absolute;bottom:4px;right:6px;font-size:9px;color:var(--text-dim);text-transform:uppercase}
 
-/* toggle */
-.toggle-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 10px;
-}
-.toggle-row:last-child { border-bottom: none; margin-bottom: 0; }
-.toggle-label { font-size: 12px; color: var(--text-mid); }
-.toggle {
-  position: relative; width: 36px; height: 20px;
-  cursor: pointer;
-}
-.toggle input { opacity: 0; width: 0; height: 0; }
-.toggle-track {
-  position: absolute; inset: 0;
-  background: var(--border-bright);
-  border-radius: 20px;
-  transition: background 0.2s;
-}
-.toggle input:checked + .toggle-track { background: var(--teal); }
-.toggle-thumb {
-  position: absolute;
-  top: 3px; left: 3px;
-  width: 14px; height: 14px;
-  background: white;
-  border-radius: 50%;
-  transition: transform 0.2s;
-}
-.toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
+/* PLAN FIT GRID */
+.fit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+.fit-card{border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border)}
+.fit-card.fit-ok{border-color:rgba(76,175,130,0.35);background:var(--green-dim)}
+.fit-card.fit-warn{border-color:rgba(232,169,77,0.35);background:var(--amber-dim)}
+.fit-card.fit-no{border-color:rgba(224,92,92,0.35);background:var(--red-dim)}
+.fit-name{font-size:12px;font-weight:600;margin-bottom:4px}
+.fit-ok .fit-name{color:var(--green)}
+.fit-warn .fit-name{color:var(--amber)}
+.fit-no .fit-name{color:var(--red)}
+.fit-detail{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);line-height:1.6}
+.fit-badge{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;display:inline-block;margin-top:4px}
+.fit-ok .fit-badge{background:rgba(76,175,130,0.2);color:var(--green)}
+.fit-warn .fit-badge{background:rgba(232,169,77,0.15);color:var(--amber)}
+.fit-no .fit-badge{background:rgba(224,92,92,0.15);color:var(--red)}
 
-/* ── PLAN CARD ── */
-.plan-display {
-  margin-top: 14px;
-  padding: 12px;
-  background: var(--teal-dim);
-  border: 1px solid rgba(46,156,143,0.25);
-  border-radius: var(--radius-sm);
-  display: none;
-}
-.plan-display.visible { display: block; }
-.plan-name {
-  font-family: 'DM Serif Display', serif;
-  font-size: 16px;
-  color: var(--teal-light);
-  margin-bottom: 6px;
-}
-.plan-meta { display: flex; gap: 20px; flex-wrap: wrap; }
-.plan-meta-item { font-size: 11px; color: var(--text-mid); }
-.plan-meta-item span {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px; color: var(--text);
-  display: block;
-}
+/* LOT FACTOR */
+.lf-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.lf-row:last-child{border-bottom:none}
+.lf-lbl{color:var(--text-mid)}
+.lf-val{font-family:'DM Mono',monospace;color:var(--text)}
+.lf-total{display:flex;justify-content:space-between;padding:10px 0 0;margin-top:4px;border-top:1px solid var(--border-bright)}
+.lf-total-lbl{font-size:12px;font-weight:600;color:var(--text-mid)}
+.lf-total-val{font-family:'DM Mono',monospace;font-size:16px;color:var(--amber)}
 
-/* ── LOT FACTOR ITEMS ── */
-.lot-item {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border);
-}
-.lot-item:last-child { border-bottom: none; }
-.lot-item-label { font-size: 12px; color: var(--text-mid); }
-.lot-item-value {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px; color: var(--text);
-  text-align: right;
-}
-.lot-total {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0 0;
-  margin-top: 6px;
-  border-top: 1px solid var(--border-bright);
-}
-.lot-total-label { font-size: 12px; font-weight: 600; color: var(--text-mid); }
-.lot-total-value {
-  font-family: 'DM Mono', monospace;
-  font-size: 14px; color: var(--amber); font-weight: 500;
-}
+/* ROW TREE BLOCK */
+.row-tree-block{background:rgba(232,169,77,0.05);border:1px solid rgba(232,169,77,0.2);border-radius:var(--radius-sm);padding:14px;margin-top:10px}
+.rtb-title{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
 
-/* ── SCENARIO CARDS ── */
-.scenario-card {
-  border-radius: var(--radius);
-  padding: 20px;
-  border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-.scenario-card.worst {
-  background: linear-gradient(145deg, rgba(224,92,92,0.06), rgba(26,37,53,0.8));
-  border-color: rgba(224,92,92,0.2);
-}
-.scenario-card.base {
-  background: linear-gradient(145deg, rgba(46,156,143,0.08), rgba(26,37,53,0.8));
-  border-color: rgba(46,156,143,0.25);
-}
-.scenario-card.best {
-  background: linear-gradient(145deg, rgba(76,175,130,0.07), rgba(26,37,53,0.8));
-  border-color: rgba(76,175,130,0.2);
-}
-.scenario-tag {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 20px;
-  margin-bottom: 14px;
-  display: inline-block;
-}
-.worst .scenario-tag { background: var(--red-dim); color: var(--red); border: 1px solid rgba(224,92,92,0.3); }
-.base .scenario-tag { background: var(--teal-dim); color: var(--teal-light); border: 1px solid rgba(46,156,143,0.3); }
-.best .scenario-tag { background: var(--green-dim); color: var(--green); border: 1px solid rgba(76,175,130,0.3); }
+/* SUMMARY SIDEBAR */
+.two-col{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.sidebar{position:sticky;top:80px}
+.sb-card{background:var(--navy-mid);border:1px solid var(--border-bright);border-radius:var(--radius);padding:16px}
+.sb-card-title{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px}
+.sb-stat{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.sb-stat:last-child{border-bottom:none}
+.sb-stat-lbl{color:var(--text-mid)}
+.sb-stat-val{font-family:'DM Mono',monospace;color:var(--text)}
+.sb-big{font-family:'DM Serif Display',serif;font-size:28px;color:var(--amber);text-align:center;padding:12px 0 4px}
+.sb-big-lbl{font-size:10px;color:var(--text-dim);text-align:center;text-transform:uppercase;letter-spacing:0.06em}
 
-.scenario-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 5px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 12px;
-}
-.scenario-line:last-of-type { border-bottom: none; }
-.scenario-line-label { color: var(--text-mid); }
-.scenario-line-val {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px; color: var(--text);
-}
-.scenario-line-val.highlight { color: var(--amber); font-size: 13px; }
-.scenario-line-val.pos { color: var(--green); }
-.scenario-line-val.neg { color: var(--red); }
+/* SCENARIO MINI */
+.sc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.sc-mini{border-radius:6px;padding:10px;text-align:center}
+.sc-mini.worst{background:var(--red-dim);border:1px solid rgba(224,92,92,0.2)}
+.sc-mini.base{background:var(--teal-dim);border:1px solid rgba(46,156,143,0.25)}
+.sc-mini.best{background:var(--green-dim);border:1px solid rgba(76,175,130,0.2)}
+.sc-mini-lbl{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em}
+.sc-mini-val{font-family:'DM Serif Display',serif;font-size:18px;margin-top:2px}
+.worst .sc-mini-val{color:var(--red)}
+.base .sc-mini-val{color:var(--teal-light)}
+.best .sc-mini-val{color:var(--green)}
+.sc-mini-sub{font-size:9px;color:var(--text-dim);margin-top:2px}
 
-.scenario-profit {
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  text-align: center;
-}
-.worst .scenario-profit { background: var(--red-dim); }
-.base .scenario-profit { background: var(--teal-dim); }
-.best .scenario-profit { background: var(--green-dim); }
-.profit-label { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 4px; }
-.profit-val {
-  font-family: 'DM Serif Display', serif;
-  font-size: 26px;
-}
-.worst .profit-val { color: var(--red); }
-.base .profit-val { color: var(--teal-light); }
-.best .profit-val { color: var(--green); }
-.profit-sub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+/* UPGRADE GRID */
+.upg-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.upg-item{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:var(--radius-sm);border:1px solid var(--border);cursor:pointer;transition:all 0.15s;user-select:none}
+.upg-item:hover{background:rgba(255,255,255,0.04)}
+.upg-item.on{border-color:rgba(46,156,143,0.4);background:var(--teal-dim)}
+.upg-chk{width:14px;height:14px;border-radius:3px;border:1px solid var(--border-bright);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.upg-item.on .upg-chk{background:var(--teal);border-color:var(--teal)}
+.upg-chk svg{display:none}
+.upg-item.on .upg-chk svg{display:block}
+.upg-name{font-size:11px;color:var(--text-mid);flex:1;line-height:1.3}
+.upg-item.on .upg-name{color:var(--text)}
+.upg-cost{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim)}
+.upg-total-bar{display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:10px;border-top:1px solid var(--border-bright)}
+.upg-total-lbl{font-size:11px;color:var(--text-mid)}
+.upg-total-val{font-family:'DM Mono',monospace;font-size:14px;color:var(--amber)}
 
-/* ── UPGRADES ── */
-.upgrade-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-.upgrade-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  user-select: none;
-}
-.upgrade-item:hover { background: var(--card-hover); }
-.upgrade-item.active {
-  border-color: rgba(46,156,143,0.4);
-  background: var(--teal-dim);
-}
-.upgrade-check {
-  width: 14px; height: 14px;
-  border-radius: 3px;
-  border: 1px solid var(--border-bright);
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s, border-color 0.15s;
-}
-.upgrade-item.active .upgrade-check {
-  background: var(--teal);
-  border-color: var(--teal);
-}
-.upgrade-check svg { display: none; }
-.upgrade-item.active .upgrade-check svg { display: block; }
-.upgrade-name { font-size: 11px; color: var(--text-mid); flex: 1; line-height: 1.3; }
-.upgrade-item.active .upgrade-name { color: var(--text); }
-.upgrade-cost {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; color: var(--text-dim);
-  white-space: nowrap;
-}
-.upgrade-total-bar {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border-bright);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.upgrade-total-label { font-size: 11px; color: var(--text-mid); }
-.upgrade-total-val {
-  font-family: 'DM Mono', monospace;
-  font-size: 14px; color: var(--amber);
-}
+/* NAV BUTTONS */
+.nav-btns{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
+.btn{padding:9px 20px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{background:var(--teal-light)}
+.btn-ghost{background:transparent;color:var(--text-mid);border:1px solid var(--border-bright)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border-bright)}
 
-/* ── SECTION DIVIDER ── */
-.section-head {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  padding: 6px 0 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.section-head::before {
-  content: '';
-  width: 3px; height: 12px;
-  background: var(--teal);
-  border-radius: 2px;
-  flex-shrink: 0;
-}
+/* TOPO LINKS */
+.topo-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.topo-btn{font-size:11px;color:var(--teal);background:var(--teal-dim);border:1px solid rgba(46,156,143,0.25);padding:6px 12px;border-radius:var(--radius-sm);text-decoration:none;transition:background 0.15s;display:flex;align-items:center;gap:6px}
+.topo-btn:hover{background:rgba(46,156,143,0.25)}
+.topo-btn svg{width:12px;height:12px;flex-shrink:0}
 
-/* ── SUMMARY BAR ── */
-.summary-bar {
-  background: var(--navy-mid);
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius);
-  padding: 16px 24px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0;
-  margin-bottom: 20px;
-}
-.summary-item {
-  padding: 0 20px;
-  border-right: 1px solid var(--border);
-}
-.summary-item:first-child { padding-left: 0; }
-.summary-item:last-child { border-right: none; }
-.summary-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
-.summary-val {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px; color: var(--text);
-}
-.summary-val.teal { color: var(--teal-light); }
-.summary-val.amber { color: var(--amber); }
+/* SCENARIO CARDS */
+.sc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.sc-card{border-radius:var(--radius);padding:18px;border:1px solid var(--border)}
+.sc-card.worst{background:linear-gradient(145deg,rgba(224,92,92,0.06),rgba(26,37,53,0.8));border-color:rgba(224,92,92,0.2)}
+.sc-card.base{background:linear-gradient(145deg,rgba(46,156,143,0.08),rgba(26,37,53,0.8));border-color:rgba(46,156,143,0.25)}
+.sc-card.best{background:linear-gradient(145deg,rgba(76,175,130,0.07),rgba(26,37,53,0.8));border-color:rgba(76,175,130,0.2)}
+.sc-tag{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:3px 8px;border-radius:20px;display:inline-block;margin-bottom:12px}
+.worst .sc-tag{background:var(--red-dim);color:var(--red);border:1px solid rgba(224,92,92,0.3)}
+.base .sc-tag{background:var(--teal-dim);color:var(--teal-light);border:1px solid rgba(46,156,143,0.3)}
+.best .sc-tag{background:var(--green-dim);color:var(--green);border:1px solid rgba(76,175,130,0.3)}
+.sc-line{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px}
+.sc-line:last-of-type{border-bottom:none}
+.sc-line-lbl{color:var(--text-mid)}
+.sc-line-val{font-family:'DM Mono',monospace;color:var(--text)}
+.sc-line-val.hi{color:var(--amber);font-size:12px}
+.sc-profit{margin-top:12px;padding:12px;border-radius:var(--radius-sm);text-align:center}
+.worst .sc-profit{background:var(--red-dim)}
+.base .sc-profit{background:var(--teal-dim)}
+.best .sc-profit{background:var(--green-dim)}
+.profit-lbl{font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-mid);margin-bottom:3px}
+.profit-val{font-family:'DM Serif Display',serif;font-size:24px}
+.worst .profit-val{color:var(--red)}
+.base .profit-val{color:var(--teal-light)}
+.best .profit-val{color:var(--green)}
+.profit-sub{font-size:9px;color:var(--text-dim);margin-top:2px}
 
-/* ── ROW TREE INPUT ── */
-.row-tree-block {
-  background: rgba(232,169,77,0.05);
-  border: 1px solid rgba(232,169,77,0.15);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  margin-top: 10px;
-}
-.row-tree-block .block-title {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--amber);
-  margin-bottom: 10px;
-}
-
-/* ── FOOTER ── */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 16px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  color: var(--text-dim);
-}
-.footer a { color: var(--text-dim); text-decoration: none; }
-
-/* ── UTIL ── */
-.mono { font-family: 'DM Mono', monospace; }
-.note {
-  font-size: 10px;
-  color: var(--text-dim);
-  margin-top: 5px;
-  line-height: 1.4;
-}
-.warn-note {
-  font-size: 10px;
-  color: var(--amber);
-  margin-top: 6px;
-  padding: 6px 8px;
-  background: var(--amber-dim);
-  border-radius: 4px;
-  border-left: 2px solid var(--amber);
-}
-
-/* scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:3px}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-brand">
-    <div class="header-logo">T</div>
+<div class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-logo">T</div>
     <div>
-      <div class="header-title">New Build Calculator</div>
-      <div class="header-sub">Tide & Timber Ventures, LLC &mdash; Charlotte / Carolinas Market</div>
+      <div class="hdr-title">Site Analyzer + Build Calculator</div>
+      <div class="hdr-sub">Tide &amp; Timber Ventures, LLC &mdash; Charlotte / Carolinas Market</div>
     </div>
   </div>
-  <div class="header-badge">V1 &middot; May 2026</div>
+  <div class="hdr-badge">V2 &middot; May 2026</div>
 </div>
 
-<div class="main">
+<!-- STEP NAV -->
+<div class="step-nav">
+  <button class="step-btn active" id="nav-1" onclick="goTo(1)"><span class="step-num">01</span>Address &amp; Zoning</button>
+  <button class="step-btn" id="nav-2" onclick="goTo(2)"><span class="step-num">02</span>Lot Dimensions</button>
+  <button class="step-btn" id="nav-3" onclick="goTo(3)"><span class="step-num">03</span>Buildable Area</button>
+  <button class="step-btn" id="nav-4" onclick="goTo(4)"><span class="step-num">04</span>Lot Factor</button>
+  <button class="step-btn" id="nav-5" onclick="goTo(5)"><span class="step-num">05</span>Plan &amp; Build</button>
+  <button class="step-btn" id="nav-6" onclick="goTo(6)"><span class="step-num">06</span>Exit Scenarios</button>
+</div>
 
-  <!-- SUMMARY BAR -->
-  <div class="summary-bar">
-    <div class="summary-item">
-      <div class="summary-label">Total Build Cost</div>
-      <div class="summary-val" id="sum-build">—</div>
-    </div>
-    <div class="summary-item">
-      <div class="summary-label">All-In (Base)</div>
-      <div class="summary-val amber" id="sum-allin">—</div>
-    </div>
-    <div class="summary-item">
-      <div class="summary-label">Lot Factor Total</div>
-      <div class="summary-val" id="sum-lot">—</div>
-    </div>
-    <div class="summary-item">
-      <div class="summary-label">Tap Fees Total</div>
-      <div class="summary-val" id="sum-tap">—</div>
-    </div>
-    <div class="summary-item">
-      <div class="summary-label">Units</div>
-      <div class="summary-val teal" id="sum-units">—</div>
-    </div>
-  </div>
-
-  <!-- ROW 1: Plan + Basics -->
-  <div class="grid-top">
-
-    <!-- Plan Selection -->
+<!-- ══════════ PAGE 1: ADDRESS & ZONING ══════════ -->
+<div class="page active" id="page-1">
+  <div style="max-width:720px">
     <div class="card">
-      <div class="card-label"><span class="dot"></span>Plan Selection</div>
+      <div class="card-title"><span class="dot"></span>Property Address</div>
       <div class="field">
-        <label>Slate Building Group Plan</label>
-        <select id="plan-select">
-          <option value="">— Select a plan —</option>
-          <optgroup label="Standard Spec — Single Family">
-            <option value="akron|1533|188962|0">The Akron — 1,533 sf — $188,962</option>
-            <option value="arlington-std|1315|147451|0">The Arlington (Standard) — 1,315 sf — $147,451</option>
-            <option value="arlington-mod|1315|165380|0">The Arlington (Modern) — 1,315 sf — $165,380</option>
-            <option value="aurora|1156|138178|0">The Aurora (Standard) — 1,156 sf — $138,178</option>
-            <option value="bellville|1627|181267|0">The Bellville (Standard) — 1,627 sf — $181,267</option>
-            <option value="centerville|0|197677|0">The Centerville (Standard) — $197,677</option>
-            <option value="columbus|1311|149875|0">The Columbus (Standard) — 1,311 sf — $149,875</option>
-            <option value="cuyahoga|2005|209656|0">The Cuyahoga (Standard) — 2,005 sf — $209,656</option>
-            <option value="dublin-std|1435|159598|0">The Dublin (Standard) — 1,435 sf — $159,598</option>
-            <option value="dublin-1car|1435|173167|0">The Dublin 1 Car (Standard) — 1,435 sf — $173,167</option>
-            <option value="dublin-2car|1435|182908|0">The Dublin 2 Car (Standard) — 1,435 sf — $182,908</option>
-            <option value="grandview|1528|162303|0">The Grandview (Standard) — 1,528 sf — $162,303</option>
-            <option value="granville|1848|199643|0">The Granville (Standard) — 1,848 sf — $199,643</option>
-            <option value="hampton|2519|247874|0">The Hampton (Standard) — 2,519 sf — $247,874</option>
-            <option value="hilliard|1573|178139|0">The Hilliard (Standard) — 1,573 sf — $178,139</option>
-            <option value="muirfield|1199|146538|0">The Muirfield (Standard) — 1,199 sf — $146,538</option>
-            <option value="plumwood|1485|180860|0">The Plumwood (Standard) — 1,485 sf — $180,860</option>
-            <option value="seneca|1985|207367|0">The Seneca (Standard) — 1,985 sf — $207,367</option>
-            <option value="westerville|1108|138927|0">The Westerville (Standard) — 1,108 sf — $138,927</option>
-            <option value="worthington|1405|171821|0">The Worthington (Standard) — 1,405 sf — $171,821</option>
-            <option value="worthington-20|1405|183516|0">The Worthington 2.0 (Standard) — 1,405 sf — $183,516</option>
-          </optgroup>
-          <optgroup label="Upgrade Spec — Single Family">
-            <option value="albany|2726|319883|0">The Albany — 2,726 sf — $319,883</option>
-            <option value="galloway|3208|368301|0">The Galloway — 3,208 sf — $368,301</option>
-            <option value="linden|2992|358882|0">The Linden — 2,992 sf — $358,882</option>
-          </optgroup>
-          <optgroup label="Budget Spec — Single Family">
-            <option value="arcadia-sfh|1278|142942|0">The Arcadia (Budget) — 1,278 sf — $142,942</option>
-            <option value="hudson|0|134020|0">The Hudson (Budget) — $134,020</option>
-            <option value="laurel|1528|153360|0">The Laurel (Budget) — 1,528 sf — $153,360</option>
-            <option value="powell|1323|141902|0">The Powell (Budget) — 1,323 sf — $141,902</option>
-            <option value="powell-1car|1323|152996|0">The Powell One Car (Budget) — 1,323 sf — $152,996</option>
-            <option value="wildwood|1315|139763|0">The Wildwood (Budget) — 1,315 sf — $139,763</option>
-          </optgroup>
-          <optgroup label="Duets — Per Side">
-            <option value="arcadia-duet|1190|142812|2">The Arcadia Duet (per side) — 1,190 sf — $142,812</option>
-            <option value="bexley-duet|1664|180223|2">The Bexley Duet (per side) — 1,664 sf — $180,223</option>
-            <option value="findlay-duet|1409|167919|2">The Findlay Duet (per side) — 1,409 sf — $167,919</option>
-            <option value="logan-duet|1186|138759|2">The Logan Duet (per side) — 1,186 sf — $138,759</option>
-            <option value="whitehall-duet|1854|189738|2">The Whitehall Duet (per side) — 1,854 sf — $189,738</option>
-            <option value="winchester-duet|1480|161441|2">The Winchester Duet (per side) — 1,480 sf — $161,441</option>
-            <option value="polaris-duet|0|336081|2">The Polaris Duet (per side, Modern) — $336,081</option>
-            <option value="ashland-duet|0|299994|2">The Ashland Duet (per side, Modern) — $299,994</option>
-          </optgroup>
-          <optgroup label="Multifamily & Mini">
-            <option value="arcadia-triplex|0|416231|3">The Arcadia Triplex (all 3 units) — $416,231</option>
-            <option value="dayton-th|1372|158400|0">The Dayton Townhomes (1 unit) — 1,372 sf — $158,400</option>
-            <option value="franklin-th|1604|163459|0">The Franklin Townhomes (1 unit) — 1,604 sf — $163,459</option>
-            <option value="dunkirk|702|104118|0">The Dunkirk (mini home) — 702 sf — $104,118</option>
-          </optgroup>
-        </select>
+        <label>Street Address</label>
+        <input type="text" id="addr-street" placeholder="e.g. 2723 Dellinger Dr" oninput="onAddrChange()">
       </div>
-
-      <div class="plan-display" id="plan-display">
-        <div class="plan-name" id="plan-display-name"></div>
-        <div class="plan-meta">
-          <div class="plan-meta-item">Sq Ft (per unit)<span id="plan-sf">—</span></div>
-          <div class="plan-meta-item">Cost + 14%<span id="plan-cost">—</span></div>
-          <div class="plan-meta-item">Per Sq Ft<span id="plan-psf">—</span></div>
+      <div class="fr3">
+        <div class="field">
+          <label>City</label>
+          <input type="text" id="addr-city" placeholder="Charlotte" oninput="onAddrChange()">
+        </div>
+        <div class="field">
+          <label>State</label>
+          <input type="text" id="addr-state" value="NC" oninput="onAddrChange()">
+        </div>
+        <div class="field">
+          <label>ZIP</label>
+          <input type="text" id="addr-zip" placeholder="28269" oninput="onAddrChange()">
         </div>
       </div>
 
-      <div style="margin-top:16px;">
-        <div class="field-row">
-          <div class="field">
-            <label>Units</label>
-            <input type="number" id="units" value="1" min="1" max="20">
-          </div>
-          <div class="field">
-            <label>Land Cost</label>
-            <div class="input-wrap"><span class="prefix">$</span><input type="text" id="land-cost" value="25,000" class="mono"></div>
-          </div>
-        </div>
+      <!-- External Links auto-generated from address -->
+      <div class="link-card" id="link-card" style="display:none">
+        <div class="link-card-title">🔗 Jump to External Resources</div>
+        <div id="link-rows"></div>
+        <p class="note" style="margin-top:8px">Always confirm lot dimensions and zoning in GIS before relying on them. These links pre-fill the address where supported.</p>
       </div>
     </div>
 
-    <!-- Soft Costs -->
     <div class="card">
-      <div class="card-label"><span class="dot"></span>Soft Costs &amp; Financing Defaults</div>
-      <div class="field-row">
+      <div class="card-title"><span class="dot"></span>County &amp; Zoning</div>
+      <div class="fr2">
         <div class="field">
-          <label>Survey</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="survey" value="1,000"></div>
+          <label>County</label>
+          <select id="county-sel" onchange="onCountyChange()">
+            <option value="">— Select County —</option>
+            <option value="Mecklenburg">Mecklenburg (Charlotte UDO)</option>
+            <option value="Gaston">Gaston</option>
+            <option value="Catawba">Catawba</option>
+            <option value="Lincoln">Lincoln</option>
+            <option value="Cabarrus">Cabarrus</option>
+            <option value="Iredell">Iredell</option>
+            <option value="Shelby">Shelby (Cleveland)</option>
+            <option value="Kannapolis">Kannapolis (Cabarrus/Rowan)</option>
+            <option value="Monroe">Monroe (Union)</option>
+          </select>
         </div>
         <div class="field">
-          <label>Appraisal</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="appraisal" value="725"></div>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Insurance</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="insurance" value="1,400"></div>
-        </div>
-        <div class="field">
-          <label>Loan Points</label>
-          <div class="input-wrap"><input type="number" id="loan-points" value="1" step="0.25" class="has-suffix"><span class="suffix">%</span></div>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Interest Rate</label>
-          <div class="input-wrap"><input type="number" id="interest-rate" value="10" step="0.25" class="has-suffix"><span class="suffix">%</span></div>
-        </div>
-        <div class="field">
-          <label>Realtor Fee</label>
-          <div class="input-wrap"><input type="number" id="realtor-pct" value="5" step="0.5" class="has-suffix"><span class="suffix">%</span></div>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Closing Cost (per unit)</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="closing-cost" value="3,335"></div>
-        </div>
-        <div class="field">
-          <label>Municipality</label>
-          <select id="municipality">
-            <option value="17340">Charlotte Water (~$17,340)</option>
-            <option value="8000">Statesville (~$8,000)</option>
-            <option value="7500">Gaston County (~$7,500)</option>
-            <option value="7500">Lincoln County (~$7,500)</option>
-            <option value="custom">Custom</option>
+          <label>Zoning District</label>
+          <select id="zone-sel" onchange="onZoneChange()">
+            <option value="">— Select County First —</option>
           </select>
         </div>
       </div>
-      <div class="field" id="custom-tap-field" style="display:none;">
-        <label>Custom Tap Fee (per unit)</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="text" id="custom-tap" value="0"></div>
+      <div id="zone-info" style="display:none">
+        <div class="fr3" style="margin-top:4px">
+          <div class="field"><label>Front Setback (ft)</label><div class="input-wrap"><input type="number" id="sb-front" oninput="calcBuildable()"><span class="sfx">ft</span></div></div>
+          <div class="field"><label>Rear Setback (ft)</label><div class="input-wrap"><input type="number" id="sb-rear" oninput="calcBuildable()"><span class="sfx">ft</span></div></div>
+          <div class="field"><label>Side Setback (ft)</label><div class="input-wrap"><input type="number" id="sb-sides" oninput="calcBuildable()"><span class="sfx">ft</span></div></div>
+        </div>
+        <div class="fr3">
+          <div class="field"><label>Corner Side Setback (ft)</label><div class="input-wrap"><input type="number" id="sb-corner" oninput="calcBuildable()"><span class="sfx">ft</span></div></div>
+          <div class="field"><label>Min Lot Width (ft)</label><div class="input-wrap"><input type="number" id="sb-minw" readonly style="opacity:0.6"><span class="sfx">ft</span></div></div>
+          <div class="field"><label>Garage Setback</label><div class="input-wrap"><input type="text" id="sb-garage" readonly style="opacity:0.6"></div></div>
+        </div>
+        <p class="note">Setbacks auto-filled from your Drive spreadsheet. Override any value if needed. Always verify against the actual UDO for this address.</p>
       </div>
-      <div class="toggle-row" style="margin-top:8px;">
-        <span class="toggle-label">Existing taps on lot (divide tap fee by units)</span>
-        <label class="toggle">
-          <input type="checkbox" id="existing-taps">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
+      <div id="zone-udo-link" style="margin-top:10px;display:none"></div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn btn-primary" onclick="goTo(2)">Next: Lot Dimensions →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE 2: LOT DIMENSIONS ══════════ -->
+<div class="page" id="page-2">
+  <div style="max-width:720px">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Lot Dimensions</div>
+
+      <div id="gis-link-block" style="margin-bottom:16px"></div>
+
+      <div class="fr2">
+        <div class="field">
+          <label>Lot Width (ft)</label>
+          <input type="number" id="lot-w" placeholder="e.g. 75" oninput="calcBuildable()">
+        </div>
+        <div class="field">
+          <label>Lot Depth (ft)</label>
+          <input type="number" id="lot-d" placeholder="e.g. 180" oninput="calcBuildable()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Lot Area (sq ft) — auto-calculated or manual override</label>
+        <input type="number" id="lot-sf" placeholder="Auto-calculated from W × D" oninput="onLotSFOverride()">
+        <p class="note">If the lot is irregular, enter the actual sq ft here and flag it below.</p>
+      </div>
+
+      <div class="toggle-row" style="margin-top:12px">
+        <span class="toggle-lbl">Corner lot (corner side setback applies to one side)</span>
+        <label class="tog"><input type="checkbox" id="corner-lot" onchange="calcBuildable()"><div class="tog-track"></div><div class="tog-thumb"></div></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-lbl">Irregular / non-rectangular lot</span>
+        <label class="tog"><input type="checkbox" id="irregular-lot" onchange="calcBuildable()"><div class="tog-track"></div><div class="tog-thumb"></div></label>
+      </div>
+
+      <div id="irregular-warn" style="display:none" class="warn" style="margin-top:8px">
+        ⚠ Irregular lot flagged. Buildable area formula (W−setbacks) × (D−setbacks) may be inaccurate. Use GIS to measure the actual buildable envelope and enter manually on the next screen.
+      </div>
+
+      <div id="width-warn" style="display:none" class="warn" style="margin-top:8px"></div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goTo(3)">Next: Buildable Area →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE 3: BUILDABLE AREA ══════════ -->
+<div class="page" id="page-3">
+  <div class="fr2" style="gap:20px;align-items:start">
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Buildable Envelope</div>
+
+        <div id="buildable-result"></div>
+
+        <div class="field" style="margin-top:16px">
+          <label>Buildable Area Override (sq ft)</label>
+          <input type="number" id="buildable-override" placeholder="Leave blank to use calculated value" oninput="calcBuildable()">
+          <p class="note">Use this if the lot is irregular and you've measured in GIS.</p>
+        </div>
+      </div>
+
+      <!-- Setback Diagram -->
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Setback Diagram</div>
+        <canvas id="sb-canvas" width="400" height="300" style="width:100%;max-width:400px;display:block;margin:0 auto;border-radius:6px"></canvas>
+      </div>
+
+      <!-- Topo Links -->
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Topography &amp; Flood Resources</div>
+        <p class="note" style="margin-bottom:10px">Use these to assess grade change and flood risk before estimating lot factor grading costs.</p>
+        <div class="topo-links" id="topo-links">
+          <a class="topo-btn" id="topo-usgs" href="https://apps.nationalmap.gov/viewer/" target="_blank">
+            <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M2 6h8M6 2v8" stroke="currentColor" stroke-width="1.2"/></svg>
+            USGS Topo Viewer
+          </a>
+          <a class="topo-btn" id="topo-flood" href="https://ncfloodmaps.com/" target="_blank">
+            <svg viewBox="0 0 12 12" fill="none"><path d="M1 9c1-2 2-3 3-3s2 1 3 1 2-2 3-2" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+            NC Floodplain Map
+          </a>
+          <a class="topo-btn" id="topo-earth" href="https://earth.google.com/web/" target="_blank">
+            <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/></svg>
+            Google Earth
+          </a>
+        </div>
+        <p class="warn" style="margin-top:10px">Grading / dirt load estimates on the next screen are manual — use topo to assess grade change visually before estimating loads.</p>
       </div>
     </div>
 
+    <!-- Plan Fit Panel -->
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Plan Footprint Fit Check</div>
+        <p class="note" style="margin-bottom:12px">Shows which Slate plans physically fit within the buildable envelope. Footprint is ground-floor only — adding stories increases sq ft without requiring more land.</p>
+        <div class="fit-grid" id="fit-grid"></div>
+        <div id="fit-empty" class="note" style="margin-top:8px">Enter lot dimensions and setbacks to see fit check.</div>
+      </div>
+    </div>
   </div>
 
-  <!-- ROW 2: Lot Factor + Upgrades -->
-  <div class="grid-mid">
+  <div class="nav-btns">
+    <button class="btn btn-ghost" onclick="goTo(2)">← Back</button>
+    <button class="btn btn-primary" onclick="goTo(4)">Next: Lot Factor →</button>
+  </div>
+</div>
 
-    <!-- Lot Factor -->
-    <div class="card">
-      <div class="card-label"><span class="dot"></span>Lot Factor — Itemized</div>
-      <p class="note" style="margin-bottom:14px;">The hardest part of underwriting. Each item auto-calculates — adjust quantities as needed.</p>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Existing Structure Size (sq ft)</label>
-          <input type="number" id="demo-sqft" value="0" placeholder="0 = no demo">
-          <p class="note">$8–$10/sq ft. Enter 0 if vacant lot.</p>
-        </div>
-        <div class="field">
-          <label>Demo Rate</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="number" id="demo-rate" value="9"><span class="suffix">/sf</span></div>
+<!-- ══════════ PAGE 4: LOT FACTOR ══════════ -->
+<div class="page" id="page-4">
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Existing Structure</div>
+        <div class="fr2">
+          <div class="field"><label>Structure Size (sq ft)</label><input type="number" id="demo-sqft" value="0" oninput="calcLF()" placeholder="0 = vacant lot"><p class="note">$8–$10/sf. Enter 0 if vacant.</p></div>
+          <div class="field"><label>Demo Rate ($/sf)</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="demo-rate" value="9" oninput="calcLF()"></div></div>
         </div>
       </div>
 
-      <div class="field-row" style="margin-top:4px;">
-        <div class="field">
-          <label>Heritage Trees on Site</label>
-          <input type="number" id="heritage-trees" value="0" min="0">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Heritage Trees (On-Site)</div>
+        <div class="fr2">
+          <div class="field"><label>Number of Trees</label><input type="number" id="her-trees" value="0" min="0" oninput="calcLF()"></div>
+          <div class="field"><label>Removal Timing</label>
+            <select id="her-timing" onchange="calcLF()">
+              <option value="750">Before Demo ($750/tree) ✓ Cheaper</option>
+              <option value="1500">During Development ($1,500/tree)</option>
+            </select>
+          </div>
         </div>
+        <div class="warn" style="margin-top:0">💡 Save money: remove heritage trees BEFORE demolition to pay $750 instead of $1,500 per tree.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>ROW Trees (Right-of-Way)</div>
+        <div class="row-tree-block">
+          <div class="rtb-title">⚠ ROW Trees — High Cost Risk</div>
+          <p class="note" style="margin-bottom:10px">City fee: $200/inch of trunk diameter. Removal labor is separate. Call Urban Forestry — free site visit, confirms in writing in ~2 days. They are the legal authority.</p>
+          <div class="fr3">
+            <div class="field"><label># of ROW Trees</label><input type="number" id="row-count" value="0" min="0" oninput="calcLF()"></div>
+            <div class="field"><label>Avg Diameter (inches)</label><input type="number" id="row-diam" value="0" oninput="calcLF()"></div>
+            <div class="field"><label>Removal Labor / Tree</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="row-labor" value="3500" oninput="calcLF()"></div></div>
+          </div>
+          <div id="row-tree-cost-msg" style="margin-top:6px"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Clearing, Grading &amp; Site Work</div>
         <div class="field">
-          <label>Removal Timing</label>
-          <select id="heritage-timing">
-            <option value="750">Before Demo ($750/tree)</option>
-            <option value="1500">During Dev ($1,500/tree)</option>
+          <label>Clearing Type</label>
+          <select id="clearing" onchange="calcLF()">
+            <option value="0">None / Already Clear ($0)</option>
+            <option value="3000">Light — minimal vegetation ($3,000)</option>
+            <option value="6500" selected>Medium — standard lot ($6,500)</option>
+            <option value="10000">Heavy — overgrown, multiple trees ($10,000)</option>
+            <option value="15000">Extreme — dense / difficult access ($15,000)</option>
           </select>
         </div>
-      </div>
-
-      <!-- ROW TREES -->
-      <div class="row-tree-block">
-        <div class="block-title">⚠ ROW Trees (Right-of-Way)</div>
-        <p class="note" style="margin-bottom:10px;">City fee: $200/inch diameter. Removal labor separate. Call Urban Forestry to confirm — free, ~2 days.</p>
-        <div class="field-row">
-          <div class="field">
-            <label>Number of ROW Trees</label>
-            <input type="number" id="row-tree-count" value="0" min="0">
-          </div>
-          <div class="field">
-            <label>Avg Trunk Diameter (inches)</label>
-            <input type="number" id="row-tree-diameter" value="0" min="0">
-          </div>
+        <div class="fr2">
+          <div class="field"><label>Loads of Dirt</label><input type="number" id="dirt-loads" value="0" min="0" oninput="calcLF()"><p class="note">~5 loads = 4 ft grade change over 130 ft</p></div>
+          <div class="field"><label>Cost / Load</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="dirt-rate" value="4000" oninput="calcLF()"></div></div>
+        </div>
+        <div class="fr2">
+          <div class="field"><label>Grading</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="grading" value="2500" oninput="calcLF()"></div></div>
+          <div class="field"><label>Site Prep / Driveway</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="site-prep" value="750" oninput="calcLF()"></div></div>
+        </div>
+        <div class="fr2">
+          <div class="field"><label>Utilities / Connections</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="utilities" value="1500" oninput="calcLF()"></div></div>
+          <div class="field"><label>Framing Labor Buffer</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="framing" value="600" oninput="calcLF()"></div></div>
+        </div>
+        <div class="fr2">
+          <div class="field"><label>Culverts</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="culverts" value="0" oninput="calcLF()"></div></div>
+          <div class="field"><label>Landscaping</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="landscaping" value="500" oninput="calcLF()"></div></div>
         </div>
         <div class="field">
-          <label>Removal Labor (per ROW tree)</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="row-removal-labor" value="3,500"></div>
+          <label>GC Management Markup</label>
+          <div class="input-wrap"><input type="number" id="gc-markup" value="15" class="sfx-pad" oninput="calcLF()"><span class="sfx">%</span></div>
+          <p class="note">Applied to all raw lot factor costs above.</p>
         </div>
-      </div>
-
-      <div class="field" style="margin-top:12px;">
-        <label>Clearing Type</label>
-        <select id="clearing">
-          <option value="0">None / Already Clear</option>
-          <option value="3000">Light — minimal vegetation ($3,000)</option>
-          <option value="6500" selected>Medium — standard lot ($6,500)</option>
-          <option value="10000">Heavy — overgrown, multiple trees ($10,000)</option>
-          <option value="15000">Extreme — dense / difficult access ($15,000)</option>
-        </select>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Loads of Dirt</label>
-          <input type="number" id="dirt-loads" value="0" min="0">
-        </div>
-        <div class="field">
-          <label>Cost per Load</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="dirt-rate" value="4,000"></div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Grading</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="grading" value="2,500"></div>
-        </div>
-        <div class="field">
-          <label>Site Prep / Driveway</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="site-prep" value="750"></div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Utilities / Connections</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="utilities" value="1,500"></div>
-        </div>
-        <div class="field">
-          <label>Framing Labor Buffer</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="framing" value="600"></div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Culverts</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="culverts" value="0"></div>
-        </div>
-        <div class="field">
-          <label>Landscaping</label>
-          <div class="input-wrap"><span class="prefix">$</span><input type="text" id="landscaping" value="500"></div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>GC Management Markup</label>
-        <div class="input-wrap"><input type="number" id="gc-markup" value="15" step="1" class="has-suffix"><span class="suffix">%</span></div>
-        <p class="note">Applied to all raw lot factor costs above.</p>
-      </div>
-
-      <!-- Lot Factor Breakdown -->
-      <div style="margin-top:16px;">
-        <div class="section-head">Lot Factor Breakdown</div>
-        <div id="lot-breakdown"></div>
-        <div class="lot-total">
-          <span class="lot-total-label">Total Lot Factor</span>
-          <span class="lot-total-value" id="lot-total-display">$0</span>
-        </div>
-        <p class="warn-note" id="row-tree-warn" style="display:none;">⚠ ROW tree costs detected. Verify with Urban Forestry before finalizing.</p>
       </div>
     </div>
 
-    <!-- Upgrades -->
-    <div class="card">
-      <div class="card-label"><span class="dot"></span>Upgrades (per unit)</div>
-      <div class="upgrade-grid" id="upgrade-grid"></div>
-      <div class="upgrade-total-bar">
-        <span class="upgrade-total-label">Selected Upgrades Total</span>
-        <span class="upgrade-total-val" id="upgrade-total">$0</span>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sb-card">
+        <div class="sb-card-title">Lot Factor Breakdown</div>
+        <div id="lf-breakdown"></div>
+        <div class="lf-total">
+          <span class="lf-total-lbl">Total Lot Factor</span>
+          <span class="lf-total-val" id="lf-total-display">$0</span>
+        </div>
+        <div id="row-tree-danger" style="display:none" class="warn" style="margin-top:10px">⚠ ROW tree costs detected — verify with Urban Forestry before finalizing.</div>
+      </div>
+      <div class="sb-card" style="margin-top:12px">
+        <div class="sb-card-title">Property Summary</div>
+        <div class="sb-stat"><span class="sb-stat-lbl">Address</span><span class="sb-stat-val" id="sum-addr" style="font-family:'DM Sans',sans-serif;font-size:11px;text-align:right;max-width:160px">—</span></div>
+        <div class="sb-stat"><span class="sb-stat-lbl">County / Zone</span><span class="sb-stat-val" id="sum-zone">—</span></div>
+        <div class="sb-stat"><span class="sb-stat-lbl">Lot Size</span><span class="sb-stat-val" id="sum-lotsize">—</span></div>
+        <div class="sb-stat"><span class="sb-stat-lbl">Buildable Area</span><span class="sb-stat-val" id="sum-buildable">—</span></div>
       </div>
     </div>
-
   </div>
 
-  <!-- ROW 3: Scenarios -->
-  <div class="section-head">Exit Scenarios</div>
-  <div class="grid-scenarios">
+  <div class="nav-btns">
+    <button class="btn btn-ghost" onclick="goTo(3)">← Back</button>
+    <button class="btn btn-primary" onclick="goTo(5)">Next: Plan &amp; Build →</button>
+  </div>
+</div>
 
-    <div class="scenario-card worst" id="scenario-worst">
-      <div class="scenario-tag">Worst Case</div>
-      <div class="field">
-        <label>Loan Term (months)</label>
-        <input type="number" id="term-worst" value="9" min="1" max="36">
+<!-- ══════════ PAGE 5: PLAN & BUILD ══════════ -->
+<div class="page" id="page-5">
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Slate Plan Selection</div>
+        <div class="field">
+          <select id="plan-sel" onchange="onPlanChange()">
+            <option value="">— Select a Slate plan —</option>
+            <optgroup label="Standard Spec — Single Family">
+              <option value="Akron|1533|188962|1|0|0">The Akron — 1,533 sf — $188,962</option>
+              <option value="Arlington Std|1315|147451|1|50.4|31">The Arlington (Standard) — 1,315 sf — $147,451 — 50'5"×31'</option>
+              <option value="Arlington Modern|1315|165380|1|50.4|31">The Arlington (Modern) — 1,315 sf — $165,380 — 50'5"×31'</option>
+              <option value="Aurora|1156|138178|1|20|30">The Aurora (Standard) — 1,156 sf — $138,178 — 20'×30'</option>
+              <option value="Bellville|1627|181267|1|38|28">The Bellville (Standard) — 1,627 sf — $181,267 — 38'×28'</option>
+              <option value="Centerville|0|197677|1|0|0">The Centerville (Standard) — $197,677</option>
+              <option value="Columbus|1311|149875|1|34.5|46">The Columbus (Standard) — 1,311 sf — $149,875 — 34'6"×46'</option>
+              <option value="Cuyahoga|2005|209656|1|0|0">The Cuyahoga (Standard) — 2,005 sf — $209,656</option>
+              <option value="Dublin Std|1435|159598|1|42|22">The Dublin (Standard) — 1,435 sf — $159,598 — 42'×22'</option>
+              <option value="Dublin 1Car|1435|173167|1|42|22">The Dublin 1 Car — 1,435 sf — $173,167 — 42'×22'</option>
+              <option value="Dublin 2Car|1435|182908|1|42|22">The Dublin 2 Car — 1,435 sf — $182,908 — 42'×22'</option>
+              <option value="Grandview|1528|162303|1|25|30">The Grandview (Standard) — 1,528 sf — $162,303 — 25'×30'</option>
+              <option value="Granville|1848|199643|1|42|38">The Granville (Standard) — 1,848 sf — $199,643 — 42'×38'</option>
+              <option value="Hampton|2519|247874|1|58|50.4">The Hampton (Standard) — 2,519 sf — $247,874 — 58'×50'5"</option>
+              <option value="Hilliard|1573|178139|1|41.7|24.5">The Hilliard (Standard) — 1,573 sf — $178,139 — 41'8"×24'6"</option>
+              <option value="Muirfield|1199|146538|1|42.3|30">The Muirfield (Standard) — 1,199 sf — $146,538 — 42'3"×30'</option>
+              <option value="Plumwood|1485|180860|1|58|34">The Plumwood (Standard) — 1,485 sf — $180,860 — 58'×34'</option>
+              <option value="Seneca|1985|207367|1|43|30">The Seneca (Standard) — 1,985 sf — $207,367 — 43'×30'</option>
+              <option value="Westerville|1108|138927|1|48.4|25">The Westerville (Standard) — 1,108 sf — $138,927 — 48'5"×25'</option>
+              <option value="Worthington|1405|171821|1|46|48">The Worthington (Standard) — 1,405 sf — $171,821 — 46'×48'</option>
+              <option value="Worthington 2.0|1405|183516|1|46|48">The Worthington 2.0 (Standard) — 1,405 sf — $183,516 — 46'×48'</option>
+            </optgroup>
+            <optgroup label="Upgrade Spec — Single Family">
+              <option value="Albany|2726|319883|1|45|40">The Albany — 2,726 sf — $319,883 — 45'×40'</option>
+              <option value="Galloway|3208|368301|1|60|36">The Galloway — 3,208 sf — $368,301 — 60'×36'</option>
+              <option value="Linden|2992|358882|1|60|35">The Linden — 2,992 sf — $358,882 — 60'×35'</option>
+            </optgroup>
+            <optgroup label="Budget Spec — Single Family">
+              <option value="Arcadia SFH|1278|142942|1|30.6|22">The Arcadia (Budget) — 1,278 sf — $142,942 — 30'7"×22'</option>
+              <option value="Hudson|0|134020|1|0|0">The Hudson (Budget) — $134,020</option>
+              <option value="Laurel|1528|153360|1|25|30">The Laurel (Budget) — 1,528 sf — $153,360 — 25'×30'</option>
+              <option value="Powell|1323|141902|1|38|20">The Powell (Budget) — 1,323 sf — $141,902 — 38'×20'</option>
+              <option value="Powell 1Car|1323|152996|1|38|32">The Powell One Car (Budget) — 1,323 sf — $152,996 — 38'×32'</option>
+              <option value="Wildwood|1315|139763|1|0|0">The Wildwood (Budget) — 1,315 sf — $139,763</option>
+            </optgroup>
+            <optgroup label="Duets — Per Side">
+              <option value="Arcadia Duet|1190|142812|2|30|40">The Arcadia Duet (per side) — 1,190 sf — $142,812 — 30'×40'</option>
+              <option value="Bexley Duet|1664|180223|2|53|40">The Bexley Duet (per side) — 1,664 sf — $180,223 — 53'×40'</option>
+              <option value="Findlay Duet|1409|167919|2|45|38">The Findlay Duet (per side) — 1,409 sf — $167,919 — 45'×38'</option>
+              <option value="Logan Duet|1186|138759|2|62|39.5">The Logan Duet (per side) — 1,186 sf — $138,759 — 62'×39'6"</option>
+              <option value="Whitehall Duet|1854|189738|2|53|45">The Whitehall Duet (per side) — 1,854 sf — $189,738 — 53'×45'</option>
+              <option value="Winchester Duet|1480|161441|2|42.2|39.7">The Winchester Duet (per side) — 1,480 sf — $161,441 — 42'2"×39'8"</option>
+              <option value="Polaris Duet|0|336081|2|0|0">The Polaris Duet (Modern, per side) — $336,081</option>
+              <option value="Ashland Duet|0|299994|2|0|0">The Ashland Duet (Modern, per side) — $299,994</option>
+            </optgroup>
+            <optgroup label="Multifamily & Mini">
+              <option value="Arcadia Triplex|0|416231|3|0|0">The Arcadia Triplex (all 3 units) — $416,231</option>
+              <option value="Dayton TH|1372|158400|1|0|0">The Dayton Townhomes (1 unit) — 1,372 sf — $158,400</option>
+              <option value="Franklin TH|1604|163459|1|40|20">The Franklin Townhomes (1 unit) — 1,604 sf — $163,459 — 40'×20'</option>
+              <option value="Dunkirk|702|104118|1|26|27">The Dunkirk (mini home) — 702 sf — $104,118 — 26'×27'</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div id="plan-info" style="display:none;margin-top:12px;padding:12px;background:var(--teal-dim);border:1px solid rgba(46,156,143,0.25);border-radius:var(--radius-sm)">
+          <div style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--teal-light);margin-bottom:6px" id="plan-info-name"></div>
+          <div class="fr3">
+            <div><div style="font-size:10px;color:var(--text-dim)">Cost + 14%</div><div style="font-family:'DM Mono',monospace;font-size:13px" id="plan-info-cost"></div></div>
+            <div><div style="font-size:10px;color:var(--text-dim)">Sq Ft / Unit</div><div style="font-family:'DM Mono',monospace;font-size:13px" id="plan-info-sf"></div></div>
+            <div><div style="font-size:10px;color:var(--text-dim)">Footprint</div><div style="font-family:'DM Mono',monospace;font-size:13px" id="plan-info-fp"></div></div>
+          </div>
+          <div id="plan-fit-msg" style="margin-top:8px"></div>
+        </div>
+
+        <div class="fr2" style="margin-top:14px">
+          <div class="field"><label>Units</label><input type="number" id="units" value="1" min="1" max="20" oninput="calcAll()"></div>
+          <div class="field"><label>Land Cost</label><div class="input-wrap"><span class="pfx">$</span><input type="text" id="land-cost" value="25,000" oninput="calcAll()"></div></div>
+        </div>
       </div>
-      <div class="field">
-        <label>Sale Price / sq ft (ARV)</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="text" id="arv-psf-worst" placeholder="e.g. 185" class="mono"></div>
-        <p class="note">Enter your comp-derived $/sf. Auto-fills at base −10% if blank.</p>
+
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Tap Fees</div>
+        <div class="fr2">
+          <div class="field">
+            <label>Municipality</label>
+            <select id="tap-muni" onchange="calcAll()">
+              <option value="17340">Charlotte / Mecklenburg — $17,340</option>
+              <option value="8003">Gaston County — $8,003</option>
+              <option value="7697">Statesville (Iredell) — $7,697</option>
+              <option value="10126">Lincoln County — $10,126</option>
+              <option value="9850">Kannapolis — $9,850</option>
+              <option value="2400">Mt Holly — $2,400</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="field" id="custom-tap-f" style="display:none">
+            <label>Custom Tap Fee (per unit)</label>
+            <div class="input-wrap"><span class="pfx">$</span><input type="number" id="custom-tap" value="0" oninput="calcAll()"></div>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-lbl">Existing taps on lot (divide total by units)</span>
+          <label class="tog"><input type="checkbox" id="existing-taps" onchange="calcAll()"><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div id="tap-calc-msg" style="margin-top:8px"></div>
       </div>
-      <div id="scenario-lines-worst" style="margin-top:14px;"></div>
-      <div class="scenario-profit">
-        <div class="profit-label">Profit per Unit</div>
-        <div class="profit-val" id="profit-worst">—</div>
-        <div class="profit-sub" id="coc-worst"></div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Soft Costs &amp; Financing</div>
+        <div class="fr3">
+          <div class="field"><label>Survey</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="survey" value="1000" oninput="calcAll()"></div></div>
+          <div class="field"><label>Appraisal</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="appraisal" value="725" oninput="calcAll()"></div></div>
+          <div class="field"><label>Insurance</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="insurance" value="1400" oninput="calcAll()"></div></div>
+        </div>
+        <div class="fr3">
+          <div class="field"><label>Loan Points (%)</label><div class="input-wrap"><input type="number" id="loan-pts" value="1" step="0.25" class="sfx-pad" oninput="calcAll()"><span class="sfx">%</span></div></div>
+          <div class="field"><label>Interest Rate (%)</label><div class="input-wrap"><input type="number" id="int-rate" value="10" step="0.25" class="sfx-pad" oninput="calcAll()"><span class="sfx">%</span></div></div>
+          <div class="field"><label>Realtor Fee (%)</label><div class="input-wrap"><input type="number" id="realtor-pct" value="5" step="0.5" class="sfx-pad" oninput="calcAll()"><span class="sfx">%</span></div></div>
+        </div>
+        <div class="field"><label>Closing Cost (per unit)</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="closing" value="3335" oninput="calcAll()"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Upgrades (per unit)</div>
+        <div class="upg-grid" id="upg-grid"></div>
+        <div class="upg-total-bar">
+          <span class="upg-total-lbl">Selected Upgrades</span>
+          <span class="upg-total-val" id="upg-total">$0</span>
+        </div>
       </div>
     </div>
 
-    <div class="scenario-card base" id="scenario-base">
-      <div class="scenario-tag">Base Case</div>
-      <div class="field">
-        <label>Loan Term (months)</label>
-        <input type="number" id="term-base" value="7" min="1" max="36">
-      </div>
-      <div class="field">
-        <label>Sale Price / sq ft (ARV)</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="text" id="arv-psf-base" placeholder="e.g. 205" class="mono"></div>
-      </div>
-      <div id="scenario-lines-base" style="margin-top:14px;"></div>
-      <div class="scenario-profit">
-        <div class="profit-label">Profit per Unit</div>
-        <div class="profit-val" id="profit-base">—</div>
-        <div class="profit-sub" id="coc-base"></div>
+    <!-- Sidebar cost summary -->
+    <div class="sidebar">
+      <div class="sb-card">
+        <div class="sb-card-title">Cost Stack (per unit)</div>
+        <div id="cost-stack"></div>
+        <div style="border-top:1px solid var(--border-bright);margin-top:8px;padding-top:10px">
+          <div class="sb-big" id="allin-display">—</div>
+          <div class="sb-big-lbl">All-In Cost / Unit (before financing)</div>
+        </div>
       </div>
     </div>
-
-    <div class="scenario-card best" id="scenario-best">
-      <div class="scenario-tag">Best Case</div>
-      <div class="field">
-        <label>Loan Term (months)</label>
-        <input type="number" id="term-best" value="6" min="1" max="36">
-      </div>
-      <div class="field">
-        <label>Sale Price / sq ft (ARV)</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="text" id="arv-psf-best" placeholder="e.g. 225" class="mono"></div>
-        <p class="note">Auto-fills at base +10% if blank.</p>
-      </div>
-      <div id="scenario-lines-best" style="margin-top:14px;"></div>
-      <div class="scenario-profit">
-        <div class="profit-label">Profit per Unit</div>
-        <div class="profit-val" id="profit-best">—</div>
-        <div class="profit-sub" id="coc-best"></div>
-      </div>
-    </div>
-
   </div>
 
-</div><!-- /main -->
+  <div class="nav-btns">
+    <button class="btn btn-ghost" onclick="goTo(4)">← Back</button>
+    <button class="btn btn-primary" onclick="goTo(6)">Next: Exit Scenarios →</button>
+  </div>
+</div>
 
-<div class="footer">
-  <span>Tide &amp; Timber Ventures, LLC &mdash; management@tidetimberventures.com &mdash; Charlotte, NC</span>
-  <span>For internal use only &mdash; not financial advice</span>
+<!-- ══════════ PAGE 6: EXIT SCENARIOS ══════════ -->
+<div class="page" id="page-6">
+  <div class="sc-grid">
+    <div class="sc-card worst">
+      <div class="sc-tag">Worst Case</div>
+      <div class="field"><label>Loan Term (months)</label><input type="number" id="term-w" value="9" min="1" max="36" oninput="calcScenarios()"></div>
+      <div class="field"><label>Sale Price / sq ft (ARV)</label><div class="input-wrap"><span class="pfx">$</span><input type="text" id="arv-w" placeholder="e.g. 185 — auto −10% from base" oninput="calcScenarios()"></div></div>
+      <div id="sc-lines-w" style="margin-top:12px"></div>
+      <div class="sc-profit"><div class="profit-lbl">Profit / Unit</div><div class="profit-val" id="profit-w">—</div><div class="profit-sub" id="coc-w"></div></div>
+    </div>
+    <div class="sc-card base">
+      <div class="sc-tag">Base Case</div>
+      <div class="field"><label>Loan Term (months)</label><input type="number" id="term-b" value="7" min="1" max="36" oninput="calcScenarios()"></div>
+      <div class="field"><label>Sale Price / sq ft (ARV)</label><div class="input-wrap"><span class="pfx">$</span><input type="text" id="arv-b" placeholder="e.g. 205 — from your comp work" oninput="calcScenarios()"></div></div>
+      <div id="sc-lines-b" style="margin-top:12px"></div>
+      <div class="sc-profit"><div class="profit-lbl">Profit / Unit</div><div class="profit-val" id="profit-b">—</div><div class="profit-sub" id="coc-b"></div></div>
+    </div>
+    <div class="sc-card best">
+      <div class="sc-tag">Best Case</div>
+      <div class="field"><label>Loan Term (months)</label><input type="number" id="term-best" value="6" min="1" max="36" oninput="calcScenarios()"></div>
+      <div class="field"><label>Sale Price / sq ft (ARV)</label><div class="input-wrap"><span class="pfx">$</span><input type="text" id="arv-best" placeholder="e.g. 225 — auto +10% from base" oninput="calcScenarios()"></div></div>
+      <div id="sc-lines-best" style="margin-top:12px"></div>
+      <div class="sc-profit"><div class="profit-lbl">Profit / Unit</div><div class="profit-val" id="profit-best">—</div><div class="profit-sub" id="coc-best"></div></div>
+    </div>
+  </div>
+
+  <!-- Project totals -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-title"><span class="dot"></span>Total Project (All Units)</div>
+    <div class="fr3">
+      <div style="text-align:center;padding:16px;background:var(--red-dim);border-radius:var(--radius-sm);border:1px solid rgba(224,92,92,0.2)">
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Worst Total</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--red)" id="proj-worst">—</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--teal-dim);border-radius:var(--radius-sm);border:1px solid rgba(46,156,143,0.25)">
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Base Total</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--teal-light)" id="proj-base">—</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--green-dim);border-radius:var(--radius-sm);border:1px solid rgba(76,175,130,0.2)">
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Best Total</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--green)" id="proj-best">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-ghost" onclick="goTo(5)">← Back to Plan &amp; Build</button>
+  </div>
+</div>
+
+<div style="border-top:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim)">
+  <span>Tide &amp; Timber Ventures, LLC &mdash; management@tidetimberventures.com</span>
+  <span>Internal use only &mdash; not financial advice</span>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────
-const UPGRADES = [
-  { id:'lvp', name:'LVP Throughout', cost:2899 },
-  { id:'lvp-click', name:'Click LVP Throughout', cost:3522 },
-  { id:'hw', name:'Engineered Hardwoods', cost:13519 },
-  { id:'brushed-ni', name:'Brushed Nickel Hardware', cost:622 },
-  { id:'matte-blk', name:'Matte Black Hardware', cost:823 },
-  { id:'quartz', name:'Quartz Countertops', cost:688 },
-  { id:'waterfall-qtz', name:'Waterfall Quartz', cost:1530 },
-  { id:'shiplap', name:'Shiplap Kitchen Island', cost:455 },
-  { id:'frameless', name:'Frameless Shower Door', cost:800 },
-  { id:'tile-shower', name:'Tile Primary Shower/Tub', cost:2800 },
-  { id:'blinds', name:'Faux Wood Blinds', cost:600 },
-  { id:'front-door', name:'Craftsman Wood Stain Door', cost:1800 },
-  { id:'deadbolt', name:'Electronic Deadbolt', cost:250 },
-  { id:'corbels', name:'Cedar Corbels', cost:1105 },
-  { id:'columns', name:'Cedar Wrapped Columns', cost:500 },
-  { id:'hardie', name:'Color Plus Hardie Exterior', cost:5695 },
-  { id:'open-rail', name:'Open Rail Staircase', cost:2221 },
-  { id:'fireplace', name:'Gas Fireplace', cost:6884 },
-  { id:'ceiling-fans', name:'4 Additional Ceiling Fans', cost:1780 },
-  { id:'fridge', name:'Counter Depth Fridge', cost:1540 },
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
+const SETBACKS = {
+  'Mecklenburg|N1-A':{county:'Mecklenburg',zone:'N1-A',front:27,rear:40,sides:5,corner:13.5,minWidth:70,minSF:10000,garage:'27 ft'},
+  'Mecklenburg|N1-B':{county:'Mecklenburg',zone:'N1-B',front:27,rear:35,sides:5,corner:13.5,minWidth:60,minSF:8000,garage:'27 ft'},
+  'Mecklenburg|N1-C':{county:'Mecklenburg',zone:'N1-C',front:17,rear:30,sides:5,corner:10,minWidth:50,minSF:6000,garage:'20 ft'},
+  'Mecklenburg|N1-D':{county:'Mecklenburg',zone:'N1-D',front:17,rear:25,sides:5,corner:10,minWidth:40,minSF:3500,garage:'20 ft'},
+  'Mecklenburg|N1-E':{county:'Mecklenburg',zone:'N1-E',front:10,rear:20,sides:5,corner:10,minWidth:30,minSF:3000,garage:'20 ft'},
+  'Mecklenburg|N1-F':{county:'Mecklenburg',zone:'N1-F',front:17,rear:20,sides:5,corner:10,minWidth:30,minSF:3000,garage:'20 ft'},
+  'Mecklenburg|N2-A':{county:'Mecklenburg',zone:'N2-A',front:17,rear:25,sides:5,corner:10,minWidth:50,minSF:5000,garage:'20 ft'},
+  'Mecklenburg|N2-B':{county:'Mecklenburg',zone:'N2-B',front:17,rear:20,sides:5,corner:10,minWidth:40,minSF:3500,garage:'20 ft'},
+  'Mecklenburg|N2-C':{county:'Mecklenburg',zone:'N2-C',front:10,rear:15,sides:5,corner:10,minWidth:30,minSF:3000,garage:'20 ft'},
+  'Mecklenburg|UR-2':{county:'Mecklenburg',zone:'UR-2',front:15,rear:20,sides:5,corner:10,minWidth:25,minSF:2500,garage:'20 ft'},
+  'Mecklenburg|UR-3':{county:'Mecklenburg',zone:'UR-3',front:15,rear:20,sides:5,corner:10,minWidth:25,minSF:2500,garage:'20 ft'},
+  'Mecklenburg|UR-4':{county:'Mecklenburg',zone:'UR-4',front:10,rear:15,sides:5,corner:10,minWidth:20,minSF:2000,garage:'20 ft'},
+  'Gaston|R-1':{county:'Gaston',zone:'R-1',front:30,rear:25,sides:15,corner:25,minWidth:80,minSF:30000,garage:'5 ft'},
+  'Gaston|R-2':{county:'Gaston',zone:'R-2',front:30,rear:25,sides:15,corner:25,minWidth:80,minSF:0,garage:'6 ft'},
+  'Gaston|R-3':{county:'Gaston',zone:'R-3',front:30,rear:25,sides:15,corner:25,minWidth:80,minSF:0,garage:'7 ft'},
+  'Gaston|RS-8':{county:'Gaston',zone:'RS-8',front:30,rear:30,sides:8,corner:17,minWidth:60,minSF:8000,garage:'8 ft'},
+  'Gaston|RS-12':{county:'Gaston',zone:'RS-12',front:30,rear:30,sides:12,corner:18,minWidth:90,minSF:12000,garage:'9 ft'},
+  'Gaston|RS-20':{county:'Gaston',zone:'RS-20',front:30,rear:30,sides:15,corner:19,minWidth:100,minSF:20000,garage:'10 ft'},
+  'Gaston|RMF-SF':{county:'Gaston',zone:'RMF-SF',front:30,rear:30,sides:8,corner:19,minWidth:70,minSF:8000,garage:'11 ft'},
+  'Catawba|R-7':{county:'Catawba',zone:'R-7',front:20,rear:20,sides:10,corner:20,minWidth:60,minSF:7000,garage:'10 ft'},
+  'Catawba|R-10':{county:'Catawba',zone:'R-10',front:20,rear:20,sides:10,corner:20,minWidth:60,minSF:10000,garage:'10 ft'},
+  'Catawba|R-12':{county:'Catawba',zone:'R-12',front:20,rear:20,sides:10,corner:20,minWidth:75,minSF:12000,garage:'10 ft'},
+  'Catawba|R-15':{county:'Catawba',zone:'R-15',front:30,rear:30,sides:15,corner:20,minWidth:75,minSF:15000,garage:'10 ft'},
+  'Catawba|R-20':{county:'Catawba',zone:'R-20',front:30,rear:30,sides:15,corner:20,minWidth:75,minSF:15000,garage:'10 ft'},
+  'Lincoln|R-SF':{county:'Lincoln',zone:'R-SF',front:30,rear:40,sides:10,corner:40,minWidth:80,minSF:0,garage:'10 ft'},
+  'Lincoln|R-CR':{county:'Lincoln',zone:'R-CR',front:30,rear:40,sides:10,corner:40,minWidth:100,minSF:0,garage:'10 ft'},
+  'Lincoln|R-20':{county:'Lincoln',zone:'R-20',front:30,rear:30,sides:10,corner:40,minWidth:100,minSF:0,garage:'10 ft'},
+  'Lincoln|R-14':{county:'Lincoln',zone:'R-14',front:30,rear:30,sides:10,corner:40,minWidth:100,minSF:0,garage:'10 ft'},
+  'Lincoln|R-MR':{county:'Lincoln',zone:'R-MR',front:15,rear:20,sides:6,corner:40,minWidth:100,minSF:0,garage:'10 ft'},
+  'Lincoln|R-MF':{county:'Lincoln',zone:'R-MF',front:40,rear:30,sides:10,corner:40,minWidth:100,minSF:0,garage:'10 ft'},
+  'Cabarrus|AO':{county:'Cabarrus',zone:'AO',front:75,rear:30,sides:20,corner:20,minWidth:150,minSF:0,garage:'20 ft'},
+  'Cabarrus|CR':{county:'Cabarrus',zone:'CR',front:75,rear:30,sides:20,corner:20,minWidth:150,minSF:0,garage:'20 ft'},
+  'Cabarrus|LDR':{county:'Cabarrus',zone:'LDR',front:75,rear:30,sides:20,corner:20,minWidth:150,minSF:0,garage:'20 ft'},
+  'Cabarrus|MDR':{county:'Cabarrus',zone:'MDR',front:25,rear:20,sides:5,corner:15,minWidth:60,minSF:0,garage:'5 ft'},
+  'Cabarrus|HDR':{county:'Cabarrus',zone:'HDR',front:15,rear:15,sides:5,corner:10,minWidth:40,minSF:0,garage:'5 ft'},
+  'Iredell|RA':{county:'Iredell',zone:'RA',front:35,rear:35,sides:15,corner:25,minWidth:100,minSF:20000,garage:'10 ft'},
+  'Iredell|RUR':{county:'Iredell',zone:'RUR',front:35,rear:35,sides:15,corner:25,minWidth:100,minSF:30000,garage:'10 ft'},
+  'Iredell|RR':{county:'Iredell',zone:'RR',front:35,rear:35,sides:15,corner:25,minWidth:100,minSF:20000,garage:'10 ft'},
+  'Iredell|R-20':{county:'Iredell',zone:'R-20',front:35,rear:35,sides:15,corner:25,minWidth:90,minSF:20000,garage:'10 ft'},
+  'Iredell|R-12':{county:'Iredell',zone:'R-12',front:35,rear:35,sides:12,corner:22,minWidth:80,minSF:12000,garage:'10 ft'},
+  'Iredell|R-8':{county:'Iredell',zone:'R-8',front:35,rear:25,sides:10,corner:20,minWidth:70,minSF:8000,garage:'10 ft'},
+  'Shelby|R20':{county:'Shelby',zone:'R20',front:40,rear:25,sides:15,corner:20,minWidth:90,minSF:20000,garage:'5 ft'},
+  'Shelby|R10':{county:'Shelby',zone:'R10',front:25,rear:15,sides:10,corner:20,minWidth:70,minSF:10000,garage:'5 ft'},
+  'Shelby|R8':{county:'Shelby',zone:'R8',front:20,rear:15,sides:8,corner:18,minWidth:60,minSF:8000,garage:'5 ft'},
+  'Shelby|R6':{county:'Shelby',zone:'R6',front:15,rear:15,sides:5,corner:15,minWidth:50,minSF:6000,garage:'5 ft'},
+  'Kannapolis|R1':{county:'Kannapolis',zone:'R1',front:45,rear:40,sides:15,corner:33.75,minWidth:150,minSF:0,garage:'5 ft'},
+  'Kannapolis|R2':{county:'Kannapolis',zone:'R2',front:35,rear:35,sides:12,corner:26.25,minWidth:100,minSF:0,garage:'5 ft'},
+  'Kannapolis|R4':{county:'Kannapolis',zone:'R4',front:25,rear:30,sides:10,corner:18.75,minWidth:75,minSF:0,garage:'5 ft'},
+  'Kannapolis|R6':{county:'Kannapolis',zone:'R6',front:15,rear:30,sides:5,corner:11.25,minWidth:50,minSF:0,garage:'5 ft'},
+  'Kannapolis|R7':{county:'Kannapolis',zone:'R7',front:10,rear:30,sides:5,corner:7.5,minWidth:40,minSF:0,garage:'5 ft'},
+  'Kannapolis|R8':{county:'Kannapolis',zone:'R8',front:10,rear:20,sides:5,corner:7.5,minWidth:40,minSF:0,garage:'5 ft'},
+  'Kannapolis|R18':{county:'Kannapolis',zone:'R18',front:10,rear:15,sides:5,corner:7.5,minWidth:30,minSF:0,garage:'5 ft'},
+  'Monroe|RR':{county:'Monroe',zone:'RR',front:50,rear:25,sides:20,corner:40,minWidth:100,minSF:40000,garage:'50 ft'},
+  'Monroe|RLD':{county:'Monroe',zone:'RLD',front:25,rear:20,sides:15,corner:20,minWidth:100,minSF:20000,garage:'25 ft'},
+  'Monroe|RMD':{county:'Monroe',zone:'RMD',front:20,rear:10,sides:10,corner:15,minWidth:75,minSF:12000,garage:'20 ft'},
+  'Monroe|RHD':{county:'Monroe',zone:'RHD',front:20,rear:10,sides:5,corner:15,minWidth:50,minSF:5000,garage:'20 ft'},
+};
+
+const COUNTY_ZONES = {
+  'Mecklenburg':['N1-A','N1-B','N1-C','N1-D','N1-E','N1-F','N2-A','N2-B','N2-C','UR-2','UR-3','UR-4'],
+  'Gaston':['R-1','R-2','R-3','RS-8','RS-12','RS-20','RMF-SF'],
+  'Catawba':['R-7','R-10','R-12','R-15','R-20'],
+  'Lincoln':['R-SF','R-CR','R-20','R-14','R-MR','R-MF'],
+  'Cabarrus':['AO','CR','LDR','MDR','HDR'],
+  'Iredell':['RA','RUR','RR','R-20','R-12','R-8'],
+  'Shelby':['R20','R10','R8','R6'],
+  'Kannapolis':['R1','R2','R4','R6','R7','R8','R18'],
+  'Monroe':['RR','RLD','RMD','RHD'],
+};
+
+const COUNTY_GIS = {
+  'Mecklenburg': addr => `https://polaris3g.mecklenburgcountync.gov/?addressQuery=${encodeURIComponent(addr)}`,
+  'Gaston':      addr => `https://gis.gastongov.com/mapviewer/?search=${encodeURIComponent(addr)}`,
+  'Catawba':     addr => `https://gis.catawbacountync.gov/map/?query=${encodeURIComponent(addr)}`,
+  'Lincoln':     addr => `https://gis.lincolncountync.gov/?search=${encodeURIComponent(addr)}`,
+  'Cabarrus':    addr => `https://gis.cabarruscounty.us/map/?address=${encodeURIComponent(addr)}`,
+  'Iredell':     addr => `https://gis.iredellcountync.gov/?address=${encodeURIComponent(addr)}`,
+  'Shelby':      addr => `https://gis.clevelandcountync.gov/?search=${encodeURIComponent(addr)}`,
+  'Kannapolis':  addr => `https://gis.cabarruscounty.us/map/?address=${encodeURIComponent(addr)}`,
+  'Monroe':      addr => `https://gis.unioncountync.gov/?address=${encodeURIComponent(addr)}`,
+};
+
+const COUNTY_ZONING_LOOKUP = {
+  'Mecklenburg': 'https://charlottenc.gov/growth-development/udo/Pages/default.aspx',
+  'Gaston':      'https://www.gastongov.com/government/departments/planning-and-development/zoning',
+  'Catawba':     'https://www.catawbacountync.gov/county-services/planning-development/planning-zoning/zoning/',
+  'Lincoln':     'https://www.lincolncountync.gov/189/Planning-Zoning',
+  'Cabarrus':    'https://www.cabarruscounty.us/government/departments/planning-and-development',
+  'Iredell':     'https://www.iredellcountync.gov/169/Planning-Zoning',
+  'Shelby':      'https://www.cityofshelbync.gov/departments/planning-and-development/',
+  'Kannapolis':  'https://www.kannapolisnc.gov/government/departments/planning/zoning',
+  'Monroe':      'https://www.monroenc.org/departments/planning/',
+};
+
+// City → County auto-detect
+const CITY_COUNTY = {
+  'charlotte':'Mecklenburg','cornelius':'Mecklenburg','davidson':'Mecklenburg',
+  'huntersville':'Mecklenburg','matthews':'Mecklenburg','mint hill':'Mecklenburg',
+  'pineville':'Mecklenburg','gastonia':'Gaston','belmont':'Gaston','mcadenville':'Gaston',
+  'lowell':'Gaston','dallas':'Gaston','cramerton':'Gaston','mount holly':'Gaston',
+  'hickory':'Catawba','conover':'Catawba','newton':'Catawba','maiden':'Catawba',
+  'lincolnton':'Lincoln','vale':'Lincoln','denver':'Lincoln',
+  'concord':'Cabarrus','kannapolis':'Kannapolis','harrisburg':'Cabarrus',
+  'mooresville':'Iredell','statesville':'Iredell','troutman':'Iredell',
+  'shelby':'Shelby','kings mountain':'Shelby',
+  'monroe':'Monroe','indian trail':'Monroe','weddington':'Monroe','stallings':'Monroe',
+};
+
+// Plans with footprint data [name, sf, cost14, defaultUnits, fpW, fpD]
+const PLANS_FP = [
+  ['Akron',1533,188962,1,0,0],
+  ['Arlington (Standard)',1315,147451,1,50.4,31],
+  ['Arlington (Modern)',1315,165380,1,50.4,31],
+  ['Aurora',1156,138178,1,20,30],
+  ['Bellville',1627,181267,1,38,28],
+  ['Columbus',1311,149875,1,34.5,46],
+  ['Dublin (Standard)',1435,159598,1,42,22],
+  ['Dublin 1 Car',1435,173167,1,42,22],
+  ['Dublin 2 Car',1435,182908,1,42,22],
+  ['Grandview',1528,162303,1,25,30],
+  ['Granville',1848,199643,1,42,38],
+  ['Hampton',2519,247874,1,58,50.4],
+  ['Hilliard',1573,178139,1,41.7,24.5],
+  ['Muirfield',1199,146538,1,42.3,30],
+  ['Plumwood',1485,180860,1,58,34],
+  ['Seneca',1985,207367,1,43,30],
+  ['Westerville',1108,138927,1,48.4,25],
+  ['Worthington',1405,171821,1,46,48],
+  ['Albany',2726,319883,1,45,40],
+  ['Galloway',3208,368301,1,60,36],
+  ['Linden',2992,358882,1,60,35],
+  ['Arcadia Duet (per side)',1190,142812,2,30,40],
+  ['Bexley Duet (per side)',1664,180223,2,53,40],
+  ['Findlay Duet (per side)',1409,167919,2,45,38],
+  ['Logan Duet (per side)',1186,138759,2,62,39.5],
+  ['Whitehall Duet (per side)',1854,189738,2,53,45],
+  ['Winchester Duet (per side)',1480,161441,2,42.2,39.7],
+  ['Dunkirk (mini)',702,104118,1,26,27],
+  ['Franklin TH',1604,163459,1,40,20],
 ];
 
+const UPGRADES = [
+  {id:'lvp',name:'LVP Throughout',cost:2899},
+  {id:'hw',name:'Engineered Hardwoods',cost:13519},
+  {id:'quartz',name:'Quartz Countertops',cost:688},
+  {id:'wfall-qtz',name:'Waterfall Quartz',cost:1530},
+  {id:'frameless',name:'Frameless Shower Door',cost:800},
+  {id:'tile-shower',name:'Tile Primary Shower/Tub',cost:2800},
+  {id:'front-door',name:'Craftsman Wood Door',cost:1800},
+  {id:'deadbolt',name:'Electronic Deadbolt',cost:250},
+  {id:'corbels',name:'Cedar Corbels',cost:1105},
+  {id:'columns',name:'Cedar Wrapped Columns',cost:500},
+  {id:'hardie',name:'Color Plus Hardie Exterior',cost:5695},
+  {id:'open-rail',name:'Open Rail Staircase',cost:2221},
+  {id:'fireplace',name:'Gas Fireplace',cost:6884},
+  {id:'fans',name:'4 Additional Ceiling Fans',cost:1780},
+  {id:'blinds',name:'Faux Wood Blinds',cost:600},
+  {id:'brushed-ni',name:'Brushed Nickel Hardware',cost:622},
+  {id:'matte-blk',name:'Matte Black Hardware',cost:823},
+  {id:'shiplap',name:'Shiplap Kitchen Island',cost:455},
+];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let currentStep = 1;
 const selectedUpgrades = new Set();
+let buildableArea = 0;
+let allInPerUnit = 0;
+let sfPerUnit = 0;
+let units = 1;
+let lotSFOverridden = false;
 
-// ── HELPERS ────────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════
 const $ = id => document.getElementById(id);
-const fmt = (n) => n == null || isNaN(n) ? '—' : '$' + Math.round(n).toLocaleString();
-const fmtSigned = (n) => {
-  if (n == null || isNaN(n)) return '—';
-  const s = Math.round(n).toLocaleString();
-  return n >= 0 ? '+$' + s : '-$' + Math.abs(Math.round(n)).toLocaleString();
-};
-const parseVal = (id) => {
-  const el = $(id);
-  if (!el) return 0;
-  const v = parseFloat(el.value.replace(/,/g,''));
-  return isNaN(v) ? 0 : v;
-};
-const pct = id => parseVal(id) / 100;
+const fmt = n => (n==null||isNaN(n)) ? '—' : '$'+Math.round(n).toLocaleString();
+const fmtN = n => (n==null||isNaN(n)) ? '—' : Math.round(n).toLocaleString();
+const pv = id => { const v=parseFloat(($( id)||{}).value||'0'.replace(/,/g,'')); return isNaN(v)?0:v; };
+const pvt = id => { const v=parseFloat(($( id)||{value:''}).value.replace(/,/g,'')); return isNaN(v)?0:v; };
 
-// ── UPGRADES RENDER ────────────────────────────────────────────────────────
-function renderUpgrades() {
-  const grid = $('upgrade-grid');
-  grid.innerHTML = '';
-  UPGRADES.forEach(u => {
-    const div = document.createElement('div');
-    div.className = 'upgrade-item' + (selectedUpgrades.has(u.id) ? ' active' : '');
-    div.dataset.id = u.id;
-    div.innerHTML = `
-      <div class="upgrade-check">
-        <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-          <path d="M1 3l2.5 2.5L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <span class="upgrade-name">${u.name}</span>
-      <span class="upgrade-cost">$${u.cost.toLocaleString()}</span>`;
-    div.addEventListener('click', () => {
-      if (selectedUpgrades.has(u.id)) selectedUpgrades.delete(u.id);
-      else selectedUpgrades.add(u.id);
-      div.classList.toggle('active');
-      calc();
-    });
-    grid.appendChild(div);
-  });
+function fullAddr() {
+  const s = ($('addr-street').value||'').trim();
+  const c = ($('addr-city').value||'').trim();
+  const st= ($('addr-state').value||'NC').trim();
+  const z = ($('addr-zip').value||'').trim();
+  return [s,c,st,z].filter(Boolean).join(', ');
 }
 
-function upgradeTotal() {
-  return UPGRADES.filter(u => selectedUpgrades.has(u.id)).reduce((s,u)=>s+u.cost,0);
-}
-
-// ── PLAN SELECT ────────────────────────────────────────────────────────────
-$('plan-select').addEventListener('change', () => {
-  const val = $('plan-select').value;
-  const disp = $('plan-display');
-  if (!val) { disp.classList.remove('visible'); calc(); return; }
-  const [name, sf, cost, units] = val.split('|');
-  const sfN = parseInt(sf), costN = parseInt(cost), unitsN = parseInt(units);
-  const planName = $('plan-select').options[$('plan-select').selectedIndex].text;
-
-  $('plan-display-name').textContent = planName.split('—')[0].trim();
-  $('plan-sf').textContent = sfN > 0 ? sfN.toLocaleString() + ' sf' : 'N/A';
-  $('plan-cost').textContent = '$' + costN.toLocaleString();
-  $('plan-psf').textContent = sfN > 0 ? '$' + (costN/sfN).toFixed(2) + '/sf' : 'N/A';
-  disp.classList.add('visible');
-
-  if (unitsN > 0) {
-    $('units').value = unitsN;
-    $('units').style.borderColor = 'var(--teal)';
-    setTimeout(() => $('units').style.borderColor = '', 1200);
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function goTo(n) {
+  for(let i=1;i<=6;i++) {
+    $(`page-${i}`).classList.toggle('active', i===n);
+    const nb = $(`nav-${i}`);
+    nb.classList.remove('active','done');
+    if(i===n) nb.classList.add('active');
+    else if(i<n) nb.classList.add('done');
   }
-  calc();
-});
+  currentStep = n;
+  window.scrollTo(0,0);
+  if(n===3) { calcBuildable(); drawDiagram(); renderFitCheck(); updateTopoLinks(); }
+  if(n===4) { updateSummaryBar(); }
+  if(n===5) { calcAll(); }
+  if(n===6) { calcScenarios(); }
+}
 
-// ── MUNICIPALITY ───────────────────────────────────────────────────────────
-$('municipality').addEventListener('change', () => {
-  $('custom-tap-field').style.display = $('municipality').value === 'custom' ? '' : 'none';
-  calc();
-});
+// ══════════════════════════════════════════════════════
+// PAGE 1 — ADDRESS & ZONING
+// ══════════════════════════════════════════════════════
+function onAddrChange() {
+  const city = ($('addr-city').value||'').toLowerCase().trim();
+  const detected = CITY_COUNTY[city];
+  if(detected && !$('county-sel').value) {
+    $('county-sel').value = detected;
+    onCountyChange();
+  }
+  updateLinks();
+}
 
-// ── LOT FACTOR ────────────────────────────────────────────────────────────
-function calcLotFactor() {
-  const demoSqft = parseVal('demo-sqft');
-  const demoRate = parseVal('demo-rate');
-  const heritageTrees = parseVal('heritage-trees');
-  const heritageCost = parseFloat($('heritage-timing').value);
-  const rowCount = parseVal('row-tree-count');
-  const rowDiam = parseVal('row-tree-diameter');
-  const rowLabor = parseVal('row-removal-labor');
-  const clearing = parseFloat($('clearing').value) || 0;
-  const dirtLoads = parseVal('dirt-loads');
-  const dirtRate = parseVal('dirt-rate');
-  const grading = parseVal('grading');
-  const sitePrep = parseVal('site-prep');
-  const utilities = parseVal('utilities');
-  const framing = parseVal('framing');
-  const culverts = parseVal('culverts');
-  const landscaping = parseVal('landscaping');
-  const gcMarkup = pct('gc-markup');
+function updateLinks() {
+  const county = $('county-sel').value;
+  const addr = fullAddr();
+  const card = $('link-card');
+  const rows = $('link-rows');
+  if(!addr && !county) { card.style.display='none'; return; }
+  card.style.display='';
+  let html='';
+  if(county && COUNTY_ZONING_LOOKUP[county]) {
+    html+=`<div class="link-row"><span class="link-row-label">🗺 Look up zoning (${county})</span><a class="link-btn" href="${COUNTY_ZONING_LOOKUP[county]}" target="_blank">Open Zoning Portal →</a></div>`;
+  }
+  if(county && addr && COUNTY_GIS[county]) {
+    html+=`<div class="link-row"><span class="link-row-label">📐 GIS Parcel Lookup — confirm lot dimensions</span><a class="link-btn" href="${COUNTY_GIS[county](addr)}" target="_blank">Open GIS →</a></div>`;
+  }
+  if(addr) {
+    const enc=encodeURIComponent(addr);
+    html+=`<div class="link-row"><span class="link-row-label">🛰 Google Maps</span><a class="link-btn" href="https://maps.google.com/?q=${enc}" target="_blank">Open Maps →</a></div>`;
+  }
+  rows.innerHTML=html;
+}
 
-  const demo = demoSqft * demoRate;
-  const heritage = heritageTrees * heritageCost;
-  const rowCityFee = rowCount * rowDiam * 200;
-  const rowLaborTotal = rowCount * rowLabor;
-  const dirt = dirtLoads * dirtRate;
+function onCountyChange() {
+  const county = $('county-sel').value;
+  const sel = $('zone-sel');
+  sel.innerHTML = '<option value="">— Select Zone —</option>';
+  if(county && COUNTY_ZONES[county]) {
+    COUNTY_ZONES[county].forEach(z => {
+      const o=document.createElement('option');
+      o.value=`${county}|${z}`;
+      o.textContent=z;
+      sel.appendChild(o);
+    });
+  }
+  updateLinks();
+  $('zone-info').style.display='none';
+  $('zone-udo-link').style.display='none';
+}
 
-  const rawCosts = demo + heritage + rowCityFee + rowLaborTotal + clearing + dirt + grading + sitePrep + utilities + framing + culverts + landscaping;
-  const gcFee = rawCosts * gcMarkup;
-  const total = rawCosts + gcFee;
+function onZoneChange() {
+  const key=$('zone-sel').value;
+  const zi=$('zone-info');
+  const zl=$('zone-udo-link');
+  if(!key){zi.style.display='none';return;}
+  const sb=SETBACKS[key];
+  if(sb){
+    $('sb-front').value=sb.front;
+    $('sb-rear').value=sb.rear;
+    $('sb-sides').value=sb.sides;
+    $('sb-corner').value=sb.corner;
+    $('sb-minw').value=sb.minWidth||'—';
+    $('sb-garage').value=sb.garage||'—';
+    zi.style.display='';
+    const county=$('county-sel').value;
+    if(COUNTY_ZONING_LOOKUP[county]){
+      zl.innerHTML=`<a class="topo-btn" href="${COUNTY_ZONING_LOOKUP[county]}" target="_blank">📋 Verify in ${county} UDO/Zoning Code →</a>`;
+      zl.style.display='';
+    }
+    calcBuildable();
+  }
+}
 
-  const items = [
-    { label: 'Demo / Teardown', val: demo },
-    { label: `Heritage Trees (${heritageTrees} × $${heritageCost.toLocaleString()})`, val: heritage },
-    { label: `ROW Trees — City Fee (${rowCount} trees × ${rowDiam}" × $200/in)`, val: rowCityFee },
-    { label: `ROW Trees — Removal Labor (${rowCount} × $${Math.round(rowLabor).toLocaleString()})`, val: rowLaborTotal },
-    { label: 'Clearing', val: clearing },
-    { label: `Dirt (${dirtLoads} loads × $${Math.round(dirtRate).toLocaleString()})`, val: dirt },
-    { label: 'Grading', val: grading },
-    { label: 'Site Prep / Driveway', val: sitePrep },
-    { label: 'Utilities / Connections', val: utilities },
-    { label: 'Framing Labor Buffer', val: framing },
-    { label: 'Culverts', val: culverts },
-    { label: 'Landscaping', val: landscaping },
-    { label: `GC Management Markup (${(gcMarkup*100).toFixed(0)}%)`, val: gcFee },
-  ].filter(i => i.val > 0);
+// ══════════════════════════════════════════════════════
+// PAGE 2 — LOT DIMENSIONS
+// ══════════════════════════════════════════════════════
+function onLotSFOverride() {
+  lotSFOverridden = !!$('lot-sf').value;
+  calcBuildable();
+}
 
-  const breakdown = $('lot-breakdown');
-  breakdown.innerHTML = items.map(i => `
-    <div class="lot-item">
-      <span class="lot-item-label">${i.label}</span>
-      <span class="lot-item-value">${fmt(i.val)}</span>
-    </div>`).join('') || '<p class="note">No lot costs entered.</p>';
+function updateGISLink() {
+  const county=$('county-sel').value;
+  const addr=fullAddr();
+  const bl=$('gis-link-block');
+  if(!bl) return;
+  if(county && addr && COUNTY_GIS[county]) {
+    bl.innerHTML=`<div class="link-card"><div class="link-card-title">📐 Pull lot dimensions from GIS</div><div class="link-row"><span class="link-row-label">Open parcel in ${county} GIS — enter address, find lot width &amp; depth, enter below</span><a class="link-btn" href="${COUNTY_GIS[county](addr)}" target="_blank">Open ${county} GIS →</a></div><p class="note" style="margin-top:6px">Always confirm dimensions in GIS. Auto-fill from public APIs is unreliable — use GIS as your source of truth.</p></div>`;
+  } else {
+    bl.innerHTML=`<div class="warn">Enter your address and select a county on Step 1 to get a pre-filled GIS link.</div>`;
+  }
+}
 
-  $('lot-total-display').textContent = fmt(total);
+// ══════════════════════════════════════════════════════
+// BUILDABLE AREA CALC
+// ══════════════════════════════════════════════════════
+function calcBuildable() {
+  const w = pv('lot-w'), d = pv('lot-d');
+  const front = pv('sb-front'), rear = pv('sb-rear');
+  const sides = pv('sb-sides'), corner = pv('sb-corner');
+  const isCorner = $('corner-lot')&&$('corner-lot').checked;
+  const isIrregular = $('irregular-lot')&&$('irregular-lot').checked;
+  const minW = pv('sb-minw');
+  const overrideSF = pvt('buildable-override');
+  const lotSFManual = pvt('lot-sf');
 
-  const rowWarn = $('row-tree-warn');
-  rowWarn.style.display = (rowCityFee + rowLaborTotal) > 0 ? '' : 'none';
+  // Lot SF
+  let lotSF = lotSFManual || (w*d) || 0;
+  if(w && d && !lotSFManual) $('lot-sf')&&($('lot-sf').value='');
 
+  // Width warning
+  const ww=$('width-warn');
+  if(ww && minW>0 && w>0 && w<minW) {
+    ww.style.display='';
+    ww.textContent=`⚠ Lot width (${w} ft) is below the minimum lot width for this zone (${minW} ft). Verify with the city — a variance may be required.`;
+  } else if(ww) ww.style.display='none';
+
+  // Irregular warning
+  const iw=$('irregular-warn');
+  if(iw) iw.style.display=isIrregular?'':'none';
+
+  // Buildable dimensions
+  const sideTotal = isCorner ? (sides + corner) : (sides * 2);
+  const buildW = Math.max(0, w - sideTotal);
+  const buildD = Math.max(0, d - front - rear);
+
+  let bArea = overrideSF || (w&&d ? buildW*buildD : 0);
+  if(isIrregular && overrideSF) bArea = overrideSF;
+  buildableArea = bArea;
+
+  // Update page 3 display
+  const br=$('buildable-result');
+  if(br) {
+    if(bArea>0) {
+      br.innerHTML=`
+        <div class="area-display">
+          <div style="color:var(--text-dim);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Buildable Footprint Envelope</div>
+          <div class="area-big">${fmtN(bArea)}</div>
+          <div class="area-unit">sq ft</div>
+          ${buildW&&buildD?`<div class="area-dims">${buildW.toFixed(1)} ft wide × ${buildD.toFixed(1)} ft deep (net of setbacks)</div>`:''}
+          <div class="area-grid">
+            <div class="area-item"><div class="area-item-val">${w||'—'} ft</div><div class="area-item-lbl">Lot Width</div></div>
+            <div class="area-item"><div class="area-item-val">${d||'—'} ft</div><div class="area-item-lbl">Lot Depth</div></div>
+            <div class="area-item"><div class="area-item-val">${fmtN(lotSF)} sf</div><div class="area-item-lbl">Total Lot</div></div>
+          </div>
+        </div>
+        ${isIrregular&&!overrideSF?'<div class="warn" style="margin-top:8px">Irregular lot — rectangle formula may be inaccurate. Measure buildable area in GIS and enter the override below.</div>':''}
+      `;
+    } else {
+      br.innerHTML=`<div class="warn">Enter lot dimensions and setbacks on Steps 1–2 to calculate buildable area.</div>`;
+    }
+  }
+
+  updateSummaryBar();
+  renderFitCheck();
+  drawDiagram();
+}
+
+// ══════════════════════════════════════════════════════
+// SETBACK DIAGRAM
+// ══════════════════════════════════════════════════════
+function drawDiagram() {
+  const canvas=$('sb-canvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const pad=12;
+  ctx.clearRect(0,0,W,H);
+
+  const w=pv('lot-w')||100, d=pv('lot-d')||150;
+  const front=pv('sb-front')||0, rear=pv('sb-rear')||0;
+  const sides=pv('sb-sides')||0, corner=pv('sb-corner')||0;
+  const isCorner=$('corner-lot')&&$('corner-lot').checked;
+
+  const scale=Math.min((W-pad*2)/w,(H-pad*2)/d);
+  const ox=(W-w*scale)/2, oy=(H-d*scale)/2;
+
+  // lot outline
+  ctx.strokeStyle='rgba(255,255,255,0.15)';
+  ctx.lineWidth=1;
+  ctx.setLineDash([4,4]);
+  ctx.strokeRect(ox,oy,w*scale,d*scale);
+  ctx.setLineDash([]);
+
+  // buildable rect
+  const sideL=sides, sideR=isCorner?corner:sides;
+  const bx=ox+sideL*scale, by=oy+front*scale;
+  const bw=(w-sideL-sideR)*scale, bh=(d-front-rear)*scale;
+  if(bw>0&&bh>0){
+    ctx.fillStyle='rgba(46,156,143,0.1)';
+    ctx.fillRect(bx,by,bw,bh);
+    ctx.strokeStyle='rgba(46,156,143,0.6)';
+    ctx.lineWidth=1.5;
+    ctx.strokeRect(bx,by,bw,bh);
+  }
+
+  ctx.font='10px DM Mono, monospace';
+  ctx.fillStyle='rgba(143,163,188,0.8)';
+  ctx.textAlign='center';
+  if(front>0) ctx.fillText(`Front: ${front}'`,W/2,oy+front*scale/2+4);
+  if(rear>0) ctx.fillText(`Rear: ${rear}'`,W/2,oy+d*scale-rear*scale/2+4);
+  ctx.textAlign='left';
+  if(sides>0) ctx.fillText(`${sides}'`,ox+3,H/2);
+  ctx.textAlign='right';
+  if(isCorner&&corner>0) ctx.fillText(`${corner}'`,W-ox-3,H/2);
+  else if(sides>0) ctx.fillText(`${sides}'`,W-ox-3,H/2);
+
+  ctx.fillStyle='rgba(255,255,255,0.06)';
+  ctx.fillText('Lot',ox+6,oy+H*0.1);
+  ctx.fillStyle='rgba(58,184,168,0.6)';
+  ctx.textAlign='center';
+  ctx.fillText('Buildable',bx+bw/2,by+bh/2+4);
+}
+
+// ══════════════════════════════════════════════════════
+// FIT CHECK
+// ══════════════════════════════════════════════════════
+function renderFitCheck() {
+  const grid=$('fit-grid');
+  const empty=$('fit-empty');
+  if(!grid) return;
+  if(!buildableArea || buildableArea<=0) {
+    grid.innerHTML='';
+    if(empty) empty.style.display='';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  const bW=pv('lot-w')-(($('corner-lot')&&$('corner-lot').checked)?pv('sb-sides')+pv('sb-corner'):pv('sb-sides')*2);
+  const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
+
+  grid.innerHTML=PLANS_FP.filter(p=>p[1]>0&&p[4]>0&&p[5]>0).map(([name,sf,cost,du,fpW,fpD])=>{
+    const fits = bW>=fpW && bD>=fpD;
+    const fitFlipped = bW>=fpD && bD>=fpW;
+    const areaOk = buildableArea>=fpW*fpD;
+    let cls,badge,msg;
+    if(fits){cls='fit-ok';badge='Fits';msg=`${fpW}'×${fpD}' — ${(fpW*fpD).toLocaleString()} sf footprint`;}
+    else if(fitFlipped){cls='fit-ok';badge='Fits (rotated)';msg=`Rotate 90° — ${fpW}'×${fpD}'`;}
+    else if(areaOk){cls='fit-warn';badge='Check Carefully';msg=`Area OK but width ${fpW}' or depth ${fpD}' may be tight`;}
+    else{cls='fit-no';badge='Too Large';msg=`Needs ${fpW}'×${fpD}' = ${(fpW*fpD).toLocaleString()} sf`;}
+    return `<div class="fit-card ${cls}"><div class="fit-name">${name}</div><div class="fit-detail">${msg}<br>${sf.toLocaleString()} sf · ${fmt(cost)}</div><span class="fit-badge">${badge}</span></div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// TOPO LINKS
+// ══════════════════════════════════════════════════════
+function updateTopoLinks() {
+  const addr=fullAddr();
+  const enc=encodeURIComponent(addr);
+  const usgs=$('topo-usgs');
+  const earth=$('topo-earth');
+  if(addr) {
+    if(usgs) usgs.href=`https://apps.nationalmap.gov/viewer/?basemap=USGSTopo&search=${enc}`;
+    if(earth) earth.href=`https://earth.google.com/web/search/${enc}`;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// LOT FACTOR
+// ══════════════════════════════════════════════════════
+function calcLF() {
+  const demo = pv('demo-sqft') * pv('demo-rate');
+  const heritage = pv('her-trees') * parseFloat(($('her-timing')||{value:'750'}).value);
+  const rowCount=pv('row-count'), rowDiam=pv('row-diam'), rowLabor=pv('row-labor');
+  const rowCity = rowCount*rowDiam*200;
+  const rowLaborTotal = rowCount*rowLabor;
+  const clearing = parseFloat(($('clearing')||{value:'0'}).value)||0;
+  const dirt = pv('dirt-loads')*pv('dirt-rate');
+  const grading=pv('grading'), sitePrep=pv('site-prep');
+  const util=pv('utilities'), framing=pv('framing');
+  const culverts=pv('culverts'), land=pv('landscaping');
+  const gcPct=pv('gc-markup')/100;
+
+  const raw=demo+heritage+rowCity+rowLaborTotal+clearing+dirt+grading+sitePrep+util+framing+culverts+land;
+  const gcFee=raw*gcPct;
+  const total=raw+gcFee;
+
+  const items=[
+    {l:'Demo/Teardown',v:demo},
+    {l:`Heritage Trees (${pv('her-trees')}×$${parseFloat(($('her-timing')||{value:'750'}).value).toLocaleString()})`,v:heritage},
+    {l:`ROW City Fee (${rowCount}×${rowDiam}"×$200/in)`,v:rowCity},
+    {l:`ROW Removal Labor (${rowCount}×$${Math.round(rowLabor).toLocaleString()})`,v:rowLaborTotal},
+    {l:'Clearing',v:clearing},
+    {l:`Dirt (${pv('dirt-loads')} loads)`,v:dirt},
+    {l:'Grading',v:grading},
+    {l:'Site Prep / Driveway',v:sitePrep},
+    {l:'Utilities',v:util},
+    {l:'Framing Labor',v:framing},
+    {l:'Culverts',v:culverts},
+    {l:'Landscaping',v:land},
+    {l:`GC Markup (${pv('gc-markup')}%)`,v:gcFee},
+  ].filter(i=>i.v>0);
+
+  const bd=$('lf-breakdown');
+  if(bd) bd.innerHTML=items.map(i=>`<div class="lf-row"><span class="lf-lbl">${i.l}</span><span class="lf-val">${fmt(i.v)}</span></div>`).join('')||'<div class="lf-row"><span class="lf-lbl" style="color:var(--text-dim)">No costs yet</span></div>';
+  const td=$('lf-total-display');
+  if(td) td.textContent=fmt(total);
+
+  // ROW cost msg
+  const rmsg=$('row-tree-cost-msg');
+  if(rmsg&&rowCount>0) {
+    rmsg.innerHTML=`<div class="warn">Est. ROW tree cost: ${fmt(rowCity+rowLaborTotal)} (city fee ${fmt(rowCity)} + labor ${fmt(rowLaborTotal)})<br>⚠ Call Urban Forestry first — free, ~2 days, confirms in writing.</div>`;
+  } else if(rmsg) rmsg.innerHTML='';
+
+  const rd=$('row-tree-danger');
+  if(rd) rd.style.display=(rowCity+rowLaborTotal)>0?'':'none';
+
+  calcAll();
   return total;
 }
 
-// ── TAP FEES ──────────────────────────────────────────────────────────────
-function calcTapFees(units) {
-  const muni = $('municipality').value;
-  const tapPerUnit = muni === 'custom' ? parseVal('custom-tap') : parseInt(muni);
-  const existingTaps = $('existing-taps').checked;
-  if (existingTaps) {
-    return tapPerUnit; // total tap fee divided by units — treat as single cost pool, then divide
+// ══════════════════════════════════════════════════════
+// PAGE 5 — PLAN & BUILD
+// ══════════════════════════════════════════════════════
+function onPlanChange() {
+  const val=($('plan-sel')||{}).value||'';
+  const info=$('plan-info');
+  if(!val||!info){if(info)info.style.display='none';calcAll();return;}
+  const parts=val.split('|');
+  const [name,sfStr,costStr,duStr,fpWStr,fpDStr]=parts;
+  const sf=parseInt(sfStr)||0, cost=parseInt(costStr)||0;
+  const du=parseInt(duStr)||0, fpW=parseFloat(fpWStr)||0, fpD=parseFloat(fpDStr)||0;
+
+  $('plan-info-name').textContent=name;
+  $('plan-info-cost').textContent=fmt(cost);
+  $('plan-info-sf').textContent=sf>0?sf.toLocaleString()+' sf':'N/A';
+  $('plan-info-fp').textContent=fpW&&fpD?`${fpW}'×${fpD}'`:'N/A';
+  info.style.display='';
+
+  if(du>0) {
+    $('units').value=du;
+    $('units').style.borderColor='var(--teal)';
+    setTimeout(()=>$('units').style.borderColor='',1200);
   }
-  return tapPerUnit * units;
+
+  // Fit check for selected plan
+  const pfm=$('plan-fit-msg');
+  if(pfm && buildableArea>0 && fpW&&fpD) {
+    const bW=pv('lot-w')-(($('corner-lot')&&$('corner-lot').checked)?pv('sb-sides')+pv('sb-corner'):pv('sb-sides')*2);
+    const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
+    if(bW>=fpW&&bD>=fpD) pfm.innerHTML=`<div class="ok">✓ This plan fits your buildable envelope (${fpW}'×${fpD}' footprint)</div>`;
+    else if(bW>=fpD&&bD>=fpW) pfm.innerHTML=`<div class="warn">⚠ Fits if rotated 90° — confirm orientation with builder</div>`;
+    else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'×${fpD}') exceeds buildable envelope. Consider a smaller plan or verify setbacks.</div>`;
+  } else if(pfm) pfm.innerHTML='';
+
+  calcAll();
 }
 
-// ── SCENARIO CALC ─────────────────────────────────────────────────────────
-function calcScenario(name, termId, arvPsfId, allInPerUnit, sfPerUnit, loanBase) {
-  const term = parseVal(termId);
-  let arvPsf = parseVal(arvPsfId);
+function calcAll() {
+  const val=($('plan-sel')||{}).value||'';
+  const parts=val.split('|');
+  const sf=parseInt(parts[1])||0, buildCostPerUnit=parseInt(parts[2])||0;
+  sfPerUnit=sf;
+  units=Math.max(1,pv('units'));
 
-  const basePsf = parseVal('arv-psf-base');
+  const buildTotal=buildCostPerUnit*units;
+  const upgPerUnit=Array.from(selectedUpgrades).reduce((s,id)=>{const u=UPGRADES.find(x=>x.id===id);return s+(u?u.cost:0);},0);
+  const upgTotal=upgPerUnit*units;
+  const lf=calcLF();
+  const tapMuni=($('tap-muni')||{}).value||'17340';
+  const tapPerUnit=tapMuni==='custom'?pv('custom-tap'):parseInt(tapMuni)||17340;
+  const existingTaps=($('existing-taps')&&$('existing-taps').checked);
+  const tapTotal=existingTaps?tapPerUnit:(tapPerUnit*units);
 
-  if (!arvPsf && basePsf) {
-    if (name === 'worst') arvPsf = basePsf * 0.90;
-    else if (name === 'best') arvPsf = basePsf * 1.10;
+  const tapmsg=$('tap-calc-msg');
+  if(tapmsg) {
+    if(existingTaps) tapmsg.innerHTML=`<div class="ok">Existing taps: total fee $${tapPerUnit.toLocaleString()} split across ${units} units = ${fmt(tapPerUnit/units)} per unit</div>`;
+    else tapmsg.innerHTML=`<div style="font-size:11px;color:var(--text-dim)">$${tapPerUnit.toLocaleString()} × ${units} unit${units>1?'s':''} = ${fmt(tapTotal)} total</div>`;
   }
 
-  const arv = sfPerUnit > 0 && arvPsf > 0 ? arvPsf * sfPerUnit : 0;
-  const rate = pct('interest-rate');
-  const points = pct('loan-points');
-  const realtorPct = pct('realtor-pct');
-  const closing = parseVal('closing-cost');
+  const softFixed=pv('survey')+pv('appraisal')+pv('insurance');
+  const landCost=pvt('land-cost');
+  const totalStack=landCost+buildTotal+upgTotal+lf+tapTotal+softFixed;
+  allInPerUnit=totalStack/units;
 
-  const loanAmt = loanBase;
-  const finCost = loanAmt * (points + (rate / 12) * term);
-  const realtorCost = arv * realtorPct;
-  const totalAllIn = allInPerUnit + finCost + realtorCost + closing;
-  const profit = arv - totalAllIn;
-  const coc = loanAmt > 0 ? (profit / loanAmt) * 100 : 0;
+  // Cost stack sidebar
+  const cs=$('cost-stack');
+  if(cs) {
+    const items=[
+      {l:'Land',v:landCost},{l:'Build Cost (all units)',v:buildTotal},
+      {l:'Upgrades (all units)',v:upgTotal},{l:'Lot Factor',v:lf},
+      {l:'Tap Fees',v:tapTotal},{l:'Survey',v:pv('survey')},
+      {l:'Appraisal',v:pv('appraisal')},{l:'Insurance',v:pv('insurance')},
+    ].filter(i=>i.v>0);
+    cs.innerHTML=items.map(i=>`<div class="sb-stat"><span class="sb-stat-lbl">${i.l}</span><span class="sb-stat-val">${fmt(i.v)}</span></div>`).join('');
+  }
+  const ald=$('allin-display');
+  if(ald) ald.textContent=fmt(allInPerUnit);
+  const ut=$('upg-total');
+  if(ut) ut.textContent=fmt(upgTotal);
+}
 
-  const lines = [
-    { label: 'ARV', val: arv > 0 ? fmt(arv) : '—', highlight: true },
-    { label: 'All-In (before financing)', val: fmt(allInPerUnit) },
-    { label: `Finance Cost (${term}mo)`, val: fmt(finCost) },
-    { label: `Realtor (${(realtorPct*100).toFixed(1)}%)`, val: fmt(realtorCost) },
-    { label: 'Closing Cost', val: fmt(closing) },
-    { label: 'Total All-In', val: fmt(totalAllIn) },
-  ];
+// ══════════════════════════════════════════════════════
+// PAGE 6 — SCENARIOS
+// ══════════════════════════════════════════════════════
+function calcScenarios() {
+  const basePSF=pvt('arv-b');
+  ['w','b','best'].forEach(k=>{
+    const termId=k==='w'?'term-w':k==='b'?'term-b':'term-best';
+    const arvId=k==='w'?'arv-w':k==='b'?'arv-b':'arv-best';
+    const lineId=`sc-lines-${k}`;
+    const profId=`profit-${k}`;
+    const cocId=`coc-${k}`;
 
-  const container = $(`scenario-lines-${name}`);
-  container.innerHTML = lines.map(l => `
-    <div class="scenario-line">
-      <span class="scenario-line-label">${l.label}</span>
-      <span class="scenario-line-val${l.highlight?' highlight':''}">${l.val}</span>
+    let arvPSF=pvt(arvId);
+    if(!arvPSF&&basePSF) {
+      if(k==='w') arvPSF=basePSF*0.90;
+      if(k==='best') arvPSF=basePSF*1.10;
+    }
+    const arv=sfPerUnit>0&&arvPSF>0?arvPSF*sfPerUnit:0;
+    const term=pv(termId);
+    const rate=pv('int-rate')/100;
+    const pts=pv('loan-pts')/100;
+    const loanBase=(pvt('land-cost')*0.60+(parseInt((($('plan-sel')||{}).value||'').split('|')[2])||0)*units+Array.from(selectedUpgrades).reduce((s,id)=>{const u=UPGRADES.find(x=>x.id===id);return s+(u?u.cost:0);},0)*units)/units;
+    const finCost=loanBase*(pts+(rate/12)*term);
+    const realtorCost=arv*(pv('realtor-pct')/100);
+    const closing=pv('closing');
+    const totalAllIn=allInPerUnit+finCost+realtorCost+closing;
+    const profit=arv-totalAllIn;
+    const coc=loanBase>0?profit/loanBase*100:0;
+
+    const lines=[
+      {l:'ARV',v:arv>0?fmt(arv):'Enter $/sf above',hi:true},
+      {l:'All-In (pre-financing)',v:fmt(allInPerUnit)},
+      {l:`Finance Cost (${term}mo)`,v:fmt(finCost)},
+      {l:`Realtor (${pv('realtor-pct')}%)`,v:fmt(realtorCost)},
+      {l:'Closing',v:fmt(closing)},
+      {l:'Total All-In',v:fmt(totalAllIn)},
+    ];
+    const lc=document.getElementById(lineId);
+    if(lc) lc.innerHTML=lines.map(l=>`<div class="sc-line"><span class="sc-line-lbl">${l.l}</span><span class="sc-line-val${l.hi?' hi':''}">${l.v}</span></div>`).join('');
+
+    const pe=document.getElementById(profId);
+    if(pe) { pe.textContent=arv>0?fmt(profit):'—'; pe.className='profit-val'+(profit<0&&arv>0?' neg':''); }
+    const ce=document.getElementById(cocId);
+    if(ce) ce.textContent=arv>0?`CoC: ${coc.toFixed(1)}%`:'Enter ARV $/sf';
+
+    // Project totals
+    if(k==='w') { const e=$('proj-worst'); if(e) e.textContent=arv>0?fmt(profit*units):'—'; }
+    if(k==='b') { const e=$('proj-base'); if(e) e.textContent=arv>0?fmt(profit*units):'—'; }
+    if(k==='best') { const e=$('proj-best'); if(e) e.textContent=arv>0?fmt(profit*units):'—'; }
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// SUMMARY BAR (page 4 sidebar)
+// ══════════════════════════════════════════════════════
+function updateSummaryBar() {
+  const sa=$('sum-addr'); if(sa) sa.textContent=fullAddr()||'—';
+  const county=$('county-sel')&&$('county-sel').value;
+  const zone=$('zone-sel')&&$('zone-sel').value&&$('zone-sel').value.split('|')[1];
+  const sz=$('sum-zone'); if(sz) sz.textContent=(county&&zone)?`${county} / ${zone}`:(county||zone||'—');
+  const w=pv('lot-w'),d=pv('lot-d');
+  const sls=$('sum-lotsize'); if(sls) sls.textContent=w&&d?`${w}' × ${d}' (${(w*d).toLocaleString()} sf)`:'—';
+  const sb=$('sum-buildable'); if(sb) sb.textContent=buildableArea>0?`${fmtN(buildableArea)} sf`:'—';
+}
+
+// ══════════════════════════════════════════════════════
+// MUNICIPALITY TOGGLE
+// ══════════════════════════════════════════════════════
+function initTapToggle(){
+  const sel=$('tap-muni');
+  if(sel) sel.addEventListener('change',()=>{
+    const cf=$('custom-tap-f');
+    if(cf) cf.style.display=sel.value==='custom'?'':'none';
+    calcAll();
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// UPGRADES
+// ══════════════════════════════════════════════════════
+function renderUpgrades() {
+  const grid=$('upg-grid');
+  if(!grid) return;
+  grid.innerHTML=UPGRADES.map(u=>`
+    <div class="upg-item${selectedUpgrades.has(u.id)?' on':''}" data-id="${u.id}">
+      <div class="upg-chk"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3l2.5 2.5L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <span class="upg-name">${u.name}</span>
+      <span class="upg-cost">$${u.cost.toLocaleString()}</span>
     </div>`).join('');
-
-  const profitEl = $(`profit-${name}`);
-  profitEl.textContent = arv > 0 ? fmt(profit) : '—';
-  profitEl.className = 'profit-val' + (profit > 0 ? '' : profit < 0 ? ' neg' : '');
-
-  $(`coc-${name}`).textContent = arv > 0 ? `Cash-on-Cash: ${coc.toFixed(1)}%` : 'Enter ARV to calculate';
-
-  return { arv, totalAllIn, profit, finCost };
+  grid.querySelectorAll('.upg-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const id=el.dataset.id;
+      if(selectedUpgrades.has(id)) selectedUpgrades.delete(id);
+      else selectedUpgrades.add(id);
+      el.classList.toggle('on');
+      calcAll();
+    });
+  });
 }
 
-// ── MAIN CALC ─────────────────────────────────────────────────────────────
-function calc() {
-  const units = Math.max(1, parseVal('units'));
-  const landCost = parseVal('land-cost');
-  const survey = parseVal('survey');
-  const appraisal = parseVal('appraisal');
-  const insurance = parseVal('insurance');
-
-  const val = $('plan-select').value;
-  const parts = val ? val.split('|') : [];
-  const sfPerUnit = parts[1] ? parseInt(parts[1]) : 0;
-  const buildCostPlan = parts[2] ? parseInt(parts[2]) : 0;
-
-  const buildCostTotal = buildCostPlan * units;
-  const upgTotal = upgradeTotal() * units;
-  const lotFactor = calcLotFactor();
-  const tapTotal = calcTapFees(units);
-  const softFixed = survey + appraisal + insurance;
-
-  const allInTotal = landCost + buildCostTotal + upgTotal + lotFactor + tapTotal + softFixed;
-  const allInPerUnit = allInTotal / units;
-
-  // 60% land / 100% build loan base (standard HML structure)
-  const loanBase = (landCost * 0.60) + buildCostTotal + upgTotal;
-  const loanPerUnit = loanBase / units;
-
-  // Summary bar
-  $('sum-build').textContent = buildCostTotal > 0 ? fmt(buildCostTotal) : '—';
-  $('sum-allin').textContent = fmt(allInTotal);
-  $('sum-lot').textContent = fmt(lotFactor);
-  $('sum-tap').textContent = fmt(tapTotal);
-  $('sum-units').textContent = units;
-  $('upgrade-total').textContent = fmt(upgTotal);
-
-  // Scenarios
-  calcScenario('worst', 'term-worst', 'arv-psf-worst', allInPerUnit, sfPerUnit, loanPerUnit);
-  calcScenario('base',  'term-base',  'arv-psf-base',  allInPerUnit, sfPerUnit, loanPerUnit);
-  calcScenario('best',  'term-best',  'arv-psf-best',  allInPerUnit, sfPerUnit, loanPerUnit);
+// ══════════════════════════════════════════════════════
+// WIRE UP ALL CHANGE EVENTS
+// ══════════════════════════════════════════════════════
+function wireEvents() {
+  // Scenario ARV inputs
+  ['arv-w','arv-b','arv-best','term-w','term-b','term-best'].forEach(id=>{
+    const el=$(id); if(el) el.addEventListener('input',calcScenarios);
+  });
+  // Tap existing
+  const et=$('existing-taps');
+  if(et) et.addEventListener('change',calcAll);
 }
 
-// ── AUTO-FILL WORST/BEST FROM BASE ─────────────────────────────────────────
-$('arv-psf-base').addEventListener('input', () => {
-  const base = parseFloat($('arv-psf-base').value);
-  if (!isNaN(base) && base > 0) {
-    if (!$('arv-psf-worst').value) {}
-    if (!$('arv-psf-best').value) {}
-  }
-  calc();
-});
-
-// ── EVENT LISTENERS ───────────────────────────────────────────────────────
-const allInputs = document.querySelectorAll('input, select');
-allInputs.forEach(el => {
-  el.addEventListener('input', calc);
-  el.addEventListener('change', calc);
-});
-
-// ── INIT ──────────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
 renderUpgrades();
-calc();
+initTapToggle();
+wireEvents();
+// Page 2 GIS link depends on address
+document.querySelectorAll('#addr-street,#addr-city,#addr-state,#addr-zip,#county-sel').forEach(el=>{
+  el.addEventListener('input',updateGISLink);
+  el.addEventListener('change',updateGISLink);
+});
+updateGISLink();
 </script>
 </body>
 </html>
