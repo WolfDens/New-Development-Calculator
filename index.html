@@ -1233,6 +1233,7 @@ function setLotMode(mode){
 let polyPoints = [];      // [{x,y}] in canvas pixels
 let polyDragIdx = -1;     // which point is being dragged
 let polyDragOffX = 0, polyDragOffY = 0;
+let edgeDesignations = []; // 'front'|'rear'|'side' per edge i
 
 function getScaleFtPerPx(){
   const canvas = $('lot-editor-canvas');
@@ -1931,43 +1932,8 @@ function calcBUA(){
   }
 }
 
-// Lot image state
-let lotImageObj = null;
-
-function onLotImageUpload(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    const img = new Image();
-    img.onload = function(){
-      lotImageObj = img;
-      // Show preview
-      const prev = $('img-preview');
-      if(prev){ prev.src = ev.target.result; prev.style.display='block'; }
-      const zone = $('img-upload-zone');
-      if(zone) zone.classList.add('has-image');
-      const clearBtn = $('img-clear-btn');
-      if(clearBtn) clearBtn.style.display='inline-block';
-      drawDiagram();
-    };
-    img.src = ev.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearLotImage(){
-  lotImageObj = null;
-  const prev = $('img-preview');
-  if(prev){ prev.src=''; prev.style.display='none'; }
-  const zone = $('img-upload-zone');
-  if(zone) zone.classList.remove('has-image');
-  const clearBtn = $('img-clear-btn');
-  if(clearBtn) clearBtn.style.display='none';
-  const input = $('lot-img-input');
-  if(input) input.value='';
-  drawDiagram();
-}
+// Image upload removed — lot editor canvas is the visual reference
+let lotImageObj = null; // kept for rect-mode diagram compat
 
 function drawDiagram(){
   const canvas=$('sb-canvas');if(!canvas)return;
@@ -2269,11 +2235,7 @@ function selectPlanFromTile(planKey){
   renderFitCheck();
 }
 
-function initSidesFromCount(){
-  const n=parseInt(($('corner-count')||{value:'6'}).value)||6;
-  lotSides=Array.from({length:n},()=>({length:50,angleDeg:90}));
-  renderSidesList();
-}
+// initSidesFromCount handled by stub above
 
 function renderFitCheck(){
   const grid=$('fit-grid'),empty=$('fit-empty');if(!grid)return;
