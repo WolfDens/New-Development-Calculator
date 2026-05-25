@@ -127,6 +127,59 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 .lf-total-val{font-family:'DM Mono',monospace;font-size:16px;color:var(--amber)}
 
 .row-tree-block{background:rgba(232,169,77,0.05);border:1px solid rgba(232,169,77,0.2);border-radius:var(--radius-sm);padding:14px;margin-top:10px}
+/* LOT MODE TOGGLE */
+.lot-mode-toggle{display:flex;gap:0;margin-bottom:16px;border:1px solid var(--border-bright);border-radius:var(--radius-sm);overflow:hidden}
+/* LOT POINT EDITOR */
+.lot-editor-wrap{position:relative;width:100%;border-radius:var(--radius-sm);border:1px solid var(--border-bright);background:#0d1a26;overflow:hidden;cursor:crosshair;user-select:none}
+.lot-editor-wrap canvas{display:block;width:100%;height:auto}
+.lot-editor-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.lot-editor-toolbar label{font-size:11px;color:var(--text-mid);white-space:nowrap}
+.lot-editor-toolbar input[type=number]{width:80px;background:var(--input-bg);border:1px solid var(--border-bright);border-radius:4px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;padding:5px 8px;outline:none}
+.lot-editor-toolbar input[type=number]:focus{border-color:var(--teal)}
+.lot-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.lot-stat-box{text-align:center;padding:10px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.lot-stat-val{font-family:'DM Mono',monospace;font-size:16px;color:var(--teal-light)}
+.lot-stat-lbl{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:3px}
+.hint-text{font-size:10px;color:var(--text-dim);margin-top:6px;line-height:1.5}
+.lot-mode-btn{flex:1;padding:9px 12px;text-align:center;cursor:pointer;font-size:12px;font-weight:500;background:transparent;color:var(--text-dim);border:none;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.lot-mode-btn.active{background:var(--teal);color:#fff}
+.lot-mode-btn:hover:not(.active){background:var(--card-hover);color:var(--text-mid)}
+
+/* IRREGULAR LOT SIDE ENTRY */
+.sides-list{margin-top:10px}
+.side-row{display:grid;grid-template-columns:28px 1fr 90px 36px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.side-row:last-child{border-bottom:none}
+.side-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);text-align:center}
+.side-input{background:var(--input-bg);border:1px solid var(--border-bright);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;padding:6px 8px;outline:none;width:100%}
+.side-input:focus{border-color:var(--teal)}
+.angle-wrap{display:flex;align-items:center;gap:4px}
+.angle-badge{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);background:var(--teal-dim);padding:2px 6px;border-radius:3px;cursor:pointer;border:1px solid rgba(46,156,143,0.25);white-space:nowrap}
+.angle-badge:hover{background:rgba(46,156,143,0.25)}
+.side-del{width:28px;height:28px;background:transparent;border:1px solid var(--border-bright);border-radius:4px;color:var(--text-dim);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.side-del:hover{border-color:var(--red);color:var(--red)}
+.add-side-btn{width:100%;padding:8px;background:transparent;border:1px dashed var(--border-bright);border-radius:var(--radius-sm);color:var(--text-dim);cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;margin-top:8px;transition:all 0.15s}
+.add-side-btn:hover{border-color:var(--teal);color:var(--teal)}
+.lot-poly-preview{width:100%;height:160px;background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);border:1px solid var(--border);margin-top:10px}
+.angle-override-row{display:grid;grid-template-columns:28px 1fr 90px 36px;gap:8px;align-items:center;padding:4px 0 8px;display:none}
+.angle-override-row.open{display:grid}
+.angle-override-row input{background:var(--input-bg);border:1px solid rgba(46,156,143,0.4);border-radius:var(--radius-sm);color:var(--teal);font-family:'DM Mono',monospace;font-size:12px;padding:4px 8px;outline:none;width:100%}
+
+/* PLAN OVERLAY / DRAG TOOL */
+.plan-overlay-section{margin-top:16px;padding:14px;background:rgba(232,169,77,0.05);border:1px solid rgba(232,169,77,0.2);border-radius:var(--radius-sm)}
+.overlay-title{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.overlay-canvas-wrap{position:relative;border-radius:var(--radius-sm);overflow:hidden;cursor:grab;background:#0d1a26;border:1px solid var(--border-bright)}
+.overlay-canvas-wrap:active{cursor:grabbing}
+.rotation-controls{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.rot-preset{padding:5px 10px;background:var(--input-bg);border:1px solid var(--border-bright);border-radius:4px;color:var(--text-mid);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer}
+.rot-preset:hover{border-color:var(--teal);color:var(--teal)}
+.rot-slider{flex:1;min-width:120px}
+.rot-val{font-family:'DM Mono',monospace;font-size:12px;color:var(--amber);min-width:40px;text-align:right}
+.overlay-stats{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap}
+.overlay-stat{font-size:11px;color:var(--text-dim)}
+.overlay-stat span{color:var(--text);font-family:'DM Mono',monospace}
+.overlay-fit-ok{color:var(--green)}
+.overlay-fit-warn{color:var(--red)}
+
 .rtb-title{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
 
 .two-col{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
@@ -261,6 +314,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
         <div class="field"><label>State</label><input type="text" id="addr-state" value="NC" oninput="onAddrChange()"></div>
         <div class="field"><label>ZIP</label><input type="text" id="addr-zip" placeholder="28205" oninput="onAddrChange()"></div>
       </div>
+      <div id="addr-validation"></div>
       <div class="link-card" id="link-card" style="display:none">
         <div class="link-card-title">🔗 External Resources</div>
         <div id="link-rows"></div>
@@ -321,21 +375,68 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
     <div class="card">
       <div class="card-title"><span class="dot"></span>Lot Dimensions</div>
       <div id="gis-link-block" style="margin-bottom:16px"></div>
-      <div class="fr2">
-        <div class="field"><label>Lot Width (ft)</label><input type="number" id="lot-w" placeholder="e.g. 75" oninput="calcBuildable()"></div>
-        <div class="field"><label>Lot Depth (ft)</label><input type="number" id="lot-d" placeholder="e.g. 180" oninput="calcBuildable()"></div>
+
+      <!-- Mode Toggle -->
+      <div class="lot-mode-toggle">
+        <button class="lot-mode-btn active" id="mode-rect-btn" onclick="setLotMode('rect')">Rectangle / Simple (4 corners)</button>
+        <button class="lot-mode-btn" id="mode-poly-btn" onclick="setLotMode('poly')">Irregular Lot (5+ corners)</button>
       </div>
-      <div class="field"><label>Lot Area (sq ft) — auto or manual override</label><input type="number" id="lot-sf" placeholder="Auto from W × D" oninput="calcBuildable()"><p class="note">Enter actual sq ft if lot is irregular.</p></div>
-      <div class="toggle-row" style="margin-top:12px">
-        <span class="toggle-lbl">Corner lot (corner side setback applies to one side)</span>
-        <label class="tog"><input type="checkbox" id="corner-lot" onchange="calcBuildable()"><div class="tog-track"></div><div class="tog-thumb"></div></label>
+
+      <!-- RECTANGLE MODE -->
+      <div id="rect-mode-fields">
+        <div class="fr2">
+          <div class="field"><label>Lot Width (ft)</label><input type="number" id="lot-w" placeholder="e.g. 75" oninput="calcBuildable()"></div>
+          <div class="field"><label>Lot Depth (ft)</label><input type="number" id="lot-d" placeholder="e.g. 180" oninput="calcBuildable()"></div>
+        </div>
+        <div class="field"><label>Lot Area (sq ft) — auto or manual override</label><input type="number" id="lot-sf" placeholder="Auto from W × D" oninput="calcBuildable()"><p class="note">Enter actual sq ft if lot is irregular.</p></div>
+        <div class="toggle-row" style="margin-top:4px">
+          <span class="toggle-lbl">Corner lot (corner side setback applies to one side)</span>
+          <label class="tog"><input type="checkbox" id="corner-lot" onchange="calcBuildable()"><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div id="width-warn" style="display:none" class="warn"></div>
       </div>
-      <div class="toggle-row">
-        <span class="toggle-lbl">Irregular / non-rectangular lot</span>
-        <label class="tog"><input type="checkbox" id="irregular-lot" onchange="calcBuildable()"><div class="tog-track"></div><div class="tog-thumb"></div></label>
+
+      <!-- IRREGULAR MODE -->
+      <div id="poly-mode-fields" style="display:none">
+        <div class="field">
+          <label>How many corners does the lot have?</label>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+            <input type="number" id="corner-count" value="6" min="3" max="20"
+              style="width:80px;background:var(--input-bg);border:1px solid var(--border-bright);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:16px;padding:8px;outline:none;text-align:center">
+            <button class="btn btn-primary" onclick="initPolyEditor()" style="padding:8px 16px;font-size:12px">Set Corners</button>
+          </div>
+          <p class="note" style="margin-top:4px">Enter corner count, click Set Corners, then drag each dot to match your lot shape from Polaris.</p>
+        </div>
+
+        <!-- LOT EDITOR CANVAS -->
+        <div class="lot-editor-wrap" id="lot-editor-wrap">
+          <canvas id="lot-editor-canvas" width="800" height="600"></canvas>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="lot-editor-toolbar">
+          <label>Canvas width =</label>
+          <input type="number" id="canvas-scale-ft" value="200" min="10" oninput="redrawEditor()">
+          <label>ft &nbsp;|&nbsp; Measurements update live as you drag</label>
+          <button class="btn-ghost btn" style="padding:4px 10px;font-size:11px;margin-left:auto" onclick="resetPolyToDefault()">Reset Shape</button>
+        </div>
+
+        <!-- LIVE STATS -->
+        <div class="lot-stats">
+          <div class="lot-stat-box"><div class="lot-stat-val" id="poly-stat-area">—</div><div class="lot-stat-lbl">Lot Area (sq ft)</div></div>
+          <div class="lot-stat-box"><div class="lot-stat-val" id="poly-stat-perimeter">—</div><div class="lot-stat-lbl">Perimeter (ft)</div></div>
+          <div class="lot-stat-box"><div class="lot-stat-val" id="poly-stat-corners">—</div><div class="lot-stat-lbl">Corners</div></div>
+        </div>
+
+        <p class="hint-text">💡 Drag orange dots to match your lot shape. Numbers show side lengths in feet. <strong style="color:var(--teal)">Click any edge line</strong> to cycle: Front (blue) → Rear (red) → Side (gray). Multiple edges can share the same designation. Set canvas width to calibrate scale.</p>
+
+        <div class="field" style="margin-top:10px">
+          <label>Total Lot Area (sq ft) — from GIS / Polaris (overrides calculated)</label>
+          <input type="number" id="lot-sf-poly" placeholder="Optional — read off Polaris for accuracy" oninput="calcBuildable()">
+        </div>
       </div>
-      <div id="irregular-warn" style="display:none" class="warn">⚠ Irregular lot — rectangle formula may be inaccurate. Measure in GIS and enter override on Step 3.</div>
-      <div id="width-warn" style="display:none" class="warn"></div>
+
+
     </div>
     <div class="nav-btns">
       <button class="btn btn-ghost" onclick="goTo(1)">← Back</button>
@@ -351,7 +452,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
       <div class="card">
         <div class="card-title"><span class="dot"></span>Buildable Envelope</div>
         <div id="buildable-result"></div>
-        <div class="field" style="margin-top:16px"><label>Buildable Area Override (sq ft)</label><input type="number" id="buildable-override" placeholder="Leave blank to use calculated value" oninput="calcBuildable()"><p class="note">Use if lot is irregular and you've measured in GIS.</p></div>
+        <div id="rect-override-field" class="field" style="margin-top:16px"><label>Buildable Area Override (sq ft)</label><input type="number" id="buildable-override" placeholder="Leave blank to use calculated value" oninput="calcBuildable()"><p class="note">Use if lot is irregular and you've measured in GIS.</p></div>
         <div id="bua-section" style="display:none">
           <div class="bua-block">
             <div class="bua-title">Mecklenburg BUA / Watershed Check</div>
@@ -365,8 +466,28 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
         </div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="dot"></span>Setback Diagram</div>
-        <canvas id="sb-canvas" width="400" height="300" style="width:100%;max-width:400px;display:block;margin:0 auto;border-radius:6px"></canvas>
+        <div class="card-title"><span class="dot"></span>Setback Diagram &amp; Plan Overlay</div>
+        <canvas id="sb-canvas" width="600" height="500" style="width:100%;display:block;border-radius:6px;cursor:default" id="sb-canvas"></canvas>
+
+        <!-- Plan Overlay Controls — shown when a plan is selected -->
+        <div class="plan-overlay-section" id="plan-overlay-controls" style="display:none">
+          <div class="overlay-title">📐 Plan Footprint — Drag to position</div>
+          <div class="rotation-controls">
+            <span style="font-size:11px;color:var(--text-dim)">Rotate:</span>
+            <button class="rot-preset" onclick="setRotation(0)">0°</button>
+            <button class="rot-preset" onclick="setRotation(45)">45°</button>
+            <button class="rot-preset" onclick="setRotation(90)">90°</button>
+            <button class="rot-preset" onclick="setRotation(180)">180°</button>
+            <input type="range" id="rot-slider" class="rot-slider" min="0" max="360" value="0" oninput="setRotation(this.value)">
+            <span class="rot-val" id="rot-val">0°</span>
+          </div>
+          <div class="overlay-stats">
+            <div class="overlay-stat">Plan: <span id="ov-plan-name">—</span></div>
+            <div class="overlay-stat">Footprint: <span id="ov-footprint">—</span></div>
+            <div class="overlay-stat">Fits: <span id="ov-fits">—</span></div>
+          </div>
+          <p class="note" style="margin-top:6px">Drag the plan footprint within the buildable area. Select a different plan on Step 5 to swap it out.</p>
+        </div>
       </div>
       <div class="card">
         <div class="card-title"><span class="dot"></span>Topography &amp; Flood Resources</div>
@@ -390,7 +511,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
         <div class="card" style="border-color:rgba(46,156,143,0.25);background:rgba(46,156,143,0.04)">
           <div class="card-title"><span class="dot"></span>Duet Selected — Mecklenburg</div>
           <p style="font-size:12px;color:var(--text-mid);line-height:1.6">Units can sell as <strong style="color:var(--text)">individual townhomes</strong> (sublotted, MLS individually) or as a <strong style="color:var(--text)">duplex package</strong> (one deed, investor buyer). This affects your comps and exit ARV.</p>
-          <div style="margin-top:10px"><a class="topo-btn" href="https://polaris3g.mecklenburgcountync.gov/" target="_blank">Check Polaris GIS for interior lot lines →</a></div>
+          <div style="margin-top:10px"><a class="topo-btn" href="https://polaris3g.mecklenburgcountync.gov/" target="_blank">Open Polaris GIS — check for interior lot lines →</a></div>
         </div>
       </div>
     </div>
@@ -843,26 +964,35 @@ const COUNTY_ZONES={
   'Monroe':['RR','RLD','RMD','RHD'],
 };
 const COUNTY_GIS={
+  // Mecklenburg: Polaris 3G — confirmed working with address pre-fill
   'Mecklenburg':a=>`https://polaris3g.mecklenburgcountync.gov/?addressQuery=${encodeURIComponent(a)}`,
-  'Gaston':a=>`https://gis.gastongov.com/mapviewer/?search=${encodeURIComponent(a)}`,
-  'Catawba':a=>`https://gis.catawbacountync.gov/map/?query=${encodeURIComponent(a)}`,
-  'Lincoln':a=>`https://gis.lincolncountync.gov/?search=${encodeURIComponent(a)}`,
-  'Cabarrus':a=>`https://gis.cabarruscounty.us/map/?address=${encodeURIComponent(a)}`,
-  'Iredell':a=>`https://gis.iredellcountync.gov/?address=${encodeURIComponent(a)}`,
-  'Shelby':a=>`https://gis.clevelandcountync.gov/?search=${encodeURIComponent(a)}`,
-  'Kannapolis':a=>`https://gis.cabarruscounty.us/map/?address=${encodeURIComponent(a)}`,
-  'Monroe':a=>`https://gis.unioncountync.gov/?address=${encodeURIComponent(a)}`,
+  // Gaston: confirmed working GIS map viewer
+  'Gaston':a=>`https://gis.gastoncountync.gov/Map/Index`,
+  // Catawba: regional GIS — confirmed at gis.catawbacountync.gov
+  'Catawba':a=>`https://gis.catawbacountync.gov/`,
+  // Lincoln: confirmed tax parcel viewer URL (note: lincolncounty.org not lincolncountync.gov)
+  'Lincoln':a=>`https://arcgisserver.lincolncountync.gov/taxparcelviewer/`,
+  // Cabarrus: county GIS portal — confirmed working
+  'Cabarrus':a=>`https://www.cabarruscounty.us/Services/GIS-Maps-and-Data`,
+  // Iredell: MapGeo confirmed as primary online GIS tool per county site
+  'Iredell':a=>`https://iredell.mapgeo.io/datasets/parcels?location=${encodeURIComponent(a)}`,
+  // Shelby/Cleveland: county GIS confirmed at clevelandcounty.com
+  'Shelby':a=>`https://www.clevelandcounty.com/main/departments/planning___zoning/gis_services.php`,
+  // Kannapolis: Cabarrus County GIS (Kannapolis is in Cabarrus)
+  'Kannapolis':a=>`https://www.cabarruscounty.us/Services/GIS-Maps-and-Data`,
+  // Monroe/Union: UC Atlas — confirmed new 2025 system replacing GoMAPS
+  'Monroe':a=>`https://ucatlas.unioncountync.gov/`,
 };
 const COUNTY_ZONING_URL={
-  'Mecklenburg':'https://charlottenc.gov/growth-development/udo/Pages/default.aspx',
-  'Gaston':'https://www.gastongov.com/government/departments/planning-and-development/zoning',
-  'Catawba':'https://www.catawbacountync.gov/county-services/planning-development/planning-zoning/zoning/',
+  'Mecklenburg':'https://charlotteudo.org/',
+  'Gaston':'https://www.gastongov.com/185/Planning-and-Zoning',
+  'Catawba':'https://gis.catawbacountync.gov/misc/zoning.html',
   'Lincoln':'https://www.lincolncountync.gov/189/Planning-Zoning',
-  'Cabarrus':'https://www.cabarruscounty.us/government/departments/planning-and-development',
+  'Cabarrus':'https://www.cabarruscounty.us/Government/Departments/Planning-and-Development',
   'Iredell':'https://www.iredellcountync.gov/169/Planning-Zoning',
-  'Shelby':'https://www.cityofshelbync.gov/departments/planning-and-development/',
-  'Kannapolis':'https://www.kannapolisnc.gov/government/departments/planning/zoning',
-  'Monroe':'https://www.monroenc.org/departments/planning/',
+  'Shelby':'https://www.clevelandcounty.com/main/departments/planning___zoning/planning___zoning.php',
+  'Kannapolis':'https://www.cabarruscounty.us/Government/Departments/Planning-and-Development',
+  'Monroe':'https://www.unioncountync.gov/government/departments-f-p/planning-development',
 };
 const CITY_COUNTY={
   'charlotte':'Mecklenburg','cornelius':'Mecklenburg','davidson':'Mecklenburg','huntersville':'Mecklenburg',
@@ -908,6 +1038,41 @@ let buildableArea=0, allInExLand=0, sfPerUnit=0, units=1, currentPlanCost=0;
 let lotFactor=0, tapTotal=0;
 const selectedUpgrades=new Set();
 
+// Lot mode state
+let lotMode = 'rect'; // 'rect' or 'poly'
+let lotSides = []; // [{length, angleDeg}] for irregular mode
+
+// Lot editor canvas snapshot (carried to Step 3)
+let lotEditorSnapshot = null; // ImageData or dataURL
+
+function snapshotLotEditor(){
+  const src=$('lot-editor-canvas');
+  if(!src||polyPoints.length<3){lotEditorSnapshot=null;return;}
+  lotEditorSnapshot=src.toDataURL('image/png');
+  // Reset snapshot position so overlay re-centers on the new snapshot
+  planOverlay.snapshotPositioned=false;
+}
+
+// Plan overlay state
+let planOverlay = {
+  active: false,
+  fpW: 0, fpH: 0, // footprint in feet
+  rotation: 0,    // degrees
+  // canvas position in pixels
+  x: 0, y: 0,
+  // dragging
+  dragging: false,
+  dragOffX: 0, dragOffY: 0,
+  // scale: canvas pixels per foot
+  scale: 1,
+  // buildable rect in canvas coords
+  buildRect: null, // {x,y,w,h} in canvas pixels
+  // irregular buildable polygon
+  buildPoly: null,
+  // lot polygon in canvas pixels
+  lotPoly: null,
+};
+
 // ═══════════════════ HELPERS ═══════════════════
 const $=id=>document.getElementById(id);
 const fmt=n=>(!n&&n!==0)||isNaN(n)?'—':'$'+Math.round(n).toLocaleString();
@@ -925,7 +1090,10 @@ function goTo(n){
   }
   window.scrollTo(0,0);
   if(n===2)updateGISLink();
-  if(n===3){calcBuildable();drawDiagram();renderFitCheck();updateTopoLinks();}
+  if(n===3){
+    if(lotMode==='poly')snapshotLotEditor();
+    calcBuildable();drawDiagram();renderFitCheck();updateTopoLinks();
+  }
   if(n===4)updateSummaryBar();
   if(n===5)calcAll();
   if(n===6){calcAll();calcFinancing();}
@@ -938,6 +1106,70 @@ function onAddrChange(){
   const det=CITY_COUNTY[city];
   if(det&&!$('county-sel').value){$('county-sel').value=det;onCountyChange();}
   updateLinks();
+  validateAddress();
+}
+
+function validateAddress(){
+  const street=($('addr-street').value||'').trim();
+  const city=($('addr-city').value||'').trim();
+  const zip=($('addr-zip').value||'').trim();
+  const el=$('addr-validation');
+  if(!el)return;
+  if(!street&&!city){el.innerHTML='';return;}
+
+  const warnings=[];
+
+  // Check street has a number
+  if(street&&!/^\d/.test(street)){
+    warnings.push('Street address should start with a number (e.g. 2723 Dellinger Dr)');
+  }
+
+  // Check for common street suffix
+  const SUFFIXES=['st','ave','blvd','dr','rd','ln','ct','pl','way','cir','ter','trl',
+    'pkwy','hwy','expy','loop','pass','path','run','sq','walk'];
+  if(street){
+    const parts=street.toLowerCase().split(/\s+/);
+    const hasSuffix=parts.some(p=>SUFFIXES.includes(p.replace(/\.$/,'')));
+    if(!hasSuffix)warnings.push('Check street suffix — is it Dr, St, Ave, Rd, Ln, etc.?');
+  }
+
+  // Check city matches known cities/counties
+  if(city){
+    const cityLower=city.toLowerCase();
+    const known=Object.keys(CITY_COUNTY);
+    if(!known.includes(cityLower)){
+      // Fuzzy match — find closest
+      function editDist(a,b){
+        const m=a.length,n=b.length;
+        const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+        for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)
+          dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+        return dp[m][n];
+      }
+      const closest=known.reduce((best,k)=>{
+        const d=editDist(cityLower,k);
+        return d<best.d?{k,d}:best;
+      },{k:'',d:Infinity});
+      if(closest.d<=2&&closest.d>0){
+        warnings.push(`Did you mean <strong>${closest.k.charAt(0).toUpperCase()+closest.k.slice(1)}</strong>? City not in known service area.`);
+      } else if(closest.d>2){
+        warnings.push('City not recognized — double-check spelling or confirm it is in the Carolinas service area.');
+      }
+    }
+  }
+
+  // Check zip is 5 digits
+  if(zip&&!/^\d{5}$/.test(zip)){
+    warnings.push('ZIP code should be 5 digits');
+  }
+
+  if(warnings.length){
+    el.innerHTML='<div class="warn" style="margin-top:8px">'+warnings.map(w=>`⚠ ${w}`).join('<br>')+'</div>';
+  } else if(street&&city){
+    el.innerHTML='<div class="ok" style="margin-top:8px">✓ Address format looks good</div>';
+  } else {
+    el.innerHTML='';
+  }
 }
 function updateLinks(){
   const county=$('county-sel').value, addr=fullAddr();
@@ -985,7 +1217,531 @@ function onZoneChange(){
 }
 function fullAddr(){return[$('addr-street').value,$('addr-city').value,$('addr-state').value,$('addr-zip').value].map(s=>(s||'').trim()).filter(Boolean).join(', ');}
 
-// ═══════════════════ PAGE 2 ═══════════════════
+// ═══════════════════ PAGE 2 — LOT MODE ═══════════════════
+function setLotMode(mode){
+  lotMode = mode;
+  $('mode-rect-btn').classList.toggle('active', mode==='rect');
+  $('mode-poly-btn').classList.toggle('active', mode==='poly');
+  $('rect-mode-fields').style.display = mode==='rect' ? '' : 'none';
+  $('poly-mode-fields').style.display = mode==='poly' ? '' : 'none';
+  $('rect-override-field').style.display = mode==='rect' ? '' : 'none';
+  if(mode==='poly' && polyPoints.length===0) initPolyEditor();
+  calcBuildable();
+}
+
+// ── LOT POINT EDITOR STATE ────────────────────────────────────────────────
+let polyPoints = [];      // [{x,y}] in canvas pixels
+let polyDragIdx = -1;     // which point is being dragged
+let polyDragOffX = 0, polyDragOffY = 0;
+
+function getScaleFtPerPx(){
+  const canvas = $('lot-editor-canvas');
+  if(!canvas) return 1;
+  const canvasWidthFt = parseFloat(($('canvas-scale-ft')||{value:'200'}).value) || 200;
+  return canvasWidthFt / canvas.width;
+}
+
+function pxToFt(px){ return px * getScaleFtPerPx(); }
+function ftToPx(ft){ return ft / getScaleFtPerPx(); }
+
+function initPolyEditor(){
+  const n = parseInt(($('corner-count')||{value:'6'}).value) || 6;
+  const canvas = $('lot-editor-canvas');
+  if(!canvas) return;
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2;
+  const rx = W*0.32, ry = H*0.32;
+  polyPoints = [];
+  for(let i=0;i<n;i++){
+    const angle = (i/n)*Math.PI*2 - Math.PI/2;
+    polyPoints.push({
+      x: Math.round(cx + rx*Math.cos(angle)),
+      y: Math.round(cy + ry*Math.sin(angle))
+    });
+  }
+  initEdgeDesignations();
+  redrawEditor();
+  calcBuildable();
+}
+
+function initEdgeDesignations(){
+  const n = polyPoints.length;
+  // Default: bottom-most edge = front, top-most = rear, rest = side
+  edgeDesignations = Array(n).fill('side');
+  // Find the edge whose midpoint is lowest (most southern = likely front/street)
+  let maxY = -Infinity, frontIdx = 0;
+  for(let i=0;i<n;i++){
+    const a=polyPoints[i],b=polyPoints[(i+1)%n];
+    const my=(a.y+b.y)/2;
+    if(my>maxY){maxY=my;frontIdx=i;}
+  }
+  edgeDesignations[frontIdx]='front';
+  // Auto-assign rear: edge whose midpoint is most geometrically opposite the front midpoint
+  const fa=polyPoints[frontIdx],fb=polyPoints[(frontIdx+1)%n];
+  const fmx=(fa.x+fb.x)/2,fmy=(fa.y+fb.y)/2;
+  const cx2=polyPoints.reduce((s,p)=>s+p.x,0)/n;
+  const cy2=polyPoints.reduce((s,p)=>s+p.y,0)/n;
+  // Opposite = edge whose midpoint is most in the direction away from front midpoint through centroid
+  const fdx=fmx-cx2,fdy=fmy-cy2;
+  let bestDot=-Infinity,rearIdx=-1;
+  for(let i=0;i<n;i++){
+    if(i===frontIdx)continue;
+    const a=polyPoints[i],b=polyPoints[(i+1)%n];
+    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    const dx=mx-cx2,dy=my-cy2;
+    // dot product with opposite direction
+    const dot=dx*(-fdx)+dy*(-fdy);
+    if(dot>bestDot){bestDot=dot;rearIdx=i;}
+  }
+  if(rearIdx>=0)edgeDesignations[rearIdx]='rear';
+}
+
+function cycleEdgeDesignation(edgeIdx){
+  const cycle=['front','rear','side'];
+  const cur=edgeDesignations[edgeIdx]||'side';
+  const next=cycle[(cycle.indexOf(cur)+1)%cycle.length];
+  // Multiple fronts and rears allowed — no restriction
+  edgeDesignations[edgeIdx]=next;
+  redrawEditor();
+  calcBuildable();
+}
+
+function getSetbackForEdge(i){
+  const des=edgeDesignations[i]||'side';
+  if(des==='front')return pv('sb-front');
+  if(des==='rear')return pv('sb-rear');
+  // side: check if corner lot and this is the corner-side edge
+  return pv('sb-sides');
+}
+
+function resetPolyToDefault(){
+  polyPoints = [];
+  initPolyEditor();
+}
+
+function redrawEditor(){
+  const canvas=$('lot-editor-canvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Background
+  ctx.fillStyle='#0d1a26';ctx.fillRect(0,0,W,H);
+
+  // Grid
+  const gridFt=bestGridInterval(pxToFt(W));
+  const gridPx=ftToPx(gridFt);
+  ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
+  for(let x=0;x<W;x+=gridPx){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=gridPx){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.font='9px DM Mono,monospace';ctx.fillStyle='rgba(255,255,255,0.18)';
+  ctx.textAlign='left';
+  for(let x=gridPx;x<W-10;x+=gridPx)ctx.fillText(Math.round(pxToFt(x))+"'",x+2,10);
+  ctx.textAlign='right';
+  for(let y=gridPx;y<H-10;y+=gridPx)ctx.fillText(Math.round(pxToFt(y))+"'",W-2,y-2);
+
+  if(polyPoints.length<2){updatePolyStats();return;}
+  const pts=polyPoints;
+  const n=pts.length;
+
+  // Edge designation colors
+  const EDGE_COLORS={front:'#4a9eff',rear:'#e05c5c',side:'rgba(255,255,255,0.35)'};
+  const EDGE_LABELS={front:'FRONT',rear:'REAR',side:'SIDE'};
+
+  // Draw lot fill
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(let i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.closePath();
+  ctx.fillStyle='rgba(46,156,143,0.08)';ctx.fill();
+
+  // Draw each edge with its designation color
+  for(let i=0;i<n;i++){
+    const a=pts[i],b=pts[(i+1)%n];
+    const des=edgeDesignations[i]||'side';
+    const color=EDGE_COLORS[des];
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=color;ctx.lineWidth=des==='side'?1.5:2.5;
+    ctx.setLineDash(des==='side'?[4,4]:[]);ctx.stroke();ctx.setLineDash([]);
+  }
+
+  // Draw side length labels + designation badge
+  ctx.font='bold 11px DM Mono,monospace';
+  for(let i=0;i<n;i++){
+    const a=pts[i],b=pts[(i+1)%n];
+    const dx=b.x-a.x,dy=b.y-a.y;
+    const lenPx=Math.sqrt(dx*dx+dy*dy);
+    if(lenPx<25)continue;
+    const lenFt=pxToFt(lenPx);
+    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    // Perpendicular offset inward (toward centroid)
+    const cx2=pts.reduce((s,p)=>s+p.x,0)/n,cy2=pts.reduce((s,p)=>s+p.y,0)/n;
+    const toCentX=cx2-mx,toCentY=cy2-my;
+    const toCentLen=Math.sqrt(toCentX*toCentX+toCentY*toCentY)||1;
+    const offX=(toCentX/toCentLen)*18,offY=(toCentY/toCentLen)*18;
+    const lx=mx+offX,ly=my+offY;
+    const des=edgeDesignations[i]||'side';
+    const color=EDGE_COLORS[des];
+    const lbl=lenFt.toFixed(1)+" ft";
+    const m=ctx.measureText(lbl);
+    const badge=EDGE_LABELS[des];
+    const bm=ctx.measureText(badge);
+    const totalW=Math.max(m.width,bm.width)+10;
+    // Background pill
+    ctx.fillStyle='rgba(13,26,38,0.88)';
+    roundRect(ctx,lx-totalW/2,ly-18,totalW,32,4);ctx.fill();
+    ctx.strokeStyle=color;ctx.lineWidth=1;
+    roundRect(ctx,lx-totalW/2,ly-18,totalW,32,4);ctx.stroke();
+    // Distance
+    ctx.fillStyle='rgba(232,169,77,0.95)';ctx.textAlign='center';ctx.font='bold 11px DM Mono,monospace';
+    ctx.fillText(lbl,lx,ly-4);
+    // Designation
+    ctx.fillStyle=color;ctx.font='bold 8px DM Sans,monospace';
+    ctx.fillText(badge,lx,ly+8);
+  }
+
+  // Draw setback inset using per-edge setbacks
+  const insetPts=insetPolygonPerEdge(pts,edgeDesignations);
+  if(insetPts&&insetPts.length>=3){
+    ctx.beginPath();ctx.moveTo(insetPts[0].x,insetPts[0].y);
+    for(let i=1;i<insetPts.length;i++)ctx.lineTo(insetPts[i].x,insetPts[i].y);
+    ctx.closePath();
+    ctx.fillStyle='rgba(232,169,77,0.08)';ctx.fill();
+    ctx.strokeStyle='rgba(232,169,77,0.85)';ctx.lineWidth=2;ctx.setLineDash([6,3]);ctx.stroke();ctx.setLineDash([]);
+
+    // Buildable area = full inset polygon
+    // Calculate area using shoelace in feet
+    let insetAreaPx=0;
+    const np=insetPts.length;
+    for(let i=0;i<np;i++){
+      const a=insetPts[i],b=insetPts[(i+1)%np];
+      insetAreaPx+=a.x*b.y-b.x*a.y;
+    }
+    const insetAreaFt=Math.round(Math.abs(insetAreaPx)/2*getScaleFtPerPx()*getScaleFtPerPx());
+    buildableArea=insetAreaFt;
+
+    // Label the buildable area at the centroid of the inset polygon
+    const icx=insetPts.reduce((s,p)=>s+p.x,0)/np;
+    const icy=insetPts.reduce((s,p)=>s+p.y,0)/np;
+    ctx.font='bold 12px DM Sans,sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(76,175,130,0.95)';
+    ctx.fillText('Buildable Area',icx,icy-10);
+    ctx.font='bold 11px DM Mono,monospace';
+    ctx.fillText(insetAreaFt.toLocaleString()+' sf',icx,icy+6);
+
+    // Store inset polygon in FEET (canvas-independent)
+    const sc2ft=getScaleFtPerPx();
+    const edCanvas=$('lot-editor-canvas');
+    const edW=edCanvas?edCanvas.width:800,edH=edCanvas?edCanvas.height:600;
+    // Convert pixel coords to feet relative to canvas origin
+    planOverlay.buildPolyFt=insetPts.map(p=>({x:pxToFt(p.x),y:pxToFt(p.y)}));
+    planOverlay.buildPoly=insetPts; // keep px version for direct use in editor
+    // Store centroid in feet
+    const icxFt=pxToFt(icx),icyFt=pxToFt(icy);
+    planOverlay.buildCentroidFt={x:icxFt,y:icyFt};
+    // Bounding box in feet
+    const ixsFt=planOverlay.buildPolyFt.map(p=>p.x),iysFt=planOverlay.buildPolyFt.map(p=>p.y);
+    planOverlay.buildBBoxFt={
+      minX:Math.min(...ixsFt),maxX:Math.max(...ixsFt),
+      minY:Math.min(...iysFt),maxY:Math.max(...iysFt)
+    };
+    // Legacy buildRect in px for editor drag (will be recomputed per-canvas on snapshot)
+    const ixs=insetPts.map(p=>p.x),iys=insetPts.map(p=>p.y);
+    const ibx=Math.min(...ixs),iby=Math.min(...iys);
+    const ibw=Math.max(...ixs)-ibx,ibh=Math.max(...iys)-iby;
+    planOverlay.buildRect={x:ibx,y:iby,w:ibw,h:ibh,cx:icx,cy:icy};
+    planOverlay.editorFtPerPx=sc2ft; // store the ft/px ratio used when polygon was built
+    if(planOverlay.active&&!planOverlay.positioned){
+      planOverlay.x=icx;planOverlay.y=icy;planOverlay.positioned=true;
+    }
+  }
+
+  // Draw corner dots
+  for(let i=0;i<n;i++){
+    const p=pts[i];
+    ctx.beginPath();ctx.arc(p.x,p.y,9,0,Math.PI*2);
+    ctx.fillStyle=polyDragIdx===i?'#fff':'rgba(232,169,77,0.9)';ctx.fill();
+    ctx.strokeStyle='rgba(13,26,38,0.9)';ctx.lineWidth=2;ctx.stroke();
+    ctx.font='bold 10px DM Mono,monospace';ctx.textAlign='center';ctx.fillStyle='#0d1a26';
+    ctx.fillText(i+1,p.x,p.y+4);
+  }
+
+  // Plan overlay
+  if(planOverlay.active&&planOverlay.fpW>0&&planOverlay.fpH>0&&planOverlay.buildRect){
+    const sc=planOverlay.scale||1;
+    const pw=planOverlay.fpW*sc,ph=planOverlay.fpH*sc;
+    const rad=planOverlay.rotation*Math.PI/180;
+    if(!planOverlay.positioned){
+      const br=planOverlay.buildRect;
+      planOverlay.x=br.x+br.w/2;planOverlay.y=br.y+br.h/2;planOverlay.positioned=true;
+    }
+    ctx.save();ctx.translate(planOverlay.x,planOverlay.y);ctx.rotate(rad);
+    const br=planOverlay.buildRect;
+    const cosA=Math.abs(Math.cos(rad)),sinA=Math.abs(Math.sin(rad));
+    const rotW=pw*cosA+ph*sinA,rotH=pw*sinA+ph*cosA;
+    const fits=br&&(planOverlay.x-rotW/2>=br.x&&planOverlay.x+rotW/2<=br.x+br.w&&planOverlay.y-rotH/2>=br.y&&planOverlay.y+rotH/2<=br.y+br.h);
+    ctx.fillStyle=fits?'rgba(76,175,130,0.3)':'rgba(224,92,92,0.3)';ctx.fillRect(-pw/2,-ph/2,pw,ph);
+    ctx.strokeStyle=fits?'rgba(76,175,130,0.9)':'rgba(224,92,92,0.9)';ctx.lineWidth=2.5;ctx.setLineDash([]);ctx.strokeRect(-pw/2,-ph/2,pw,ph);
+    ctx.font='bold 10px DM Sans,sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,0.9)';
+    ctx.fillText(planOverlay.planName||'',0,-2);ctx.font='9px DM Mono,monospace';ctx.fillStyle='rgba(255,255,255,0.6)';
+    ctx.fillText(planOverlay.fpW+"'×"+planOverlay.fpH+"'",0,11);
+    ctx.restore();
+    const fe=$('ov-fits');if(fe){fe.textContent=fits?'✓ Yes':'✗ Outside';fe.className=fits?'overlay-fit-ok':'overlay-fit-warn';}
+  }
+
+  // Legend
+  drawLegend(ctx,W,H);
+  updatePolyStats();
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
+function drawLegend(ctx,W,H){
+  const items=[
+    {color:'#4a9eff',dash:false,label:'Front (click edge to change)'},
+    {color:'#e05c5c',dash:false,label:'Rear'},
+    {color:'rgba(255,255,255,0.35)',dash:true,label:'Side'},
+    {color:'rgba(232,169,77,0.85)',dash:true,label:'Setback boundary'},
+    {color:'rgba(76,175,130,0.6)',dash:false,label:'Buildable area (inside setbacks)'},
+  ];
+  const lh=18,pad=10,bw=160,bh=lh*items.length+pad*2;
+  ctx.fillStyle='rgba(13,26,38,0.88)';
+  roundRect(ctx,8,H-bh-8,bw,bh,5);ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
+  roundRect(ctx,8,H-bh-8,bw,bh,5);ctx.stroke();
+  items.forEach((it,i)=>{
+    const y=H-bh-8+pad+i*lh+lh/2;
+    ctx.strokeStyle=it.color;ctx.lineWidth=it.dash?1.5:2.5;
+    ctx.setLineDash(it.dash?[4,3]:[]);
+    ctx.beginPath();ctx.moveTo(16,y);ctx.lineTo(38,y);ctx.stroke();ctx.setLineDash([]);
+    ctx.font='10px DM Sans,sans-serif';ctx.fillStyle='rgba(200,210,220,0.75)';ctx.textAlign='left';
+    ctx.fillText(it.label,44,y+4);
+  });
+}
+
+// Per-edge setback inset using edge-offset + line intersection
+// Spikes are prevented by clamping any result point that falls outside the original polygon
+function insetPolygonPerEdge(pts,designations){
+  const n=pts.length;
+  if(n<3)return null;
+
+  function sbPxForEdge(i){
+    const des=designations[i]||'side';
+    if(des==='front')return ftToPx(pv('sb-front')||0);
+    if(des==='rear') return ftToPx(pv('sb-rear')||0);
+    return ftToPx(pv('sb-sides')||0);
+  }
+
+  // Winding
+  let area=0;
+  for(let i=0;i<n;i++){const a=pts[i],b=pts[(i+1)%n];area+=a.x*b.y-b.x*a.y;}
+  const isCW=area>0;
+  const s=isCW?1:-1;
+
+  // Offset each edge inward
+  const offsetEdges=[];
+  for(let i=0;i<n;i++){
+    const a=pts[i],b=pts[(i+1)%n];
+    const dx=b.x-a.x,dy=b.y-a.y;
+    const len=Math.sqrt(dx*dx+dy*dy)||1;
+    const nx=s*(-dy/len),ny=s*(dx/len);
+    const sb=sbPxForEdge(i);
+    offsetEdges.push({ax:a.x+nx*sb,ay:a.y+ny*sb,bx:b.x+nx*sb,by:b.y+ny*sb,nx,ny,sb});
+  }
+
+  // Centroid
+  const cx=pts.reduce((a,p)=>a+p.x,0)/n;
+  const cy=pts.reduce((a,p)=>a+p.y,0)/n;
+
+  // Point-in-polygon test for original lot
+  function ptInOrig(px,py){
+    let inside=false;
+    for(let i=0,j=n-1;i<n;j=i++){
+      const xi=pts[i].x,yi=pts[i].y,xj=pts[j].x,yj=pts[j].y;
+      if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))inside=!inside;
+    }
+    return inside;
+  }
+
+  // Closest point on a line segment to point p
+  function closestOnSeg(px,py,ax,ay,bx,by){
+    const dx=bx-ax,dy=by-ay;
+    const lenSq=dx*dx+dy*dy;
+    if(lenSq===0)return{x:ax,y:ay};
+    const t=Math.max(0,Math.min(1,((px-ax)*dx+(py-ay)*dy)/lenSq));
+    return{x:ax+t*dx,y:ay+t*dy};
+  }
+
+  const result=[];
+  for(let i=0;i<n;i++){
+    const e1=offsetEdges[i];
+    const e2=offsetEdges[(i+1)%n];
+    const d1x=e1.bx-e1.ax,d1y=e1.by-e1.ay;
+    const d2x=e2.bx-e2.ax,d2y=e2.by-e2.ay;
+    const denom=d1x*d2y-d1y*d2x;
+    let px,py;
+    if(Math.abs(denom)<0.001){
+      px=(e1.bx+e2.ax)/2;py=(e1.by+e2.ay)/2;
+    } else {
+      const t=((e2.ax-e1.ax)*d2y-(e2.ay-e1.ay)*d2x)/denom;
+      px=e1.ax+t*d1x;py=e1.ay+t*d1y;
+    }
+
+    // If result is outside original polygon or NaN — clamp it
+    if(isNaN(px)||isNaN(py)||!ptInOrig(px,py)){
+      // Try e2 start (the offset start of the outgoing edge) — usually safe
+      const c1=closestOnSeg(cx,cy,e2.ax,e2.ay,e2.bx,e2.by);
+      if(ptInOrig(c1.x,c1.y)){px=c1.x;py=c1.y;}
+      else {
+        // Last resort: push the original vertex toward centroid by avg setback
+        const origPt=pts[(i+1)%n];
+        const dx2=origPt.x-cx,dy2=origPt.y-cy;
+        const d2=Math.sqrt(dx2*dx2+dy2*dy2)||1;
+        const avgSb=(sbPxForEdge(i)+sbPxForEdge((i+1)%n))/2;
+        px=origPt.x-(dx2/d2)*avgSb;
+        py=origPt.y-(dy2/d2)*avgSb;
+      }
+    }
+    result.push({x:px,y:py});
+  }
+  return result;
+}
+
+function bestGridInterval(totalFt){
+  const targets=[5,10,20,25,50,100,200];
+  const ideal=totalFt/8;
+  return targets.reduce((a,b)=>Math.abs(b-ideal)<Math.abs(a-ideal)?b:a);
+}
+
+function updatePolyStats(){
+  const n=polyPoints.length;
+  const areaEl=$('poly-stat-area'), perEl=$('poly-stat-perimeter'), cEl=$('poly-stat-corners');
+  if(cEl)cEl.textContent=n;
+  if(n<3){if(areaEl)areaEl.textContent='—';if(perEl)perEl.textContent='—';return;}
+  // Area (shoelace)
+  let area=0;
+  for(let i=0;i<n;i++){const a=polyPoints[i],b=polyPoints[(i+1)%n];area+=a.x*b.y-b.x*a.y;}
+  const areaFt=Math.abs(area)/2*getScaleFtPerPx()*getScaleFtPerPx();
+  if(areaEl)areaEl.textContent=Math.round(areaFt).toLocaleString();
+  // Perimeter
+  let perim=0;
+  for(let i=0;i<n;i++){const a=polyPoints[i],b=polyPoints[(i+1)%n];perim+=Math.sqrt((b.x-a.x)**2+(b.y-a.y)**2);}
+  if(perEl)perEl.textContent=Math.round(pxToFt(perim)).toLocaleString();
+  // Update buildable area for calculations
+  const lotSFManual=pv('lot-sf-poly');
+  if(!lotSFManual && areaEl){
+    const val=parseInt(areaEl.textContent.replace(/,/g,''));
+    if(!isNaN(val))buildableArea=val; // rough — gets overridden by inscribed rect calc
+  }
+}
+
+// Inscribed rect search removed — buildable area is the full inset polygon
+function largestInscribedRectPts(pts){ return null; }
+
+function pointInPolygonPts(pt,poly){
+  let inside=false;
+  const n=poly.length;
+  for(let i=0,j=n-1;i<n;j=i++){
+    const pi=poly[i],pj=poly[j];
+    if(((pi.y>pt.y)!==(pj.y>pt.y))&&(pt.x<(pj.x-pi.x)*(pt.y-pi.y)/(pj.y-pi.y)+pi.x))inside=!inside;
+  }
+  return inside;
+}
+
+// ── DRAG EVENTS for lot editor ────────────────────────────────────────────
+function distToSegment(p,a,b){
+  const dx=b.x-a.x,dy=b.y-a.y;
+  const lenSq=dx*dx+dy*dy;
+  if(lenSq===0)return Math.sqrt((p.x-a.x)**2+(p.y-a.y)**2);
+  let t=((p.x-a.x)*dx+(p.y-a.y)*dy)/lenSq;
+  t=Math.max(0,Math.min(1,t));
+  return Math.sqrt((p.x-a.x-t*dx)**2+(p.y-a.y-t*dy)**2);
+}
+
+function initLotEditorDrag(){
+  const canvas=$('lot-editor-canvas');
+  if(!canvas)return;
+  const HIT=12;
+  function getPos(e){
+    const r=canvas.getBoundingClientRect();
+    const scX=canvas.width/r.width,scY=canvas.height/r.height;
+    const cx=e.touches?e.touches[0].clientX:e.clientX;
+    const cy=e.touches?e.touches[0].clientY:e.clientY;
+    return{x:(cx-r.left)*scX,y:(cy-r.top)*scY};
+  }
+  canvas.addEventListener('mousedown',e=>{
+    const pos=getPos(e);
+    polyDragIdx=-1;
+    // Check corner dots first
+    for(let i=0;i<polyPoints.length;i++){
+      const p=polyPoints[i];
+      if(Math.abs(pos.x-p.x)<HIT&&Math.abs(pos.y-p.y)<HIT){
+        polyDragIdx=i;polyDragOffX=pos.x-p.x;polyDragOffY=pos.y-p.y;
+        canvas.style.cursor='grabbing';return;
+      }
+    }
+    // Check edge clicks (within ~10px of line segment)
+    const n=polyPoints.length;
+    for(let i=0;i<n;i++){
+      const a=polyPoints[i],b=polyPoints[(i+1)%n];
+      if(distToSegment(pos,a,b)<12){
+        cycleEdgeDesignation(i);return;
+      }
+    }
+  });
+  window.addEventListener('mousemove',e=>{
+    if(polyDragIdx<0)return;
+    const canvas2=$('lot-editor-canvas');if(!canvas2)return;
+    const pos=getPos(e);
+    const W=canvas2.width,H=canvas2.height;
+    polyPoints[polyDragIdx]={
+      x:Math.max(10,Math.min(W-10,pos.x-polyDragOffX)),
+      y:Math.max(10,Math.min(H-10,pos.y-polyDragOffY))
+    };
+    redrawEditor();calcBuildable();
+  });
+  window.addEventListener('mouseup',()=>{
+    polyDragIdx=-1;
+    const c=$('lot-editor-canvas');if(c)c.style.cursor='crosshair';
+  });
+  canvas.addEventListener('touchstart',e=>{
+    e.preventDefault();const pos=getPos(e);polyDragIdx=-1;
+    for(let i=0;i<polyPoints.length;i++){
+      const p=polyPoints[i];
+      if(Math.abs(pos.x-p.x)<HIT+6&&Math.abs(pos.y-p.y)<HIT+6){
+        polyDragIdx=i;polyDragOffX=pos.x-p.x;polyDragOffY=pos.y-p.y;return;
+      }
+    }
+    // Edge tap
+    const n=polyPoints.length;
+    for(let i=0;i<n;i++){
+      const a=polyPoints[i],b=polyPoints[(i+1)%n];
+      if(distToSegment(pos,a,b)<16){cycleEdgeDesignation(i);return;}
+    }
+  },{passive:false});
+  window.addEventListener('touchmove',e=>{
+    if(polyDragIdx<0)return;e.preventDefault();
+    const pos=getPos(e);
+    const canvas2=$('lot-editor-canvas');if(!canvas2)return;
+    const W=canvas2.width,H=canvas2.height;
+    polyPoints[polyDragIdx]={
+      x:Math.max(10,Math.min(W-10,pos.x-polyDragOffX)),
+      y:Math.max(10,Math.min(H-10,pos.y-polyDragOffY))
+    };
+    redrawEditor();calcBuildable();
+  },{passive:false});
+  window.addEventListener('touchend',()=>{polyDragIdx=-1;});
+}
+
+// Keep old stubs so nothing breaks
+function initSides(){}
+function renderSidesList(){}
+function addSide(){ if(polyPoints.length<20){ polyPoints.push({x:400,y:300}); redrawEditor(); } }
+function initSidesFromCount(){ initPolyEditor(); }
+
+// ═══════════════════ PAGE 2 — GIS ═══════════════════
 function updateGISLink(){
   const county=$('county-sel').value,addr=fullAddr(),bl=$('gis-link-block');
   if(!bl)return;
@@ -997,34 +1753,155 @@ function updateGISLink(){
 
 // ═══════════════════ BUILDABLE AREA ═══════════════════
 function calcBuildable(){
-  const w=pv('lot-w'),d=pv('lot-d');
   const front=pv('sb-front'),rear=pv('sb-rear'),sides=pv('sb-sides'),corner=pv('sb-corner');
-  const isCorner=$('corner-lot')&&$('corner-lot').checked;
-  const isIrregular=$('irregular-lot')&&$('irregular-lot').checked;
-  const minW=pv('sb-minw'),overrideSF=pv('buildable-override'),lotSFManual=pv('lot-sf');
-  const ww=$('width-warn');
-  if(ww&&minW>0&&w>0&&w<minW){ww.style.display='';ww.textContent=`⚠ Lot width (${w} ft) is below the zone minimum (${minW} ft). Verify with the city.`;}
-  else if(ww)ww.style.display='none';
-  if($('irregular-warn'))$('irregular-warn').style.display=isIrregular?'':'none';
-  const sideTotal=isCorner?(sides+corner):(sides*2);
-  const buildW=Math.max(0,w-sideTotal),buildD=Math.max(0,d-front-rear);
-  buildableArea=overrideSF||(w&&d?buildW*buildD:0);
+  const minW=pv('sb-minw');
   const br=$('buildable-result');
-  if(br){
-    if(buildableArea>0){
-      br.innerHTML=`<div class="area-display">
-        <div style="color:var(--text-dim);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Buildable Footprint Envelope</div>
-        <div class="area-big">${fmtN(buildableArea)}</div><div class="area-unit">sq ft</div>
-        ${buildW&&buildD?`<div class="area-dims">${buildW.toFixed(1)} ft wide × ${buildD.toFixed(1)} ft deep</div>`:''}
-        <div class="area-grid">
-          <div class="area-item"><div class="area-item-val">${w||'—'} ft</div><div class="area-item-lbl">Lot Width</div></div>
-          <div class="area-item"><div class="area-item-val">${d||'—'} ft</div><div class="area-item-lbl">Lot Depth</div></div>
-          <div class="area-item"><div class="area-item-val">${fmtN(lotSFManual||(w*d))} sf</div><div class="area-item-lbl">Total Lot</div></div>
-        </div></div>
-        ${isIrregular&&!overrideSF?'<div class="warn" style="margin-top:8px">Irregular — enter GIS-measured area in override below.</div>':''}`;
-    }else br.innerHTML=`<div class="warn">Enter lot dimensions and setbacks on Steps 1–2.</div>`;
+
+  if(lotMode === 'rect'){
+    const w=pv('lot-w'),d=pv('lot-d');
+    const isCorner=$('corner-lot')&&$('corner-lot').checked;
+    const overrideSF=pv('buildable-override'),lotSFManual=pv('lot-sf');
+    const ww=$('width-warn');
+    if(ww&&minW>0&&w>0&&w<minW){ww.style.display='';ww.textContent=`⚠ Lot width (${w} ft) is below the zone minimum (${minW} ft). Verify with the city.`;}
+    else if(ww)ww.style.display='none';
+    const sideTotal=isCorner?(sides+corner):(sides*2);
+    const buildW=Math.max(0,w-sideTotal),buildD=Math.max(0,d-front-rear);
+    buildableArea=overrideSF||(w&&d?buildW*buildD:0);
+    if(br){
+      if(buildableArea>0){
+        br.innerHTML=`<div class="area-display">
+          <div style="color:var(--text-dim);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Buildable Footprint Envelope</div>
+          <div class="area-big">${fmtN(buildableArea)}</div><div class="area-unit">sq ft</div>
+          ${buildW&&buildD?`<div class="area-dims">${buildW.toFixed(1)} ft wide × ${buildD.toFixed(1)} ft deep</div>`:''}
+          <div class="area-grid">
+            <div class="area-item"><div class="area-item-val">${w||'—'} ft</div><div class="area-item-lbl">Lot Width</div></div>
+            <div class="area-item"><div class="area-item-val">${d||'—'} ft</div><div class="area-item-lbl">Lot Depth</div></div>
+            <div class="area-item"><div class="area-item-val">${fmtN(lotSFManual||(w*d))} sf</div><div class="area-item-lbl">Total Lot</div></div>
+          </div></div>`;
+      }else br.innerHTML=`<div class="warn">Enter lot dimensions and setbacks on Steps 1–2.</div>`;
+    }
+  } else {
+    // IRREGULAR MODE — uses polyPoints (canvas drag points)
+    const lotSFManual = pv('lot-sf-poly');
+    if(polyPoints.length < 3){
+      buildableArea=0;
+      if(br)br.innerHTML=`<div class="warn">Click "Set Corners" and drag the dots to define your lot shape.</div>`;
+    } else {
+      // Area from canvas points converted to feet
+      const sc=getScaleFtPerPx();
+      let area=0;
+      for(let i=0;i<polyPoints.length;i++){
+        const a=polyPoints[i],b=polyPoints[(i+1)%polyPoints.length];
+        area+=a.x*b.y-b.x*a.y;
+      }
+      const lotSFCalc=Math.round(Math.abs(area)/2*sc*sc);
+      // Buildable area comes from the inscribed rect drawn in redrawEditor
+      // It's stored in planOverlay.buildRect — convert back to ft
+      // buildableArea is set by redrawEditor via inset polygon shoelace
+      const baSF = buildableArea || 0;
+      const bwFt = '—';
+      const bhFt = '—';
+      if(br){
+        br.innerHTML=`<div class="area-display">
+          <div style="color:var(--text-dim);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Buildable Envelope (inside setbacks)</div>
+          <div class="area-big">${fmtN(baSF||buildableArea)}</div><div class="area-unit">sq ft</div>
+          <div class="area-grid">
+            <div class="area-item"><div class="area-item-val">${polyPoints.length}</div><div class="area-item-lbl">Lot Corners</div></div>
+            <div class="area-item"><div class="area-item-val">${fmtN(lotSFManual||lotSFCalc)} sf</div><div class="area-item-lbl">Lot Area</div></div>
+            <div class="area-item"><div class="area-item-val">${fmtN(baSF)} sf</div><div class="area-item-lbl">Buildable sf</div></div>
+          </div></div>`;
+      }
+      // Trigger editor redraw so buildable rect is current
+      redrawEditor();
+    }
   }
   calcBUA();renderFitCheck();drawDiagram();updateSummaryBar();
+  if(lotMode==='poly')snapshotLotEditor();
+}
+
+// Build polygon in real feet (for calculations)
+function buildLotPolygonFt(sides){
+  let heading = 0;
+  let pts = [[0,0]];
+  for(let i=0;i<sides.length;i++){
+    const s=sides[i];
+    const rad=heading*Math.PI/180;
+    const prev=pts[pts.length-1];
+    pts.push([prev[0]+s.length*Math.cos(rad), prev[1]+s.length*Math.sin(rad)]);
+    const ext = 180-(s.angleDeg||90);
+    heading=(heading+ext)%360;
+  }
+  return pts;
+}
+
+function polygonAreaFt(pts){
+  let area=0;const n=pts.length;
+  for(let i=0;i<n;i++){const[x1,y1]=pts[i],[x2,y2]=pts[(i+1)%n];area+=x1*y2-x2*y1;}
+  return Math.abs(area)/2;
+}
+
+// Inset polygon by setback amounts (simple centroid-push method, adequate for mostly-rectangular lots)
+function insetPolygonFt(pts, front, rear, sideL, sideR){
+  const n=pts.length;
+  const cx=pts.reduce((s,p)=>s+p[0],0)/n;
+  const cy=pts.reduce((s,p)=>s+p[1],0)/n;
+  // Find bounding box extents to determine which side of centroid is "front"
+  const minY=Math.min(...pts.map(p=>p[1]));
+  const maxY=Math.max(...pts.map(p=>p[1]));
+  const minX=Math.min(...pts.map(p=>p[0]));
+  const maxX=Math.max(...pts.map(p=>p[0]));
+  return pts.map(([x,y])=>{
+    const dx=x-cx, dy=y-cy;
+    // Determine which edge: use dominant direction
+    let inset=sideL;
+    if(dy<0 && Math.abs(dy)>Math.abs(dx)) inset=front;      // top = front
+    else if(dy>0 && Math.abs(dy)>Math.abs(dx)) inset=rear;   // bottom = rear
+    else if(dx<0) inset=sideL;
+    else inset=sideR;
+    // Push toward centroid
+    const dist=Math.sqrt(dx*dx+dy*dy)||1;
+    return [x - (dx/dist)*inset, y - (dy/dist)*inset];
+  });
+}
+
+// Largest inscribed rectangle using sampling approach
+function largestInscribedRect(poly){
+  if(!poly||poly.length<3)return null;
+  const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);
+  const minX=Math.min(...xs),maxX=Math.max(...xs);
+  const minY=Math.min(...ys),maxY=Math.max(...ys);
+  const spanX=maxX-minX,spanY=maxY-minY;
+  // Sample candidate rectangles at multiple aspect ratios
+  let best={w:0,h:0,cx:0,cy:0,area:0};
+  const steps=20;
+  for(let wi=2;wi<=steps;wi++){
+    for(let hi=2;hi<=steps;hi++){
+      const w=spanX*(wi/steps)*0.9;
+      const h=spanY*(hi/steps)*0.9;
+      // Try multiple center positions
+      for(let xi=1;xi<steps;xi++){
+        for(let yi=1;yi<steps;yi++){
+          const cx=minX+spanX*(xi/steps);
+          const cy=minY+spanY*(yi/steps);
+          const corners=[[cx-w/2,cy-h/2],[cx+w/2,cy-h/2],[cx+w/2,cy+h/2],[cx-w/2,cy+h/2]];
+          if(corners.every(c=>pointInPolygon(c,poly))){
+            if(w*h>best.area){best={w,h,cx,cy,area:w*h};}
+          }
+        }
+      }
+    }
+  }
+  return best.area>0?best:null;
+}
+
+function pointInPolygon([px,py],poly){
+  let inside=false;
+  const n=poly.length;
+  for(let i=0,j=n-1;i<n;j=i++){
+    const[xi,yi]=poly[i],[xj,yj]=poly[j];
+    if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))inside=!inside;
+  }
+  return inside;
 }
 
 function calcBUA(){
@@ -1054,27 +1931,300 @@ function calcBUA(){
   }
 }
 
+// Lot image state
+let lotImageObj = null;
+
+function onLotImageUpload(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = new Image();
+    img.onload = function(){
+      lotImageObj = img;
+      // Show preview
+      const prev = $('img-preview');
+      if(prev){ prev.src = ev.target.result; prev.style.display='block'; }
+      const zone = $('img-upload-zone');
+      if(zone) zone.classList.add('has-image');
+      const clearBtn = $('img-clear-btn');
+      if(clearBtn) clearBtn.style.display='inline-block';
+      drawDiagram();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearLotImage(){
+  lotImageObj = null;
+  const prev = $('img-preview');
+  if(prev){ prev.src=''; prev.style.display='none'; }
+  const zone = $('img-upload-zone');
+  if(zone) zone.classList.remove('has-image');
+  const clearBtn = $('img-clear-btn');
+  if(clearBtn) clearBtn.style.display='none';
+  const input = $('lot-img-input');
+  if(input) input.value='';
+  drawDiagram();
+}
+
 function drawDiagram(){
   const canvas=$('sb-canvas');if(!canvas)return;
-  const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
   ctx.clearRect(0,0,W,H);
+
+  // ── POLY MODE: use snapshot of lot editor as the canvas ──
+  if(lotMode==='poly'){
+    if(lotEditorSnapshot){
+      const img=new Image();
+      img.onload=function(){
+        ctx.drawImage(img,0,0,W,H);
+        // Compute scale: snapshot was from lot-editor-canvas (800×600)
+        // sb-canvas is W×H — find the ratio
+        const edCanvas=$('lot-editor-canvas');
+        const edW=edCanvas?edCanvas.width:800,edH=edCanvas?edCanvas.height:600;
+        const snapshotScaleX=W/edW, snapshotScaleY=H/edH;
+        drawPlanOverlayOnSnapshotCanvas(ctx,W,H,snapshotScaleX,snapshotScaleY);
+      };
+      img.src=lotEditorSnapshot;
+    } else {
+      ctx.fillStyle='rgba(46,156,143,0.08)';ctx.fillRect(0,0,W,H);
+      ctx.font='13px DM Sans,sans-serif';ctx.fillStyle='rgba(143,163,188,0.6)';ctx.textAlign='center';
+      ctx.fillText('Navigate to Step 2 → Irregular Lot to define your lot shape',W/2,H/2);
+    }
+    return;
+  }
+
+  // ── RECT MODE: original diagram ──
+  if(lotImageObj){
+    const ir=lotImageObj.width/lotImageObj.height,cr=W/H;
+    let iw,ih,ix,iy;
+    if(ir>cr){iw=W;ih=W/ir;ix=0;iy=(H-ih)/2;}else{ih=H;iw=H*ir;iy=0;ix=(W-iw)/2;}
+    ctx.globalAlpha=0.65;ctx.drawImage(lotImageObj,ix,iy,iw,ih);ctx.globalAlpha=1.0;
+  }
+
+  const front=pv('sb-front'),rear=pv('sb-rear'),sides=pv('sb-sides'),corner=pv('sb-corner');
   const w=pv('lot-w')||100,d=pv('lot-d')||150;
-  const front=pv('sb-front')||0,rear=pv('sb-rear')||0,sides=pv('sb-sides')||0,corner=pv('sb-corner')||0;
   const isCorner=$('corner-lot')&&$('corner-lot').checked;
-  const pad=14,scale=Math.min((W-pad*2)/w,(H-pad*2)/d);
+  const pad=20,scale=Math.min((W-pad*2)/w,(H-pad*2)/d);
   const ox=(W-w*scale)/2,oy=(H-d*scale)/2;
-  ctx.strokeStyle='rgba(255,255,255,0.12)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
-  ctx.strokeRect(ox,oy,w*scale,d*scale);ctx.setLineDash([]);
+  if(!lotImageObj){ctx.strokeStyle='rgba(255,255,255,0.12)';ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.strokeRect(ox,oy,w*scale,d*scale);ctx.setLineDash([]);}
   const sL=sides,sR=isCorner?corner:sides;
   const bx=ox+sL*scale,by=oy+front*scale,bw=(w-sL-sR)*scale,bh=(d-front-rear)*scale;
-  if(bw>0&&bh>0){ctx.fillStyle='rgba(46,156,143,0.1)';ctx.fillRect(bx,by,bw,bh);ctx.strokeStyle='rgba(46,156,143,0.6)';ctx.lineWidth=1.5;ctx.strokeRect(bx,by,bw,bh);}
-  ctx.font='10px DM Mono,monospace';ctx.fillStyle='rgba(143,163,188,0.8)';
-  ctx.textAlign='center';if(front>0)ctx.fillText(`Front ${front}'`,W/2,oy+front*scale/2+4);
+  if(bw>0&&bh>0){
+    ctx.fillStyle='rgba(46,156,143,0.15)';ctx.fillRect(bx,by,bw,bh);
+    ctx.strokeStyle='rgba(232,169,77,0.9)';ctx.lineWidth=2;ctx.setLineDash([6,3]);ctx.strokeRect(bx,by,bw,bh);ctx.setLineDash([]);
+    [[bx,by],[bx+bw,by],[bx,by+bh],[bx+bw,by+bh]].forEach(([cx,cy])=>{
+      const mk=7;ctx.strokeStyle='rgba(232,169,77,0.9)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(cx-mk,cy);ctx.lineTo(cx+mk,cy);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx,cy-mk);ctx.lineTo(cx,cy+mk);ctx.stroke();
+    });
+  }
+  ctx.font='bold 10px DM Mono,monospace';ctx.fillStyle='rgba(143,163,188,0.85)';
+  ctx.textAlign='center';
+  if(front>0)ctx.fillText(`Front ${front}'`,W/2,oy+front*scale/2+4);
   if(rear>0)ctx.fillText(`Rear ${rear}'`,W/2,oy+d*scale-rear*scale/2+4);
-  ctx.textAlign='left';if(sides>0)ctx.fillText(`${sides}'`,ox+3,H/2);
-  ctx.textAlign='right';if(isCorner&&corner>0)ctx.fillText(`${corner}'`,W-ox-3,H/2);else if(sides>0)ctx.fillText(`${sides}'`,W-ox-3,H/2);
-  ctx.textAlign='center';ctx.fillStyle='rgba(58,184,168,0.5)';
-  if(bw>20&&bh>20)ctx.fillText('Buildable',bx+bw/2,by+bh/2+4);
+  ctx.textAlign='left';if(sides>0)ctx.fillText(`${sides}'`,ox+4,H/2+2);
+  ctx.textAlign='right';
+  if(isCorner&&corner>0)ctx.fillText(`${corner}'`,W-ox-4,H/2+2);
+  else if(sides>0)ctx.fillText(`${sides}'`,W-ox-4,H/2+2);
+  if(bw>40&&bh>20){ctx.textAlign='center';ctx.fillStyle='rgba(58,184,168,0.6)';ctx.fillText('Buildable',bx+bw/2,by+bh/2+4);}
+  planOverlay.scale=scale;
+  planOverlay.buildRect={x:bx,y:by,w:bw,h:bh};
+  planOverlay.buildPoly=null;
+  if(planOverlay.active&&!planOverlay.positioned){
+    planOverlay.x=bx+bw/2;planOverlay.y=by+bh/2;planOverlay.positioned=true;
+  }
+  drawPlanOverlayOnCanvas(ctx,W,H);
+}
+
+// Draw plan overlay on the sb-canvas snapshot (coordinates scaled from lot editor)
+function drawPlanOverlayOnSnapshotCanvas(ctx,W,H,scaleX,scaleY){
+  if(!planOverlay.active||!planOverlay.fpW||!planOverlay.fpH)return;
+  if(!planOverlay.buildPolyFt||!planOverlay.editorFtPerPx)return;
+
+  // px-per-ft in the editor, then scale to snapshot canvas
+  const edPxPerFt=1/planOverlay.editorFtPerPx; // editor pixels per foot
+  const snapPxPerFt=edPxPerFt*scaleX; // snapshot canvas pixels per foot
+
+  // Convert plan footprint feet → snapshot px
+  const pw=planOverlay.fpW*snapPxPerFt;
+  const ph=planOverlay.fpH*snapPxPerFt;
+  const rad=planOverlay.rotation*Math.PI/180;
+
+  // Convert planOverlay.x/y (lot-editor px) to snapshot px
+  const sx=planOverlay.x*scaleX;
+  const sy=planOverlay.y*scaleY;
+
+  // Convert buildPoly from editor px to snapshot px for hit testing
+  const snapPoly=planOverlay.buildPoly
+    ?planOverlay.buildPoly.map(p=>({x:p.x*scaleX,y:p.y*scaleY}))
+    :null;
+
+  // Initial placement: center of buildable polygon in snapshot coords
+  if(!planOverlay.snapshotPositioned&&snapPoly){
+    const n=snapPoly.length;
+    planOverlay.snapshotX=snapPoly.reduce((s,p)=>s+p.x,0)/n;
+    planOverlay.snapshotY=snapPoly.reduce((s,p)=>s+p.y,0)/n;
+    planOverlay.snapshotPositioned=true;
+  }
+  const drawX=planOverlay.snapshotX||sx;
+  const drawY=planOverlay.snapshotY||sy;
+
+  // Hit test: all 4 corners inside snapshot-scaled buildPoly
+  const cos=Math.cos(rad),sin=Math.sin(rad);
+  const hw=pw/2,hh=ph/2;
+  const corners=[
+    {x:drawX+(-hw)*cos-(-hh)*sin,y:drawY+(-hw)*sin+(-hh)*cos},
+    {x:drawX+(hw)*cos-(-hh)*sin, y:drawY+(hw)*sin+(-hh)*cos},
+    {x:drawX+(hw)*cos-(hh)*sin,  y:drawY+(hw)*sin+(hh)*cos},
+    {x:drawX+(-hw)*cos-(hh)*sin, y:drawY+(-hw)*sin+(hh)*cos},
+  ];
+  const fits=snapPoly?corners.every(c=>pointInPolygonPts(c,snapPoly)):false;
+
+  ctx.save();
+  ctx.translate(drawX,drawY);
+  ctx.rotate(rad);
+  ctx.fillStyle=fits?'rgba(76,175,130,0.3)':'rgba(224,92,92,0.3)';
+  ctx.fillRect(-pw/2,-ph/2,pw,ph);
+  ctx.strokeStyle=fits?'rgba(76,175,130,0.9)':'rgba(224,92,92,0.9)';
+  ctx.lineWidth=2.5;ctx.strokeRect(-pw/2,-ph/2,pw,ph);
+  ctx.font='bold 11px DM Sans,sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.fillText(planOverlay.planName||'',0,-2);
+  ctx.font='9px DM Mono,monospace';ctx.fillStyle='rgba(255,255,255,0.65)';
+  ctx.fillText(`${planOverlay.fpW}'×${planOverlay.fpH}'`,0,11);
+  ctx.restore();
+
+  const fe=$('ov-fits');
+  if(fe){fe.textContent=fits?'✓ Fits':'✗ Outside';fe.className=fits?'overlay-fit-ok':'overlay-fit-warn';}
+}
+
+// Drag on sb-canvas for poly mode: move snapshotX/Y
+function initSnapshotDrag(){
+  const canvas=$('sb-canvas');if(!canvas)return;
+  let dragging=false,offX=0,offY=0;
+  const HIT=20;
+  function getPos(e){
+    const r=canvas.getBoundingClientRect();
+    const scX=canvas.width/r.width,scY=canvas.height/r.height;
+    const cx=e.touches?e.touches[0].clientX:e.clientX;
+    const cy=e.touches?e.touches[0].clientY:e.clientY;
+    return{x:(cx-r.left)*scX,y:(cy-r.top)*scY};
+  }
+  function hitTest(x,y){
+    if(!planOverlay.active||!planOverlay.snapshotPositioned)return false;
+    const dx=x-(planOverlay.snapshotX||0),dy=y-(planOverlay.snapshotY||0);
+    return Math.abs(dx)<(planOverlay.fpW*20+HIT)&&Math.abs(dy)<(planOverlay.fpH*20+HIT);
+  }
+  canvas.addEventListener('mousedown',e=>{
+    if(lotMode!=='poly')return;
+    const pos=getPos(e);
+    if(hitTest(pos.x,pos.y)){dragging=true;offX=pos.x-(planOverlay.snapshotX||0);offY=pos.y-(planOverlay.snapshotY||0);canvas.style.cursor='grabbing';}
+  });
+  window.addEventListener('mousemove',e=>{
+    if(!dragging||lotMode!=='poly')return;
+    const pos=getPos(e);
+    planOverlay.snapshotX=pos.x-offX;
+    planOverlay.snapshotY=pos.y-offY;
+    drawDiagram();
+  });
+  window.addEventListener('mouseup',()=>{if(dragging){dragging=false;const c=$('sb-canvas');if(c)c.style.cursor='default';}});
+  canvas.addEventListener('touchstart',e=>{
+    if(lotMode!=='poly')return;
+    e.preventDefault();const pos=getPos(e);
+    if(hitTest(pos.x,pos.y)){dragging=true;offX=pos.x-(planOverlay.snapshotX||0);offY=pos.y-(planOverlay.snapshotY||0);}
+  },{passive:false});
+  window.addEventListener('touchmove',e=>{
+    if(!dragging||lotMode!=='poly')return;
+    e.preventDefault();const pos=getPos(e);
+    planOverlay.snapshotX=pos.x-offX;planOverlay.snapshotY=pos.y-offY;drawDiagram();
+  },{passive:false});
+  window.addEventListener('touchend',()=>{dragging=false;});
+}
+
+function drawPlanOverlayOnCanvas(ctx,W,H){
+  if(!planOverlay.active||!planOverlay.fpW||!planOverlay.fpH)return;
+  const sc=planOverlay.scale||1;
+  const pw=planOverlay.fpW*sc,ph=planOverlay.fpH*sc;
+  const rad=planOverlay.rotation*Math.PI/180;
+  if(!planOverlay.positioned&&planOverlay.buildRect){
+    const br=planOverlay.buildRect;
+    planOverlay.x=br.x+br.w/2;planOverlay.y=br.y+br.h/2;planOverlay.positioned=true;
+  }
+  if(!planOverlay.x)return;
+  ctx.save();ctx.translate(planOverlay.x,planOverlay.y);ctx.rotate(rad);
+  const br=planOverlay.buildRect;
+  const cos2=Math.cos(rad),sin2=Math.sin(rad);
+  const hw2=pw/2,hh2=ph/2;
+  const corners2=[
+    {x:planOverlay.x+(-hw2)*cos2-(-hh2)*sin2,y:planOverlay.y+(-hw2)*sin2+(-hh2)*cos2},
+    {x:planOverlay.x+(hw2)*cos2-(-hh2)*sin2, y:planOverlay.y+(hw2)*sin2+(-hh2)*cos2},
+    {x:planOverlay.x+(hw2)*cos2-(hh2)*sin2,  y:planOverlay.y+(hw2)*sin2+(hh2)*cos2},
+    {x:planOverlay.x+(-hw2)*cos2-(hh2)*sin2, y:planOverlay.y+(-hw2)*sin2+(hh2)*cos2},
+  ];
+  const poly2=planOverlay.buildPoly||null;
+  const fits=poly2
+    ?corners2.every(c=>pointInPolygonPts(c,poly2))
+    :br&&corners2.every(c=>c.x>=br.x&&c.x<=br.x+br.w&&c.y>=br.y&&c.y<=br.y+br.h);
+  ctx.fillStyle=fits?'rgba(76,175,130,0.3)':'rgba(224,92,92,0.3)';
+  ctx.fillRect(-pw/2,-ph/2,pw,ph);
+  ctx.strokeStyle=fits?'rgba(76,175,130,0.9)':'rgba(224,92,92,0.9)';
+  ctx.lineWidth=2.5;ctx.strokeRect(-pw/2,-ph/2,pw,ph);
+  ctx.font='bold 11px DM Sans,sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.fillText(planOverlay.planName||'',0,-2);
+  ctx.font='9px DM Mono,monospace';ctx.fillStyle='rgba(255,255,255,0.65)';
+  ctx.fillText(`${planOverlay.fpW}'×${planOverlay.fpH}'`,0,11);
+  ctx.restore();
+  const fe=$('ov-fits');
+  if(fe){fe.textContent=fits?'✓ Fits':'✗ Outside';fe.className=fits?'overlay-fit-ok':'overlay-fit-warn';}
+}
+
+
+function setRotation(deg){
+  planOverlay.rotation = parseFloat(deg) % 360;
+  const sl=$('rot-slider');if(sl)sl.value=planOverlay.rotation;
+  const rv=$('rot-val');if(rv)rv.textContent=Math.round(planOverlay.rotation)+'°';
+  drawDiagram();
+}
+
+// ── DRAG ──────────────────────────────────────────────────────────────────
+function initDrag(){
+  const canvas=$('sb-canvas');if(!canvas)return;
+  function getPos(e){
+    const r=canvas.getBoundingClientRect();
+    const scX=canvas.width/r.width,scY=canvas.height/r.height;
+    const clientX=e.touches?e.touches[0].clientX:e.clientX;
+    const clientY=e.touches?e.touches[0].clientY:e.clientY;
+    return[(clientX-r.left)*scX,(clientY-r.top)*scY];
+  }
+  function hitTest(x,y){
+    if(!planOverlay.active||!planOverlay.buildRect)return false;
+    const dx=x-planOverlay.x,dy=y-planOverlay.y;
+    const rad=planOverlay.rotation*Math.PI/180;
+    const sc=planOverlay.scale;
+    const hw=planOverlay.fpW*sc/2,hh=planOverlay.fpH*sc/2;
+    const lx=dx*Math.cos(-rad)-dy*Math.sin(-rad);
+    const ly=dx*Math.sin(-rad)+dy*Math.cos(-rad);
+    return Math.abs(lx)<=hw&&Math.abs(ly)<=hh;
+  }
+  canvas.addEventListener('mousedown',e=>{
+    const[x,y]=getPos(e);
+    if(hitTest(x,y)){planOverlay.dragging=true;planOverlay.dragOffX=x-planOverlay.x;planOverlay.dragOffY=y-planOverlay.y;canvas.style.cursor='grabbing';}
+  });
+  window.addEventListener('mousemove',e=>{
+    if(!planOverlay.dragging)return;
+    const[x,y]=getPos(e);
+    planOverlay.x=x-planOverlay.dragOffX;
+    planOverlay.y=y-planOverlay.dragOffY;
+    drawDiagram();
+  });
+  window.addEventListener('mouseup',()=>{planOverlay.dragging=false;const canvas=$('sb-canvas');if(canvas)canvas.style.cursor='default';});
+  // Touch
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();const[x,y]=getPos(e);if(hitTest(x,y)){planOverlay.dragging=true;planOverlay.dragOffX=x-planOverlay.x;planOverlay.dragOffY=y-planOverlay.y;}},{passive:false});
+  window.addEventListener('touchmove',e=>{if(!planOverlay.dragging)return;e.preventDefault();const[x,y]=getPos(e);planOverlay.x=x-planOverlay.dragOffX;planOverlay.y=y-planOverlay.dragOffY;drawDiagram();},{passive:false});
+  window.addEventListener('touchend',()=>{planOverlay.dragging=false;});
 }
 
 const PLAN_KEY_MAP={
@@ -1112,49 +2262,135 @@ const PLAN_KEY_MAP={
 function selectPlanFromTile(planKey){
   const sel=$('plan-sel');
   if(!sel)return;
-  // Find the option with this value
   const opt=Array.from(sel.options).find(o=>o.value===planKey);
   if(!opt)return;
   sel.value=planKey;
   onPlanChange();
-  // Re-render fit check to update selected state
   renderFitCheck();
+}
+
+function initSidesFromCount(){
+  const n=parseInt(($('corner-count')||{value:'6'}).value)||6;
+  lotSides=Array.from({length:n},()=>({length:50,angleDeg:90}));
+  renderSidesList();
 }
 
 function renderFitCheck(){
   const grid=$('fit-grid'),empty=$('fit-empty');if(!grid)return;
   if(!buildableArea||buildableArea<=0){grid.innerHTML='';if(empty)empty.style.display='';return;}
   if(empty)empty.style.display='none';
-  const isCorner=$('corner-lot')&&$('corner-lot').checked;
-  const bW=pv('lot-w')-((isCorner)?(pv('sb-sides')+pv('sb-corner')):(pv('sb-sides')*2));
-  const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
   const currentPlanVal=($('plan-sel')||{}).value||'';
+  const isCorner=$('corner-lot')&&$('corner-lot').checked;
+  const polyFt=(lotMode==='poly'&&planOverlay.buildPolyFt&&planOverlay.buildPolyFt.length>=3)
+    ?planOverlay.buildPolyFt:null;
+
+  function ptInPolyFt(px,py,poly){
+    let inside=false;const n=poly.length;
+    for(let i=0,j=n-1;i<n;j=i++){
+      const xi=poly[i].x,yi=poly[i].y,xj=poly[j].x,yj=poly[j].y;
+      if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))inside=!inside;
+    }
+    return inside;
+  }
+
+  function minEdgeDist(px,py,poly){
+    let minD=Infinity;const n=poly.length;
+    for(let i=0;i<n;i++){
+      const a=poly[i],b=poly[(i+1)%n];
+      const dx=b.x-a.x,dy=b.y-a.y,lenSq=dx*dx+dy*dy;
+      if(lenSq===0){minD=Math.min(minD,Math.sqrt((px-a.x)**2+(py-a.y)**2));continue;}
+      const t=Math.max(0,Math.min(1,((px-a.x)*dx+(py-a.y)*dy)/lenSq));
+      minD=Math.min(minD,Math.sqrt((px-a.x-t*dx)**2+(py-a.y-t*dy)**2));
+    }
+    return minD;
+  }
+
+  function planFitsInPolyFt(fpW,fpD){
+    if(!polyFt)return'no';
+    const TIGHT=5;
+    const n=polyFt.length;
+    // Area check
+    let polyArea=0;
+    for(let i=0;i<n;i++){const a=polyFt[i],b=polyFt[(i+1)%n];polyArea+=a.x*b.y-b.x*a.y;}
+    if(fpW*fpD>Math.abs(polyArea)/2*1.05)return'no';
+    // Centroid
+    const cx=polyFt.reduce((s,p)=>s+p.x,0)/n;
+    const cy=polyFt.reduce((s,p)=>s+p.y,0)/n;
+    // Candidate positions
+    const xs=polyFt.map(p=>p.x),ys=polyFt.map(p=>p.y);
+    const mnX=Math.min(...xs),mxX=Math.max(...xs),mnY=Math.min(...ys),mxY=Math.max(...ys);
+    const positions=[{x:cx,y:cy}];
+    for(let i=0;i<n;i++){
+      const a=polyFt[i],b=polyFt[(i+1)%n];
+      const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+      const dx=cx-mx,dy=cy-my,dist=Math.sqrt(dx*dx+dy*dy)||1;
+      const push=Math.min(Math.max(fpW,fpD)*0.4,dist*0.6);
+      positions.push({x:mx+(dx/dist)*push,y:my+(dy/dist)*push});
+    }
+    for(let gi=1;gi<7;gi++)for(let gj=1;gj<7;gj++){
+      const gx=mnX+(mxX-mnX)*gi/7,gy=mnY+(mxY-mnY)*gj/7;
+      if(ptInPolyFt(gx,gy,polyFt))positions.push({x:gx,y:gy});
+    }
+    // Angles
+    const angles=[0,Math.PI/4,Math.PI/2,Math.PI*3/4];
+    for(let i=0;i<n;i++){
+      const a=polyFt[i],b=polyFt[(i+1)%n];
+      const ang=Math.atan2(b.y-a.y,b.x-a.x);
+      angles.push(ang,ang+Math.PI/2);
+    }
+    let best='no';
+    outer:
+    for(const rad of angles){
+      const cos=Math.cos(rad),sin=Math.sin(rad);
+      for(const pos of positions){
+        for(const [w,h] of [[fpW,fpD],[fpD,fpW]]){
+          const hw=w/2,hh=h/2;
+          const corners=[
+            {x:pos.x+(-hw)*cos-(-hh)*sin,y:pos.y+(-hw)*sin+(-hh)*cos},
+            {x:pos.x+(hw)*cos-(-hh)*sin, y:pos.y+(hw)*sin+(-hh)*cos},
+            {x:pos.x+(hw)*cos-(hh)*sin,  y:pos.y+(hw)*sin+(hh)*cos},
+            {x:pos.x+(-hw)*cos-(hh)*sin, y:pos.y+(-hw)*sin+(hh)*cos},
+          ];
+          if(corners.every(c=>ptInPolyFt(c.x,c.y,polyFt))){
+            if(corners.every(c=>minEdgeDist(c.x,c.y,polyFt)>=TIGHT)){best='fits';break outer;}
+            if(best==='no')best='tight';
+          }
+        }
+      }
+    }
+    return best;
+  }
 
   const plansWithFp=PLANS_FP.filter(p=>p[4]>0&&p[5]>0);
   const fitting=[],tooLarge=[];
-
   plansWithFp.forEach(([name,sf,cost,du,fpW,fpD])=>{
-    const fits=bW>=fpW&&bD>=fpD,fitFlipped=bW>=fpD&&bD>=fpW,areaOk=buildableArea>=fpW*fpD;
     let cls,badge,msg,selectable=true;
-    if(fits){cls='fit-ok';badge='Fits';msg=`${fpW}'×${fpD}' — ${(fpW*fpD).toLocaleString()} sf`;}
-    else if(fitFlipped){cls='fit-ok';badge='Fits (rotated)';msg=`Rotate 90° — ${fpW}'×${fpD}'`;}
-    else if(areaOk){cls='fit-warn';badge='Tight — verify';msg=`Width or depth may be tight`;}
-    else{cls='fit-no';badge='Too Large';msg=`Needs ${fpW}'×${fpD}'`;selectable=false;}
+    if(lotMode==='poly'&&polyFt){
+      const r=planFitsInPolyFt(fpW,fpD);
+      if(r==='fits'){cls='fit-ok';badge='Fits';msg=`${fpW}'×${fpD}' footprint`;}
+      else if(r==='tight'){cls='fit-warn';badge='Tight — verify';msg=`Fits but within 5 ft of boundary`;}
+      else{cls='fit-no';badge='Too Large';msg=`${fpW}'×${fpD}\' won\'t fit`;selectable=false;}
+    }else{
+      const bW=pv('lot-w')-((isCorner)?(pv('sb-sides')+pv('sb-corner')):(pv('sb-sides')*2));
+      const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
+      const fits=bW>=fpW&&bD>=fpD,fitFlipped=bW>=fpD&&bD>=fpW;
+      const tight=(fits&&(bW-fpW<5||bD-fpD<5))||(fitFlipped&&(bW-fpD<5||bD-fpW<5));
+      const areaOk=buildableArea>=fpW*fpD;
+      if((fits||fitFlipped)&&!tight){cls='fit-ok';badge=fitFlipped&&!fits?'Fits (rotated)':'Fits';msg=`${fpW}'×${fpD}' — ${(fpW*fpD).toLocaleString()} sf`;}
+      else if(fits||fitFlipped){cls='fit-warn';badge='Tight — verify';msg=`Fits but within 5 ft of boundary`;}
+      else if(areaOk){cls='fit-warn';badge='Tight — verify';msg=`Area OK but check dimensions`;}
+      else{cls='fit-no';badge='Too Large';msg=`Needs ${fpW}'×${fpD}'`;selectable=false;}
+    }
     const planKey=PLAN_KEY_MAP[name]||'';
     const isSelected=planKey&&planKey===currentPlanVal;
     const selectedCls=isSelected?' selected':'';
-    const clickAttr=selectable&&planKey?`onclick="selectPlanFromTile('${planKey.replace(/'/g,"\'")}')"`:'' ;
+    const clickAttr=selectable&&planKey?`onclick="selectPlanFromTile('${planKey.replace(/'/g,"\'")}')"`:'';
     const card=`<div class="fit-card ${cls}${selectedCls}" ${clickAttr}><div class="fit-name">${name}${isSelected?' ✓':''}</div><div class="fit-detail">${msg}<br>${sf.toLocaleString()} sf · ${fmt(cost)}</div><span class="fit-badge">${badge}</span></div>`;
-    if(selectable)fitting.push(card);
-    else tooLarge.push(card);
+    if(selectable)fitting.push(card);else tooLarge.push(card);
   });
-
   let html=`<div class="fit-grid">${fitting.join('')}</div>`;
   if(tooLarge.length>0){
-    html+=`<button class="fit-collapse-btn" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.fit-collapse-arrow').textContent=this.nextElementSibling.classList.contains('open')?'▲':'▼'">
-      <span>Plans that don't fit (${tooLarge.length})</span><span class="fit-collapse-arrow">▼</span>
-    </button>
-    <div class="fit-collapse-section"><div class="fit-grid" style="opacity:0.6">${tooLarge.join('')}</div></div>`;
+    html+=`<button class="fit-collapse-btn" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.fit-collapse-arrow').textContent=this.nextElementSibling.classList.contains('open')?'▲':'▼'"><span>Plans that don't fit (${tooLarge.length})</span><span class="fit-collapse-arrow">▼</span></button><div class="fit-collapse-section"><div class="fit-grid" style="opacity:0.6">${tooLarge.join('')}</div></div>`;
   }
   grid.innerHTML=html;
 }
@@ -1218,7 +2454,29 @@ function onPlanChange(){
   const isDuet=val.includes('Duet')||val.includes('Triplex');
   const county=$('county-sel').value;
   const dp=$('duet-prompt');if(dp)dp.style.display=(isDuet&&county==='Mecklenburg')?'':'none';
+  // Activate plan overlay
+  if(fpW>0&&fpD>0){
+    planOverlay.active=true;
+    planOverlay.fpW=fpW;planOverlay.fpH=fpD;
+    planOverlay.planName=name;
+    planOverlay.rotation=0;
+    planOverlay.positioned=false;
+    planOverlay.snapshotPositioned=false; // reset snapshot position too
+    $('plan-overlay-controls').style.display='';
+    $('rot-slider').value=0;
+    $('rot-val').textContent='0°';
+    $('ov-plan-name').textContent=name;
+    $('ov-footprint').textContent=`${fpW}'×${fpD}'`;
+  }else{
+    planOverlay.active=false;
+    $('plan-overlay-controls').style.display='none';
+  }
   calcBUA();calcAll();renderFitCheck();
+  // If we're on step 3, refresh the diagram so overlay appears immediately
+  if($('page-3').classList.contains('active')){
+    if(lotMode==='poly')snapshotLotEditor();
+    drawDiagram();
+  }
 }
 function onTapChange(){$('custom-tap-f').style.display=$('tap-muni').value==='custom'?'':'none';calcAll();}
 
@@ -1422,6 +2680,12 @@ $('land-cost').addEventListener('input',()=>{calcFinancing();calcScenarios();});
 calcLF();
 calcAll();
 calcFinancing();
+// Init drag for plan overlay
+initDrag();
+// Init lot editor drag
+initLotEditorDrag();
+// Init snapshot canvas drag (for poly mode plan overlay on Step 3)
+initSnapshotDrag();
 </script>
 </body>
 </html>
