@@ -1043,14 +1043,48 @@ let lotMode = 'rect'; // 'rect' or 'poly'
 let lotSides = []; // [{length, angleDeg}] for irregular mode
 
 // Lot editor canvas snapshot (carried to Step 3)
-let lotEditorSnapshot = null; // ImageData or dataURL
+let lotEditorSnapshot = null; // dataURL
+let lotEditorSnapshotImg = null; // pre-loaded Image object for synchronous draw
 
 function snapshotLotEditor(){
   const src=$('lot-editor-canvas');
-  if(!src||polyPoints.length<3){lotEditorSnapshot=null;return;}
-  lotEditorSnapshot=src.toDataURL('image/png');
-  // Reset snapshot position so overlay re-centers on the new snapshot
-  planOverlay.snapshotPositioned=false;
+  if(!src||polyPoints.length<3){
+    lotEditorSnapshot=null;
+    lotEditorSnapshotImg=null;
+    return;
+  }
+
+  // Store buildable polygon centroid BEFORE snapshot
+  if(planOverlay.buildPoly&&planOverlay.buildPoly.length>=3){
+    const bp=planOverlay.buildPoly,n=bp.length;
+    planOverlay.snapshotCentroidEditorX=bp.reduce((s,p)=>s+p.x,0)/n;
+    planOverlay.snapshotCentroidEditorY=bp.reduce((s,p)=>s+p.y,0)/n;
+  } else {
+    planOverlay.snapshotCentroidEditorX=null;
+    planOverlay.snapshotCentroidEditorY=null;
+  }
+
+  // *** KEY FIX: hide plan overlay before taking screenshot ***
+  // Without this the overlay gets baked into the snapshot image,
+  // then Step 3 draws it again on top = double overlay
+  const wasActive=planOverlay.active;
+  planOverlay.active=false;
+  redrawEditor();                          // draw clean lot shape only
+  const dataUrl=src.toDataURL('image/png'); // snapshot WITHOUT overlay
+  planOverlay.active=wasActive;
+  redrawEditor();                          // restore overlay on editor canvas
+
+  lotEditorSnapshot=dataUrl;
+
+  const img=new Image();
+  img.onload=function(){
+    lotEditorSnapshotImg=img;
+    planOverlay.snapshotX=null;
+    planOverlay.snapshotY=null;
+    planOverlay.snapshotPositioned=false;
+    drawDiagram();
+  };
+  img.src=dataUrl;
 }
 
 // Plan overlay state
@@ -1091,8 +1125,13 @@ function goTo(n){
   window.scrollTo(0,0);
   if(n===2)updateGISLink();
   if(n===3){
-    if(lotMode==='poly')snapshotLotEditor();
-    calcBuildable();drawDiagram();renderFitCheck();updateTopoLinks();
+    if(lotMode==='poly'){
+      // snapshotLotEditor pre-loads the image then calls drawDiagram() once
+      snapshotLotEditor();
+      calcBuildable();renderFitCheck();updateTopoLinks();
+    } else {
+      calcBuildable();drawDiagram();renderFitCheck();updateTopoLinks();
+    }
   }
   if(n===4)updateSummaryBar();
   if(n===5)calcAll();
@@ -1816,8 +1855,10 @@ function calcBuildable(){
       redrawEditor();
     }
   }
-  calcBUA();renderFitCheck();drawDiagram();updateSummaryBar();
-  if(lotMode==='poly')snapshotLotEditor();
+  calcBUA();renderFitCheck();updateSummaryBar();
+  // For poly mode, snapshotLotEditor handles the draw after image loads
+  if(lotMode==='poly') snapshotLotEditor();
+  else drawDiagram();
 }
 
 // Build polygon in real feet (for calculations)
@@ -1910,8 +1951,12 @@ function calcBUA(){
   const buaSec=$('bua-section');if(!buaSec)return;
   buaSec.style.display=county==='Mecklenburg'?'':'none';
   if(county!=='Mecklenburg')return;
-  const w=pv('lot-w'),d=pv('lot-d'),lotSFManual=pv('lot-sf');
-  const lotSF=lotSFManual||(w*d);if(!lotSF)return;
+  const w=pv('lot-w'),d=pv('lot-d');
+  // Use poly lot area if in irregular mode, otherwise rect mode fields
+  const lotSFManual = lotMode==='poly'
+    ? (pv('lot-sf-poly') || buildableArea || 0)
+    : (pv('lot-sf') || (w*d));
+  const lotSF=lotSFManual;if(!lotSF)return;
   const buaLimit=Math.min(lotSF*0.24,5000);
   const val=($('plan-sel')||{}).value||'';
   const parts=val.split('|');
@@ -1941,20 +1986,16 @@ function drawDiagram(){
   const W=canvas.width,H=canvas.height;
   ctx.clearRect(0,0,W,H);
 
-  // ── POLY MODE: use snapshot of lot editor as the canvas ──
+  // ── POLY MODE: draw synchronously using pre-loaded snapshot image ──
   if(lotMode==='poly'){
-    if(lotEditorSnapshot){
-      const img=new Image();
-      img.onload=function(){
-        ctx.drawImage(img,0,0,W,H);
-        // Compute scale: snapshot was from lot-editor-canvas (800×600)
-        // sb-canvas is W×H — find the ratio
-        const edCanvas=$('lot-editor-canvas');
-        const edW=edCanvas?edCanvas.width:800,edH=edCanvas?edCanvas.height:600;
-        const snapshotScaleX=W/edW, snapshotScaleY=H/edH;
-        drawPlanOverlayOnSnapshotCanvas(ctx,W,H,snapshotScaleX,snapshotScaleY);
-      };
-      img.src=lotEditorSnapshot;
+    if(lotEditorSnapshotImg){
+      // Synchronous draw — no async race, no ghost overlays
+      ctx.clearRect(0,0,W,H);
+      ctx.drawImage(lotEditorSnapshotImg,0,0,W,H);
+      const edCanvas=$('lot-editor-canvas');
+      const edW=edCanvas?edCanvas.width:800,edH=edCanvas?edCanvas.height:600;
+      const snapshotScaleX=W/edW,snapshotScaleY=H/edH;
+      drawPlanOverlayOnSnapshotCanvas(ctx,W,H,snapshotScaleX,snapshotScaleY);
     } else {
       ctx.fillStyle='rgba(46,156,143,0.08)';ctx.fillRect(0,0,W,H);
       ctx.font='13px DM Sans,sans-serif';ctx.fillStyle='rgba(143,163,188,0.6)';ctx.textAlign='center';
@@ -2029,15 +2070,20 @@ function drawPlanOverlayOnSnapshotCanvas(ctx,W,H,scaleX,scaleY){
     ?planOverlay.buildPoly.map(p=>({x:p.x*scaleX,y:p.y*scaleY}))
     :null;
 
-  // Initial placement: center of buildable polygon in snapshot coords
-  if(!planOverlay.snapshotPositioned&&snapPoly){
-    const n=snapPoly.length;
-    planOverlay.snapshotX=snapPoly.reduce((s,p)=>s+p.x,0)/n;
-    planOverlay.snapshotY=snapPoly.reduce((s,p)=>s+p.y,0)/n;
+  // Initial placement: use centroid computed at snapshot time (not recomputed here)
+  if(!planOverlay.snapshotX&&!planOverlay.snapshotY){
+    if(planOverlay.snapshotCentroidEditorX!=null){
+      // Convert stored editor-px centroid to snapshot-px
+      planOverlay.snapshotX=planOverlay.snapshotCentroidEditorX*scaleX;
+      planOverlay.snapshotY=planOverlay.snapshotCentroidEditorY*scaleY;
+    } else {
+      planOverlay.snapshotX=W/2;
+      planOverlay.snapshotY=H/2;
+    }
     planOverlay.snapshotPositioned=true;
   }
-  const drawX=planOverlay.snapshotX||sx;
-  const drawY=planOverlay.snapshotY||sy;
+  const drawX=planOverlay.snapshotX;
+  const drawY=planOverlay.snapshotY;
 
   // Hit test: all 4 corners inside snapshot-scaled buildPoly
   const cos=Math.cos(rad),sin=Math.sin(rad);
@@ -2054,6 +2100,7 @@ function drawPlanOverlayOnSnapshotCanvas(ctx,W,H,scaleX,scaleY){
   ctx.translate(drawX,drawY);
   ctx.rotate(rad);
   ctx.fillStyle=fits?'rgba(76,175,130,0.3)':'rgba(224,92,92,0.3)';
+        console.log("[OVERLAY] Drawing at x="+drawX.toFixed(1)+",y="+drawY.toFixed(1)+" rot="+planOverlay.rotation+" snapshotPositioned="+planOverlay.snapshotPositioned);
   ctx.fillRect(-pw/2,-ph/2,pw,ph);
   ctx.strokeStyle=fits?'rgba(76,175,130,0.9)':'rgba(224,92,92,0.9)';
   ctx.lineWidth=2.5;ctx.strokeRect(-pw/2,-ph/2,pw,ph);
@@ -2246,82 +2293,11 @@ function renderFitCheck(){
   const polyFt=(lotMode==='poly'&&planOverlay.buildPolyFt&&planOverlay.buildPolyFt.length>=3)
     ?planOverlay.buildPolyFt:null;
 
-  function ptInPolyFt(px,py,poly){
-    let inside=false;const n=poly.length;
-    for(let i=0,j=n-1;i<n;j=i++){
-      const xi=poly[i].x,yi=poly[i].y,xj=poly[j].x,yj=poly[j].y;
-      if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))inside=!inside;
-    }
-    return inside;
-  }
+  // ptInPolyFt hoisted to module scope
 
-  function minEdgeDist(px,py,poly){
-    let minD=Infinity;const n=poly.length;
-    for(let i=0;i<n;i++){
-      const a=poly[i],b=poly[(i+1)%n];
-      const dx=b.x-a.x,dy=b.y-a.y,lenSq=dx*dx+dy*dy;
-      if(lenSq===0){minD=Math.min(minD,Math.sqrt((px-a.x)**2+(py-a.y)**2));continue;}
-      const t=Math.max(0,Math.min(1,((px-a.x)*dx+(py-a.y)*dy)/lenSq));
-      minD=Math.min(minD,Math.sqrt((px-a.x-t*dx)**2+(py-a.y-t*dy)**2));
-    }
-    return minD;
-  }
+  // minEdgeDist hoisted to module scope
 
-  function planFitsInPolyFt(fpW,fpD){
-    if(!polyFt)return'no';
-    const TIGHT=5;
-    const n=polyFt.length;
-    // Area check
-    let polyArea=0;
-    for(let i=0;i<n;i++){const a=polyFt[i],b=polyFt[(i+1)%n];polyArea+=a.x*b.y-b.x*a.y;}
-    if(fpW*fpD>Math.abs(polyArea)/2*1.05)return'no';
-    // Centroid
-    const cx=polyFt.reduce((s,p)=>s+p.x,0)/n;
-    const cy=polyFt.reduce((s,p)=>s+p.y,0)/n;
-    // Candidate positions
-    const xs=polyFt.map(p=>p.x),ys=polyFt.map(p=>p.y);
-    const mnX=Math.min(...xs),mxX=Math.max(...xs),mnY=Math.min(...ys),mxY=Math.max(...ys);
-    const positions=[{x:cx,y:cy}];
-    for(let i=0;i<n;i++){
-      const a=polyFt[i],b=polyFt[(i+1)%n];
-      const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
-      const dx=cx-mx,dy=cy-my,dist=Math.sqrt(dx*dx+dy*dy)||1;
-      const push=Math.min(Math.max(fpW,fpD)*0.4,dist*0.6);
-      positions.push({x:mx+(dx/dist)*push,y:my+(dy/dist)*push});
-    }
-    for(let gi=1;gi<7;gi++)for(let gj=1;gj<7;gj++){
-      const gx=mnX+(mxX-mnX)*gi/7,gy=mnY+(mxY-mnY)*gj/7;
-      if(ptInPolyFt(gx,gy,polyFt))positions.push({x:gx,y:gy});
-    }
-    // Angles
-    const angles=[0,Math.PI/4,Math.PI/2,Math.PI*3/4];
-    for(let i=0;i<n;i++){
-      const a=polyFt[i],b=polyFt[(i+1)%n];
-      const ang=Math.atan2(b.y-a.y,b.x-a.x);
-      angles.push(ang,ang+Math.PI/2);
-    }
-    let best='no';
-    outer:
-    for(const rad of angles){
-      const cos=Math.cos(rad),sin=Math.sin(rad);
-      for(const pos of positions){
-        for(const [w,h] of [[fpW,fpD],[fpD,fpW]]){
-          const hw=w/2,hh=h/2;
-          const corners=[
-            {x:pos.x+(-hw)*cos-(-hh)*sin,y:pos.y+(-hw)*sin+(-hh)*cos},
-            {x:pos.x+(hw)*cos-(-hh)*sin, y:pos.y+(hw)*sin+(-hh)*cos},
-            {x:pos.x+(hw)*cos-(hh)*sin,  y:pos.y+(hw)*sin+(hh)*cos},
-            {x:pos.x+(-hw)*cos-(hh)*sin, y:pos.y+(-hw)*sin+(hh)*cos},
-          ];
-          if(corners.every(c=>ptInPolyFt(c.x,c.y,polyFt))){
-            if(corners.every(c=>minEdgeDist(c.x,c.y,polyFt)>=TIGHT)){best='fits';break outer;}
-            if(best==='no')best='tight';
-          }
-        }
-      }
-    }
-    return best;
-  }
+  // planFitsInPolyFt hoisted to module scope below renderFitCheck
 
   const plansWithFp=PLANS_FP.filter(p=>p[4]>0&&p[5]>0);
   const fitting=[],tooLarge=[];
@@ -2356,6 +2332,80 @@ function renderFitCheck(){
   }
   grid.innerHTML=html;
 }
+function minEdgeDist(px,py,poly){
+  let minD=Infinity;const n=poly.length;
+  for(let i=0;i<n;i++){
+    const a=poly[i],b=poly[(i+1)%n];
+    const dx=b.x-a.x,dy=b.y-a.y,lenSq=dx*dx+dy*dy;
+    if(lenSq===0){minD=Math.min(minD,Math.sqrt((px-a.x)**2+(py-a.y)**2));continue;}
+    const t=Math.max(0,Math.min(1,((px-a.x)*dx+(py-a.y)*dy)/lenSq));
+    minD=Math.min(minD,Math.sqrt((px-a.x-t*dx)**2+(py-a.y-t*dy)**2));
+  }
+  return minD;
+}
+
+function ptInPolyFt(px,py,poly){
+  let inside=false;const n=poly.length;
+  for(let i=0,j=n-1;i<n;j=i++){
+    const xi=poly[i].x,yi=poly[i].y,xj=poly[j].x,yj=poly[j].y;
+    if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))inside=!inside;
+  }
+  return inside;
+}
+
+function planFitsInPolyFt(fpW,fpD){
+  const polyFt=planOverlay.buildPolyFt;
+  if(!polyFt||polyFt.length<3)return'no';
+  const TIGHT=5;
+  const n=polyFt.length;
+  let polyArea=0;
+  for(let i=0;i<n;i++){const a=polyFt[i],b=polyFt[(i+1)%n];polyArea+=a.x*b.y-b.x*a.y;}
+  if(fpW*fpD>Math.abs(polyArea)/2*1.05)return'no';
+  const cx=polyFt.reduce((s,p)=>s+p.x,0)/n;
+  const cy=polyFt.reduce((s,p)=>s+p.y,0)/n;
+  const xs=polyFt.map(p=>p.x),ys=polyFt.map(p=>p.y);
+  const mnX=Math.min(...xs),mxX=Math.max(...xs),mnY=Math.min(...ys),mxY=Math.max(...ys);
+  const positions=[{x:cx,y:cy}];
+  for(let i=0;i<n;i++){
+    const a=polyFt[i],b=polyFt[(i+1)%n];
+    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    const dx=cx-mx,dy=cy-my,dist=Math.sqrt(dx*dx+dy*dy)||1;
+    const push=Math.min(Math.max(fpW,fpD)*0.4,dist*0.6);
+    positions.push({x:mx+(dx/dist)*push,y:my+(dy/dist)*push});
+  }
+  for(let gi=1;gi<7;gi++)for(let gj=1;gj<7;gj++){
+    const gx=mnX+(mxX-mnX)*gi/7,gy=mnY+(mxY-mnY)*gj/7;
+    if(ptInPolyFt(gx,gy,polyFt))positions.push({x:gx,y:gy});
+  }
+  const angles=[0,Math.PI/4,Math.PI/2,Math.PI*3/4];
+  for(let i=0;i<n;i++){
+    const a=polyFt[i],b=polyFt[(i+1)%n];
+    const ang=Math.atan2(b.y-a.y,b.x-a.x);
+    angles.push(ang,ang+Math.PI/2);
+  }
+  let best='no';
+  outer:
+  for(const rad of angles){
+    const cos=Math.cos(rad),sin=Math.sin(rad);
+    for(const pos of positions){
+      for(const [w,h] of [[fpW,fpD],[fpD,fpW]]){
+        const hw=w/2,hh=h/2;
+        const corners=[
+          {x:pos.x+(-hw)*cos-(-hh)*sin,y:pos.y+(-hw)*sin+(-hh)*cos},
+          {x:pos.x+(hw)*cos-(-hh)*sin, y:pos.y+(hw)*sin+(-hh)*cos},
+          {x:pos.x+(hw)*cos-(hh)*sin,  y:pos.y+(hw)*sin+(hh)*cos},
+          {x:pos.x+(-hw)*cos-(hh)*sin, y:pos.y+(-hw)*sin+(hh)*cos},
+        ];
+        if(corners.every(c=>ptInPolyFt(c.x,c.y,polyFt))){
+          if(corners.every(c=>minEdgeDist(c.x,c.y,polyFt)>=TIGHT)){best='fits';break outer;}
+          if(best==='no')best='tight';
+        }
+      }
+    }
+  }
+  return best;
+}
+
 function updateTopoLinks(){
   const addr=fullAddr(),enc=encodeURIComponent(addr);
   if(addr){$('topo-usgs').href=`https://apps.nationalmap.gov/viewer/?basemap=USGSTopo&search=${enc}`;$('topo-earth').href=`https://earth.google.com/web/search/${enc}`;}
@@ -2406,12 +2456,21 @@ function onPlanChange(){
   if(du>0){$('units').value=du;$('units').style.borderColor='var(--teal)';setTimeout(()=>$('units').style.borderColor='',1200);}
   const pfm=$('plan-fit-msg');
   if(pfm&&buildableArea>0&&fpW&&fpD){
-    const isCorner=$('corner-lot')&&$('corner-lot').checked;
-    const bW=pv('lot-w')-((isCorner)?(pv('sb-sides')+pv('sb-corner')):(pv('sb-sides')*2));
-    const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
-    if(bW>=fpW&&bD>=fpD)pfm.innerHTML=`<div class="ok">✓ This plan fits the buildable envelope.</div>`;
-    else if(bW>=fpD&&bD>=fpW)pfm.innerHTML=`<div class="warn">⚠ Fits if rotated 90°.</div>`;
-    else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'×${fpD}') exceeds buildable envelope.</div>`;
+    if(lotMode==='poly'&&planOverlay.buildPolyFt&&planOverlay.buildPolyFt.length>=3){
+      // Use polygon-based fit check (same logic as the fit tiles)
+      const r=planFitsInPolyFt(fpW,fpD);
+      if(r==='fits')pfm.innerHTML=`<div class="ok">✓ This plan fits the buildable envelope.</div>`;
+      else if(r==='tight')pfm.innerHTML=`<div class="warn">⚠ Fits but within 5 ft of boundary — verify.</div>`;
+      else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'×${fpD}') exceeds buildable envelope.</div>`;
+    } else {
+      // Rect mode: dimension comparison
+      const isCorner=$('corner-lot')&&$('corner-lot').checked;
+      const bW=pv('lot-w')-((isCorner)?(pv('sb-sides')+pv('sb-corner')):(pv('sb-sides')*2));
+      const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
+      if(bW>=fpW&&bD>=fpD)pfm.innerHTML=`<div class="ok">✓ This plan fits the buildable envelope.</div>`;
+      else if(bW>=fpD&&bD>=fpW)pfm.innerHTML=`<div class="warn">⚠ Fits if rotated 90°.</div>`;
+      else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'×${fpD}') exceeds buildable envelope.</div>`;
+    }
   }else if(pfm)pfm.innerHTML='';
   const isDuet=val.includes('Duet')||val.includes('Triplex');
   const county=$('county-sel').value;
@@ -2453,7 +2512,7 @@ function calcAll(){
   const tapMuni=$('tap-muni').value;
   const tapPerUnit=tapMuni==='custom'?pv('custom-tap'):parseInt(tapMuni)||17340;
   const existingTaps=$('existing-taps')&&$('existing-taps').checked;
-  tapTotal=existingTaps?tapPerUnit:(tapPerUnit*units);
+  tapTotal=existingTaps?0:(tapPerUnit*units); // existing taps = $0 new cost
   const softFixed=pv('survey')+pv('appraisal')+pv('insurance');
   // allInExLand = everything except land and financing
   allInExLand=buildTotal+upgTotal+lotFactor+tapTotal+softFixed;
@@ -2471,7 +2530,7 @@ function calcAll(){
   const ut=$('upg-total');if(ut)ut.textContent=fmt(upgTotal);
   const tapmsg=$('tap-msg');
   if(tapmsg){
-    if(existingTaps)tapmsg.innerHTML=`<div class="ok">Existing taps: ${fmt(tapPerUnit)} total ÷ ${units} units = ${fmt(tapPerUnit/units)}/unit</div>`;
+    if(existingTaps)tapmsg.innerHTML=`<div class="ok">✓ Existing taps — no new tap fees ($0)</div>`;
     else tapmsg.innerHTML=`<div style="font-size:11px;color:var(--text-dim)">$${tapPerUnit.toLocaleString()} × ${units} = ${fmt(tapTotal)} total</div>`;
   }
   calcFinancing();
