@@ -328,7 +328,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
       <div class="hdr-sub">Tide &amp; Timber Ventures, LLC &mdash; Charlotte / Carolinas Market</div>
     </div>
   </div>
-  <div class="hdr-badge">V4 &middot; May 2026</div>
+  <div class="hdr-badge">V6.1 &middot; Jun 2026</div>
 </div>
 
 <div class="step-nav">
@@ -1006,48 +1006,52 @@ const CITY_COUNTY={
 // t = type (sfh|duet|th|mf).  g = dropdown group.  The dropdown, fit-check grid, and
 // PLAN_KEY_MAP are all GENERATED from this list so they can never drift apart again.
 const PLANS=[
+  // Source: "Slate Cost Plus Pricing — FINAL One Sheet" (canonical, May 2026), Cost Plus 14 column.
+  // w=WIDTH ft, d=DEPTH ft (Slate lists D' x W'; corrected here). 0/0 = no published footprint.
+  // NOTE: Akron is NOT on the FINAL sheet — carried over from the prior sheet (price may be stale; footprint est.).
   {n:'Akron',sf:1533,c:188962,u:1,w:15,d:102,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Arlington (Standard)',sf:1315,c:147451,u:1,w:31,d:50.4,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Arlington (Modern)',sf:1315,c:165380,u:1,w:31,d:50.4,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Aurora',sf:1156,c:138178,u:1,w:30,d:20,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Bellville',sf:1627,c:181267,u:1,w:28,d:38,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Centerville',sf:0,c:197677,u:1,w:0,d:0,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Columbus',sf:1311,c:149875,u:1,w:46,d:34.5,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Cuyahoga',sf:2005,c:209656,u:1,w:0,d:0,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Dublin (Standard)',sf:1435,c:159598,u:1,w:22,d:42,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Dublin 1 Car',sf:1435,c:173167,u:1,w:22,d:42,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Dublin 2 Car',sf:1435,c:182908,u:1,w:22,d:42,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Grandview',sf:1528,c:162303,u:1,w:30,d:25,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Granville',sf:1848,c:199643,u:1,w:38,d:42,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Hampton',sf:2519,c:247874,u:1,w:50.4,d:58,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Hilliard',sf:1573,c:178139,u:1,w:24.5,d:41.7,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Muirfield',sf:1199,c:146538,u:1,w:30,d:42.3,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Plumwood',sf:1485,c:180860,u:1,w:34,d:58,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Seneca',sf:1985,c:207367,u:1,w:30,d:43,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Westerville',sf:1108,c:138927,u:1,w:25,d:48.4,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Worthington',sf:1405,c:171821,u:1,w:48,d:46,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Worthington 2.0',sf:1405,c:183516,u:1,w:48,d:46,t:'sfh',g:'Standard Spec — Single Family'},
-  {n:'Albany',sf:2726,c:319883,u:1,w:40,d:45,t:'sfh',g:'Upgrade Spec — Single Family'},
-  {n:'Galloway',sf:3208,c:368301,u:1,w:36,d:60,t:'sfh',g:'Upgrade Spec — Single Family'},
-  {n:'Linden',sf:2992,c:358882,u:1,w:35,d:60,t:'sfh',g:'Upgrade Spec — Single Family'},
-  {n:'Arcadia (Budget)',sf:1278,c:142942,u:1,w:22,d:30.6,t:'sfh',g:'Budget Spec — Single Family'},
-  {n:'Hudson (Budget)',sf:0,c:134020,u:1,w:0,d:0,t:'sfh',g:'Budget Spec — Single Family'},
-  {n:'Laurel (Budget)',sf:1528,c:153360,u:1,w:30,d:25,t:'sfh',g:'Budget Spec — Single Family'},
-  {n:'Powell (Budget)',sf:1323,c:141902,u:1,w:20,d:38,t:'sfh',g:'Budget Spec — Single Family'},
-  {n:'Powell One Car',sf:1323,c:152996,u:1,w:32,d:38,t:'sfh',g:'Budget Spec — Single Family'},
-  {n:'Wildwood (Budget)',sf:1315,c:139763,u:1,w:0,d:0,t:'sfh',g:'Budget Spec — Single Family'},
-  {n:'Arcadia Duet (per side)',sf:1190,c:142812,u:2,w:40,d:30,t:'duet',g:'Duets — Per Side'},
-  {n:'Bexley Duet (per side)',sf:1664,c:180223,u:2,w:40,d:53,t:'duet',g:'Duets — Per Side'},
-  {n:'Findlay Duet (per side)',sf:1409,c:167919,u:2,w:38,d:45,t:'duet',g:'Duets — Per Side'},
-  {n:'Logan Duet (per side)',sf:1186,c:138759,u:2,w:39.5,d:62,t:'duet',g:'Duets — Per Side'},
-  {n:'Whitehall Duet (per side)',sf:1854,c:189738,u:2,w:45,d:53,t:'duet',g:'Duets — Per Side'},
-  {n:'Winchester Duet (per side)',sf:1480,c:161441,u:2,w:39.7,d:42.2,t:'duet',g:'Duets — Per Side'},
-  {n:'Polaris Duet (Modern, per side)',sf:0,c:336081,u:2,w:0,d:0,t:'duet',g:'Duets — Per Side'},
-  {n:'Ashland Duet (Modern, per side)',sf:0,c:299994,u:2,w:0,d:0,t:'duet',g:'Duets — Per Side'},
-  {n:'Arcadia Triplex (all 3 units)',sf:0,c:416231,u:3,w:0,d:0,t:'mf',g:'Multifamily & Mini'},
-  {n:'Dayton Townhomes (1 unit)',sf:1372,c:158400,u:1,w:0,d:0,t:'th',g:'Multifamily & Mini'},
-  {n:'Franklin Townhomes (1 unit)',sf:1604,c:163459,u:1,w:20,d:40,t:'th',g:'Multifamily & Mini'},
-  {n:'Dunkirk (mini home)',sf:702,c:104118,u:1,w:27,d:26,t:'sfh',g:'Multifamily & Mini'},
+  {n:'Arlington (Standard)',sf:1315,c:145277,u:1,w:31,d:50.4,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Arlington (Modern)',sf:1315,c:163876,u:1,w:31,d:50.4,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Aurora',sf:1156,c:137424,u:1,w:30,d:20,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Bellville',sf:1627,c:180489,u:1,w:28,d:37,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Centerville',sf:1904,c:195754,u:1,w:22.5,d:53,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Columbus',sf:1311,c:148112,u:1,w:46,d:34.5,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Cuyahoga',sf:2005,c:207307,u:1,w:37,d:38,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Dublin (Standard)',sf:1435,c:158865,u:1,w:22,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Dublin 1 Car',sf:1435,c:170951,u:1,w:34,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Dublin 2 Car',sf:1435,c:181461,u:1,w:46.5,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Grandview',sf:1528,c:161052,u:1,w:30,d:27,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Granville',sf:1848,c:198406,u:1,w:38,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Hampton',sf:2519,c:244759,u:1,w:50.5,d:58.1,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Hilliard',sf:1573,c:175933,u:1,w:25,d:41.7,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Muirfield',sf:1199,c:145088,u:1,w:30,d:42.3,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Plumwood',sf:1485,c:178876,u:1,w:34,d:58,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Seneca',sf:1985,c:204131,u:1,w:30,d:43,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Westerville',sf:1108,c:134918,u:1,w:25,d:48.4,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Worthington',sf:1405,c:170379,u:1,w:48,d:46,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Worthington 2.0',sf:1640,c:181893,u:1,w:48,d:51,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Albany',sf:2726,c:327313,u:1,w:40,d:45,t:'sfh',g:'Upgrade Spec — Single Family'},
+  {n:'Galloway',sf:3203,c:379179,u:1,w:36,d:60,t:'sfh',g:'Upgrade Spec — Single Family'},
+  {n:'Linden',sf:2986,c:372424,u:1,w:36,d:60,t:'sfh',g:'Upgrade Spec — Single Family'},
+  {n:'Arcadia (Budget)',sf:1278,c:139130,u:1,w:22,d:30.6,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Hudson (Budget)',sf:1108,c:133065,u:1,w:25,d:48.4,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Laurel (Budget)',sf:1528,c:150552,u:1,w:30,d:27,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Powell (Budget)',sf:1323,c:140963,u:1,w:20,d:42,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Powell One Car',sf:1323,c:151547,u:1,w:32,d:42,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Wildwood (Budget)',sf:1315,c:138901,u:1,w:31,d:50.4,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Arcadia Duet (per side)',sf:1228,c:140636,u:2,w:40,d:34,t:'duet',g:'Duets — Per Side'},
+  {n:'Bexley Duet (per side)',sf:1664,c:172093,u:2,w:40,d:53,t:'duet',g:'Duets — Per Side'},
+  {n:'Findlay Duet (per side)',sf:1409,c:164462,u:2,w:38,d:45,t:'duet',g:'Duets — Per Side'},
+  {n:'Logan Duet (per side)',sf:1186,c:135976,u:2,w:39.5,d:62,t:'duet',g:'Duets — Per Side'},
+  {n:'Oxford Duet (per side)',sf:1690,c:177284,u:2,w:34,d:60,t:'duet',g:'Duets — Per Side'},
+  {n:'Polaris Duet (Modern, per side)',sf:2227,c:332019,u:2,w:40,d:68,t:'duet',g:'Duets — Per Side'},
+  {n:'Ashland Duet (Modern, per side)',sf:1747,c:295770,u:2,w:40,d:56,t:'duet',g:'Duets — Per Side'},
+  {n:'Whitehall Duet (per side)',sf:1854,c:186398,u:2,w:45,d:53,t:'duet',g:'Duets — Per Side'},
+  {n:'Winchester Duet (per side)',sf:1480,c:156739,u:2,w:40,d:42.3,t:'duet',g:'Duets — Per Side'},
+  {n:'Arcadia Triplex (all 3 units)',sf:3834,c:416608,u:3,w:66,d:33.7,t:'mf',g:'Multifamily & Mini'},
+  {n:'Dayton Townhomes (1 unit)',sf:1385,c:159359,u:1,w:21.7,d:40,t:'th',g:'Multifamily & Mini'},
+  {n:'Franklin Townhomes (1 unit)',sf:1549,c:162238,u:1,w:20,d:42.5,t:'th',g:'Multifamily & Mini'},
+  {n:'Dunkirk (mini home)',sf:702,c:104434,u:1,w:27,d:34,t:'sfh',g:'Multifamily & Mini'},
 ];
 PLANS.forEach(p=>{p.val=`${p.n}|${p.sf}|${p.c}|${p.u}|${p.w}|${p.d}`;});
 const PLAN_KEY_MAP={};PLANS.forEach(p=>{PLAN_KEY_MAP[p.n]=p.val;});
@@ -2927,217 +2931,176 @@ function buildReportHTML(canvasDataUrl){
     '</div><\/body><\/html>';
 }
 
-// ── GOOGLE SHEET EXPORT via Claude ───────────────────────────────────────
-// Sends deal data to the chat so Claude can create a formatted Google Sheet
+// ── EXCEL EXPORT (ExcelJS — fully client-side, formatted, no embedded template) ──
 function generateSheet(){
   const d = getReportData();
   const slug = (d.address||'TTV_Deal').replace(/[^a-z0-9]/gi,'_').replace(/_+/g,'_').substring(0,40);
-
-  // Load JSZip from CDN (free, no attribution required)
-  if(typeof JSZip !== 'undefined'){
-    patchAndDownloadXLSX(d, slug);
+  if(typeof ExcelJS !== 'undefined'){
+    buildAndDownloadXLSX(d, slug);
   } else {
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-    s.onload = () => patchAndDownloadXLSX(d, slug);
-    s.onerror = () => alert('Could not load zip library. Check internet connection.');
-    document.head.appendChild(s);
+    const sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js';
+    sc.onload = () => buildAndDownloadXLSX(d, slug);
+    sc.onerror = () => alert('Could not load the Excel library. Check internet connection.');
+    document.head.appendChild(sc);
   }
 }
 
-function patchAndDownloadXLSX(d, slug){
-  // ── Helpers ────────────────────────────────────────────────────────────
-  function parseAmt(v){ return typeof v==='number'?v:parseFloat(String(v||'0').replace(/[$,]/g,''))||0; }
-  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
+function buildAndDownloadXLSX(d, slug){
+  const wb = new ExcelJS.Workbook();
+  wb.creator = 'TTV Site Analyzer'; wb.created = new Date();
 
-  const land   = parseAmt(d.land),   lf = parseAmt(d.lot_factor);
-  const tap    = parseAmt(d.tap_fees);
-  const pc     = parseAmt(d.plan_cost);
-  const aiex   = parseAmt(d.all_in_ex_land);
-  const aitot  = parseAmt(d.all_in_total);
-  const sf     = d.sf||0,  units = d.units||1;
-  const ltc    = (pv('ltc-pct')||93)/100;
-  const rate   = (pv('fin-rate')||10)/100;
-  const pts    = (pv('fin-points')||1)/100;
-  const doc    = pv('fin-doc-fee')||750;
-  const arvB   = pv('arv-b')||0;
-  const arvW   = pv('arv-w')||(arvB?arvB*0.9:0);
-  const arvBe  = pv('arv-best')||(arvB?arvB*1.1:0);
-  const termW  = pv('term-w')||12;
-  const termB  = pv('term-b')||9;
-  const termBe = pv('term-best')||6;
-  const sale   = (pv('sale-cost-pct')||5)/100;
-  const date   = new Date().toLocaleDateString('en-US',{year:'numeric',month:'numeric',day:'numeric'});
+  // palette (ARGB)
+  const NAVY='FF243044', TEAL='FF2E9C8F', RED='FFE05C5C', GREEN='FF4CAF82', AMBER='FFE8A94D', LIGHT='FFF0F3F8';
+  const fill = a => ({type:'pattern',pattern:'solid',fgColor:{argb:a}});
+  const MONEY='"$"#,##0', MONEY2='"$"#,##0.00', PCT='0.0%', SF='#,##0';
+  const thin = {style:'thin',color:{argb:'FFD8DEE8'}};
+  const border = {top:thin,left:thin,bottom:thin,right:thin};
 
-  // Upgrade id → sheet3 row (D column)
-  const UPG_ROW = {
-    'lvp':23,'click-lvp':24,'brushed-ni':25,'matte-blk':26,'quartz':27,'shiplap':28,
-    'frameless':29,'tile-shower':30,'faux-blinds':31,'front-door':32,'deadbolt':33,
-    'corbels':34,'columns':35,'hardie':36,'open-rail':37,'fireplace':38,
-    'wfall-qtz':39,'hw':40,'fans':41,
-    // alias keys from the tool's UPGRADES array
-    'blinds':31,
-  };
-  const selUpg = typeof selectedUpgrades!=='undefined' ? selectedUpgrades : new Set();
-
-  // ── Patch helper: replace a numeric cell value in XML ──────────────────
-  // Cells look like: <c r="C16" s="17"><v>0</v></c>
-  // or inline string: <c r="C6" s="7" t="inlineStr"><is><t>__ADDRESS__</t></is></c>
-  function patchNum(xml, ref, val){
-    // Replace <v>anything</v> inside the cell with ref
-    const re = new RegExp('(<c r="'+ref+'"[^>]*>(?:<f>[^<]*</f>)?<v>)[^<]*(</v>)');
-    const repl = '$1'+val+'$2';
-    const out = xml.replace(re, repl);
-    if(out === xml){
-      // Cell might be empty (no <v> tag) — add it
-      const re2 = new RegExp('(<c r="'+ref+'"[^>]*>)(</c>)');
-      return xml.replace(re2, '$1<v>'+val+'</v>$2');
-    }
-    return out;
-  }
-
-  function patchStr(xml, ref, val){
-    const escaped = esc(val);
-    // Replace inlineStr content
-    const re = new RegExp('(<c r="'+ref+'"[^>]*t="inlineStr"[^>]*><is><t>)[^<]*(</t></is></c>)');
-    const out = xml.replace(re, '$1'+escaped+'$2');
-    if(out === xml){
-      // Try alternate attr order
-      const re2 = new RegExp('(<c r="'+ref+'"[^>]* t="inlineStr"[^>]*><is><t>)[^<]*(</t></is></c>)');
-      return xml.replace(re2, '$1'+escaped+'$2');
-    }
-    return out;
-  }
-
-  // Decode the embedded blank template (fully formatted, placeholders)
-  const b64 = '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';
-  const bin = atob(b64);
-  const ab  = new ArrayBuffer(bin.length);
-  const ua  = new Uint8Array(ab);
-  for(let i=0;i<bin.length;i++) ua[i]=bin.charCodeAt(i);
-
-  JSZip.loadAsync(ab).then(zip => {
-    // ── PATCH SHEET 1 (Inputs) ─────────────────────────────────────────
-    return zip.file('xl/worksheets/sheet1.xml').async('string').then(s1 => {
-      // String placeholders
-      s1 = patchStr(s1,'C6',  d.address||'');
-      s1 = patchStr(s1,'C7',  d.county||'');
-      s1 = patchStr(s1,'F7',  d.zone||'');
-      s1 = patchStr(s1,'C11', d.plan||'');
-      s1 = patchStr(s1,'F12', d.footprint||'');
-      s1 = patchStr(s1,'F8',  date);
-      s1 = patchStr(s1,'C19', tap===0?'Yes':'No');
-
-      // Numeric inputs
-      s1 = patchNum(s1,'C8',  units);
-      s1 = patchNum(s1,'C12', sf||0);
-      s1 = patchNum(s1,'C13', pc||0);
-      s1 = patchNum(s1,'F13', sf>0?Math.round(pc/sf*100)/100:0);
-      s1 = patchNum(s1,'C16', land);
-      s1 = patchNum(s1,'C17', lf);
-      s1 = patchNum(s1,'C18', tap);
-      s1 = patchNum(s1,'C20', tap===0?0:tap*units);
-      s1 = patchNum(s1,'C27', ltc);
-      s1 = patchNum(s1,'C28', rate);
-      s1 = patchNum(s1,'C29', pts);
-      s1 = patchNum(s1,'C30', doc);
-      s1 = patchNum(s1,'C33', arvB||0);
-      s1 = patchNum(s1,'C34', arvW||0);
-      s1 = patchNum(s1,'C35', arvBe||0);
-      s1 = patchNum(s1,'C36', sale);
-      s1 = patchNum(s1,'C37', termW);
-      s1 = patchNum(s1,'C38', termB);
-      s1 = patchNum(s1,'C39', termBe);
-
-      zip.file('xl/worksheets/sheet1.xml', s1);
-
-      // ── PATCH SHEET 2 (Scenarios) ────────────────────────────────────
-      return zip.file('xl/worksheets/sheet2.xml').async('string');
-    }).then(s2 => {
-      const loanW=ltc*aitot, loanB=ltc*aitot, loanBe=ltc*aitot;
-      const intW=loanW*rate/12*termW, intB=loanB*rate/12*termB, intBe=loanBe*rate/12*termBe;
-      const finW=intW+loanW*pts+doc, finB=intB+loanB*pts+doc, finBe=intBe+loanBe*pts+doc;
-      const arvUW=arvW*sf, arvUB=arvB*sf, arvUBe=arvBe*sf;
-      const saleW=arvUW*sale, saleB=arvUB*sale, saleBe=arvUBe*sale;
-      const totW=aitot+finW+saleW, totB=aitot+finB+saleB, totBe=aitot+finBe+saleBe;
-      const prW=arvUW-totW, prB=arvUB-totB, prBe=arvUBe-totBe;
-
-      // Cost rows (same value across all 3 scenarios)
-      [['C','D','E']].flat();
-      for(const c of ['C','D','E']){
-        s2=patchNum(s2,c+'6',land); s2=patchNum(s2,c+'7',aiex); s2=patchNum(s2,c+'8',aitot);
-      }
-      // Loan
-      s2=patchNum(s2,'C11',loanW); s2=patchNum(s2,'D11',loanB); s2=patchNum(s2,'E11',loanBe);
-      // Terms
-      s2=patchNum(s2,'C12',termW); s2=patchNum(s2,'D12',termB); s2=patchNum(s2,'E12',termBe);
-      // Interest
-      s2=patchNum(s2,'C13',Math.round(intW)); s2=patchNum(s2,'D13',Math.round(intB)); s2=patchNum(s2,'E13',Math.round(intBe));
-      // Points+doc
-      s2=patchNum(s2,'C14',Math.round(loanW*pts+doc)); s2=patchNum(s2,'D14',Math.round(loanB*pts+doc)); s2=patchNum(s2,'E14',Math.round(loanBe*pts+doc));
-      // Total finance
-      s2=patchNum(s2,'C15',Math.round(finW)); s2=patchNum(s2,'D15',Math.round(finB)); s2=patchNum(s2,'E15',Math.round(finBe));
-      // ARV psf
-      s2=patchNum(s2,'C18',arvW); s2=patchNum(s2,'D18',arvB); s2=patchNum(s2,'E18',arvBe);
-      // ARV unit
-      s2=patchNum(s2,'C19',Math.round(arvUW)); s2=patchNum(s2,'D19',Math.round(arvUB)); s2=patchNum(s2,'E19',Math.round(arvUBe));
-      // Sale costs
-      s2=patchNum(s2,'C20',Math.round(saleW)); s2=patchNum(s2,'D20',Math.round(saleB)); s2=patchNum(s2,'E20',Math.round(saleBe));
-      // Grand total
-      s2=patchNum(s2,'C21',Math.round(totW)); s2=patchNum(s2,'D21',Math.round(totB)); s2=patchNum(s2,'E21',Math.round(totBe));
-      // Profit/unit
-      s2=patchNum(s2,'C22',Math.round(prW)); s2=patchNum(s2,'D22',Math.round(prB)); s2=patchNum(s2,'E22',Math.round(prBe));
-      // Total project profit
-      s2=patchNum(s2,'C23',Math.round(prW*units)); s2=patchNum(s2,'D23',Math.round(prB*units)); s2=patchNum(s2,'E23',Math.round(prBe*units));
-      // CoC
-      const cocW=aitot>loanW?prW/(aitot-loanW):0;
-      const cocB=aitot>loanB?prB/(aitot-loanB):0;
-      const cocBe=aitot>loanBe?prBe/(aitot-loanBe):0;
-      s2=patchNum(s2,'C24',Math.round(cocW*10000)/10000);
-      s2=patchNum(s2,'D24',Math.round(cocB*10000)/10000);
-      s2=patchNum(s2,'E24',Math.round(cocBe*10000)/10000);
-      // Max land cost
-      const maxLand = Math.max(0, Math.round(arvUB*(1-sale)-aiex-finB-50000));
-      s2=patchNum(s2,'D29',maxLand);
-
-      zip.file('xl/worksheets/sheet2.xml', s2);
-
-      // ── PATCH SHEET 3 (Cost Build-Up) — upgrades ─────────────────────
-      return zip.file('xl/worksheets/sheet3.xml').async('string');
-    }).then(s3 => {
-      // Set Yes/No for each upgrade based on selectedUpgrades
-      Object.entries(UPG_ROW).forEach(([id, row]) => {
-        const isYes = selUpg.has(id);
-        const ref = 'D'+row;
-        s3 = s3.replace(
-          new RegExp('(<c r="'+ref+'"[^>]*t="inlineStr"[^>]*><is><t>)(Yes|No)(</t></is></c>)'),
-          '$1'+(isYes?'Yes':'No')+'$3'
-        );
-      });
-
-      zip.file('xl/worksheets/sheet3.xml', s3);
-
-      // ── GENERATE AND DOWNLOAD ─────────────────────────────────────────
-      return zip.generateAsync({
-        type:'blob',
-        mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        compression:'DEFLATE',
-        compressionOptions:{level:6}
-      });
-    }).then(blob => {
-      const url = URL.createObjectURL(blob);
-      const a   = document.createElement('a');
-      a.href    = url;
-      a.download= 'TTV_UW_'+slug+'.xlsx';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(()=>URL.revokeObjectURL(url), 1000);
-    });
-  }).catch(err => {
-    console.error('XLSX generation error:', err);
-    alert('Excel generation failed: '+err.message);
+  // ── live deal math (mirrors Step 7 exactly: calcLoanBase + holdingCost) ──
+  const land = pv('land-cost');
+  const lb = calcLoanBase(land); const loan = lb.loan, purchaseClosing = lb.purchaseClosing;
+  const u = Math.max(1, units); const salePct = pv('sale-cost-pct')/100;
+  const allInPerUnit = (allInExLand + land)/u;
+  const arvB = pv('arv-b'), arvW = pv('arv-w')||(arvB?arvB*0.9:0), arvBe = pv('arv-best')||(arvB?arvB*1.1:0);
+  const SC = [
+    {key:'WORST', color:RED,   term:pv('term-w'),    psf:arvW},
+    {key:'BASE',  color:TEAL,  term:pv('term-b'),    psf:arvB},
+    {key:'BEST',  color:GREEN, term:pv('term-best'), psf:arvBe},
+  ].map(o=>{
+    const arv = sfPerUnit>0 && o.psf>0 ? o.psf*sfPerUnit : 0;
+    const h = holdingCost(loan, o.term);
+    const holdPerUnit = (h.total + purchaseClosing)/u;
+    const sale = arv*salePct;
+    const totalAllIn = allInPerUnit + holdPerUnit + sale;
+    const profit = arv - totalAllIn;
+    const coc = (loan/u)>0 ? profit/(loan/u) : 0;
+    return Object.assign(o,{arv,holdPerUnit,sale,totalAllIn,profit,total:profit*u,coc});
   });
+  const upgPerUnit = Array.from(typeof selectedUpgrades!=='undefined'?selectedUpgrades:[])
+    .reduce((acc,id)=>{const x=UPGRADES.find(z=>z.id===id);return acc+(x?x.cost:0);},0);
+  const upgTotal = upgPerUnit*u;
+  const buildTotal = (currentPlanCost||0)*u;
+  const softFixed = pv('survey')+pv('appraisal')+pv('insurance');
+  const maxLand = parseFloat(String(d.max_land||'0').replace(/[$,]/g,''))||0;
+
+  // ── style helpers ──
+  const title = (ws,row,txt,span)=>{const c=ws.getCell('A'+row);c.value=txt;c.font={bold:true,size:13,color:{argb:'FFFFFFFF'}};c.fill=fill(NAVY);c.alignment={vertical:'middle'};ws.mergeCells('A'+row+':'+span+row);ws.getRow(row).height=22;};
+  const sect  = (ws,row,txt,span)=>{const c=ws.getCell('A'+row);c.value=txt;c.font={bold:true,size:10,color:{argb:'FF06251F'}};c.fill=fill(TEAL);ws.mergeCells('A'+row+':'+span+row);};
+  const kv    = (ws,row,label,val,fmt)=>{const a=ws.getCell('A'+row);a.value=label;a.font={color:{argb:'FF566B82'}};const b=ws.getCell('B'+row);b.value=val;if(fmt)b.numFmt=fmt;b.font={bold:true};};
+
+  /* ───────── Sheet 1: Inputs ───────── */
+  const s1 = wb.addWorksheet('Inputs');
+  s1.getColumn(1).width=28; s1.getColumn(2).width=24; s1.getColumn(3).width=4; s1.getColumn(4).width=20;
+  let r=1;
+  title(s1,r++,'TIDE & TIMBER VENTURES — New Construction Underwriting','D');
+  s1.getCell('A'+r).value='Generated '+d.date; s1.getCell('A'+r).font={italic:true,size:9,color:{argb:'FF8FA3BC'}}; s1.mergeCells('A'+r+':D'+r); r++;
+  r++;
+  sect(s1,r++,'DEAL INFORMATION','D');
+  kv(s1,r++,'Property Address',d.address);
+  kv(s1,r++,'County',d.county); kv(s1,r++,'Zone',d.zone);
+  kv(s1,r++,'Units',u); kv(s1,r++,'Buildable Area (sf)',d.buildable_sf||0,SF);
+  r++;
+  sect(s1,r++,'PLAN SELECTION','D');
+  kv(s1,r++,'Selected Plan',d.plan);
+  kv(s1,r++,'Sq Ft / Unit',d.sf||0,SF);
+  kv(s1,r++,'Footprint (W x D)',d.footprint);
+  kv(s1,r++,'Build Cost (Cost + 14%)',d.plan_cost||0,MONEY);
+  kv(s1,r++,'Build Cost / SF',(d.sf>0?(d.plan_cost/d.sf):0),MONEY2);
+  r++;
+  sect(s1,r++,'COST INPUTS','D');
+  kv(s1,r++,'Land Cost',land,MONEY);
+  kv(s1,r++,'Lot Factor',lotFactor||0,MONEY);
+  kv(s1,r++,'Tap Fees',tapTotal||0,MONEY);
+  kv(s1,r++,'Survey',pv('survey'),MONEY);
+  kv(s1,r++,'Appraisal',pv('appraisal'),MONEY);
+  kv(s1,r++,'Insurance (carry)',pv('insurance'),MONEY);
+  kv(s1,r++,'Upgrades Total',upgTotal,MONEY);
+  r++;
+  sect(s1,r++,'FINANCING INPUTS','D');
+  kv(s1,r++,'LTC %',(pv('ltc-pct')||93)/100,PCT);
+  kv(s1,r++,'Interest Rate (annual)',(pv('fin-rate')||10)/100,PCT);
+  kv(s1,r++,'Loan Points',(pv('fin-points')||1)/100,PCT);
+  kv(s1,r++,'Origination / Doc Fee',pv('fin-doc-fee')||0,MONEY);
+  r++;
+  sect(s1,r++,'EXIT ASSUMPTIONS','D');
+  kv(s1,r++,'ARV $/sf — Worst',arvW,MONEY2);
+  kv(s1,r++,'ARV $/sf — Base',arvB,MONEY2);
+  kv(s1,r++,'ARV $/sf — Best',arvBe,MONEY2);
+  kv(s1,r++,'Sale Costs (% of ARV)',salePct,PCT);
+  kv(s1,r++,'Loan Term — Worst (mo)',pv('term-w'));
+  kv(s1,r++,'Loan Term — Base (mo)',pv('term-b'));
+  kv(s1,r++,'Loan Term — Best (mo)',pv('term-best'));
+
+  /* ───────── Sheet 2: Scenarios ───────── */
+  const s2 = wb.addWorksheet('Scenarios');
+  s2.getColumn(1).width=30; [2,3,4].forEach(i=>s2.getColumn(i).width=18);
+  let R=1;
+  title(s2,R++,'SCENARIO ANALYSIS — WORST / BASE / BEST','D');
+  R++;
+  // header row with colored scenario cells
+  const hdr=s2.getRow(R);
+  hdr.getCell(1).value='';
+  SC.forEach((sc,i)=>{const c=hdr.getCell(2+i);c.value=sc.key+' — '+sc.term+' mo';c.font={bold:true,color:{argb:'FFFFFFFF'}};c.fill=fill(sc.color);c.alignment={horizontal:'center'};});
+  R++;
+  const srow=(label,vals,fmt,bold)=>{
+    const row=s2.getRow(R++);
+    const a=row.getCell(1); a.value=label; a.font={bold:!!bold,color:{argb:bold?'FF06251F':'FF566B82'}};
+    vals.forEach((v,i)=>{const c=row.getCell(2+i);c.value=v;if(fmt)c.numFmt=fmt;c.alignment={horizontal:'right'};if(bold)c.font={bold:true};c.border=border;});
+    a.border=border;
+  };
+  srow('Loan Amount', SC.map(s=>loan), MONEY);
+  srow('Loan Term (months)', SC.map(s=>s.term));
+  srow('ARV $/sf', SC.map(s=>s.psf), MONEY2);
+  srow('ARV / Unit', SC.map(s=>s.arv), MONEY);
+  srow('Build + Costs / Unit', SC.map(s=>allInPerUnit), MONEY);
+  srow('Holding Cost / Unit', SC.map(s=>s.holdPerUnit), MONEY);
+  srow('Sale Costs / Unit', SC.map(s=>s.sale), MONEY);
+  srow('Total All-In / Unit', SC.map(s=>s.totalAllIn), MONEY);
+  srow('Profit / Unit', SC.map(s=>s.profit), MONEY, true);
+  srow('Total Project Profit', SC.map(s=>s.total), MONEY, true);
+  srow('Cash-on-Cash', SC.map(s=>s.coc), PCT);
+  R++;
+  sect(s2,R++,'MAX LAND COST ANALYSIS','D');
+  kv(s2,R++,'Target Profit / Unit',50000,MONEY);
+  kv(s2,R++,'Max Land Cost (Base, $50k target)',maxLand,MONEY);
+
+  /* ───────── Sheet 3: Cost Build-Up ───────── */
+  const s3 = wb.addWorksheet('Cost Build-Up');
+  s3.getColumn(1).width=32; s3.getColumn(2).width=16; s3.getColumn(3).width=12;
+  let Q=1;
+  title(s3,Q++,'COST BUILD-UP','C');
+  Q++;
+  sect(s3,Q++,'LAND & SOFT COSTS','C');
+  const li=(label,val)=>{const row=s3.getRow(Q++);row.getCell(1).value=label;const c=row.getCell(2);c.value=val;c.numFmt=MONEY;c.alignment={horizontal:'right'};};
+  li('Land Cost',land); li('Lot Factor',lotFactor||0); li('Tap Fees',tapTotal||0);
+  li('Survey',pv('survey')); li('Appraisal',pv('appraisal')); li('Insurance (carry)',pv('insurance'));
+  {const row=s3.getRow(Q++);row.getCell(1).value='Total Soft Costs';row.getCell(1).font={bold:true};const c=row.getCell(2);c.value=lotFactor+(tapTotal||0)+softFixed;c.numFmt=MONEY;c.font={bold:true};c.alignment={horizontal:'right'};}
+  Q++;
+  sect(s3,Q++,'CONSTRUCTION','C');
+  li('Base Build Cost (all units)',buildTotal);
+  li('Upgrades (all units)',upgTotal);
+  {const row=s3.getRow(Q++);row.getCell(1).value='Grand Total (incl. Land)';row.getCell(1).font={bold:true};const c=row.getCell(2);c.value=allInExLand+land;c.numFmt=MONEY;c.font={bold:true,color:{argb:'FF06251F'}};c.fill=fill(AMBER);c.alignment={horizontal:'right'};}
+  Q++;
+  sect(s3,Q++,'UPGRADES / SELECT OPTIONS','C');
+  {const row=s3.getRow(Q++);['Upgrade','Cost','Include?'].forEach((t,i)=>{const c=row.getCell(1+i);c.value=t;c.font={bold:true,color:{argb:'FF566B82'}};});}
+  const selU = typeof selectedUpgrades!=='undefined'?selectedUpgrades:new Set();
+  UPGRADES.forEach(up=>{
+    const row=s3.getRow(Q++);
+    row.getCell(1).value=up.name;
+    const c=row.getCell(2); c.value=up.cost; c.numFmt=MONEY; c.alignment={horizontal:'right'};
+    const inc=row.getCell(3); inc.value=selU.has(up.id)?'Yes':'No'; inc.alignment={horizontal:'center'};
+    if(selU.has(up.id)){inc.font={bold:true,color:{argb:'FF06251F'}};inc.fill=fill('FFD8F0EA');}
+  });
+
+  // ── write + download ──
+  wb.xlsx.writeBuffer().then(buf=>{
+    const blob = new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='TTV_UW_'+slug+'.xlsx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }).catch(err=>{ console.error('XLSX generation error:',err); alert('Excel generation failed: '+err.message); });
 }
 
 
