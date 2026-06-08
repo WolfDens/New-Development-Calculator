@@ -98,6 +98,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 .bua-fill{height:100%;border-radius:4px;transition:width 0.3s,background 0.3s}
 
 .fit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:12px}
+.fit-group-hdr{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-mid);font-weight:600;margin:16px 0 6px}
+.fit-group-hdr:first-child{margin-top:4px}
+.fit-group-hdr span{color:var(--text-dim);font-weight:400}
+.fit-sort-bar{display:flex;align-items:center;gap:8px;margin:2px 0 10px}
+.fit-sort-bar select{background:var(--navy-mid,#10202e);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:inherit}
 .fit-card{border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border)}
 .fit-card.fit-ok{border-color:rgba(76,175,130,0.35);background:var(--green-dim)}
 .fit-card.fit-warn{border-color:rgba(232,169,77,0.35);background:var(--amber-dim)}
@@ -523,6 +528,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
       <div class="card">
         <div class="card-title"><span class="dot"></span>Plan Footprint Fit Check</div>
         <p class="note" style="margin-bottom:12px">Which Slate plans fit the buildable envelope. Footprint is ground floor only.</p>
+        <div class="fit-sort-bar"><label style="font-size:11px;color:var(--text-mid)">Sort</label><select id="fit-sort" onchange="setFitSort(this.value)"><option value="sf-desc">Finished SF — largest first</option><option value="sf-asc">Finished SF — smallest first</option><option value="fp-desc">Footprint — largest first</option><option value="fp-asc">Footprint — smallest first</option><option value="c-asc">Cost — lowest first</option><option value="c-desc">Cost — highest first</option></select></div>
         <div id="fit-grid"></div>
         <div id="fit-empty" class="note" style="margin-top:8px">Enter lot dimensions and setbacks to see fit check.</div>
       </div>
@@ -583,7 +589,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
         </div>
         <div class="fr2">
           <div class="field"><label>Loads of Dirt</label><input type="number" id="dirt-loads" value="0" min="0" oninput="calcLF()"><p class="note">~5 loads = 4 ft grade over 130 ft</p></div>
-          <div class="field"><label>Cost / Load</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="dirt-rate" value="4000" oninput="calcLF()"></div></div>
+          <div class="field"><label>Cost / Load</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="dirt-rate" value="500" oninput="calcLF()"></div></div>
         </div>
         <div class="fr2">
           <div class="field"><label>Grading</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="grading" value="2500" oninput="calcLF()"></div></div>
@@ -630,58 +636,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
         <div class="field">
           <select id="plan-sel" onchange="onPlanChange()">
             <option value="">— Select a Slate plan —</option>
-            <optgroup label="Standard Spec — Single Family">
-              <option value="Akron|1533|188962|1|0|0">The Akron — 1,533 sf — $188,962</option>
-              <option value="Arlington Std|1315|147451|1|50.4|31">The Arlington (Standard) — 1,315 sf — $147,451</option>
-              <option value="Arlington Modern|1315|165380|1|50.4|31">The Arlington (Modern) — 1,315 sf — $165,380</option>
-              <option value="Aurora|1156|138178|1|20|30">The Aurora — 1,156 sf — $138,178</option>
-              <option value="Bellville|1627|181267|1|38|28">The Bellville — 1,627 sf — $181,267</option>
-              <option value="Centerville|0|197677|1|0|0">The Centerville — $197,677</option>
-              <option value="Columbus|1311|149875|1|34.5|46">The Columbus — 1,311 sf — $149,875</option>
-              <option value="Cuyahoga|2005|209656|1|0|0">The Cuyahoga — 2,005 sf — $209,656</option>
-              <option value="Dublin Std|1435|159598|1|42|22">The Dublin (Standard) — 1,435 sf — $159,598</option>
-              <option value="Dublin 1Car|1435|173167|1|42|22">The Dublin 1 Car — 1,435 sf — $173,167</option>
-              <option value="Dublin 2Car|1435|182908|1|42|22">The Dublin 2 Car — 1,435 sf — $182,908</option>
-              <option value="Grandview|1528|162303|1|25|30">The Grandview — 1,528 sf — $162,303</option>
-              <option value="Granville|1848|199643|1|42|38">The Granville — 1,848 sf — $199,643</option>
-              <option value="Hampton|2519|247874|1|58|50.4">The Hampton — 2,519 sf — $247,874</option>
-              <option value="Hilliard|1573|178139|1|41.7|24.5">The Hilliard — 1,573 sf — $178,139</option>
-              <option value="Muirfield|1199|146538|1|42.3|30">The Muirfield — 1,199 sf — $146,538</option>
-              <option value="Plumwood|1485|180860|1|58|34">The Plumwood — 1,485 sf — $180,860</option>
-              <option value="Seneca|1985|207367|1|43|30">The Seneca — 1,985 sf — $207,367</option>
-              <option value="Westerville|1108|138927|1|48.4|25">The Westerville — 1,108 sf — $138,927</option>
-              <option value="Worthington|1405|171821|1|46|48">The Worthington — 1,405 sf — $171,821</option>
-              <option value="Worthington 2.0|1405|183516|1|46|48">The Worthington 2.0 — 1,405 sf — $183,516</option>
-            </optgroup>
-            <optgroup label="Upgrade Spec — Single Family">
-              <option value="Albany|2726|319883|1|45|40">The Albany — 2,726 sf — $319,883</option>
-              <option value="Galloway|3208|368301|1|60|36">The Galloway — 3,208 sf — $368,301</option>
-              <option value="Linden|2992|358882|1|60|35">The Linden — 2,992 sf — $358,882</option>
-            </optgroup>
-            <optgroup label="Budget Spec — Single Family">
-              <option value="Arcadia SFH|1278|142942|1|30.6|22">The Arcadia (Budget) — 1,278 sf — $142,942</option>
-              <option value="Hudson|0|134020|1|0|0">The Hudson (Budget) — $134,020</option>
-              <option value="Laurel|1528|153360|1|25|30">The Laurel (Budget) — 1,528 sf — $153,360</option>
-              <option value="Powell|1323|141902|1|38|20">The Powell (Budget) — 1,323 sf — $141,902</option>
-              <option value="Powell 1Car|1323|152996|1|38|32">The Powell One Car — 1,323 sf — $152,996</option>
-              <option value="Wildwood|1315|139763|1|0|0">The Wildwood (Budget) — 1,315 sf — $139,763</option>
-            </optgroup>
-            <optgroup label="Duets — Per Side">
-              <option value="Arcadia Duet|1190|142812|2|30|40">The Arcadia Duet (per side) — 1,190 sf — $142,812</option>
-              <option value="Bexley Duet|1664|180223|2|53|40">The Bexley Duet (per side) — 1,664 sf — $180,223</option>
-              <option value="Findlay Duet|1409|167919|2|45|38">The Findlay Duet (per side) — 1,409 sf — $167,919</option>
-              <option value="Logan Duet|1186|138759|2|62|39.5">The Logan Duet (per side) — 1,186 sf — $138,759</option>
-              <option value="Whitehall Duet|1854|189738|2|53|45">The Whitehall Duet (per side) — 1,854 sf — $189,738</option>
-              <option value="Winchester Duet|1480|161441|2|42.2|39.7">The Winchester Duet (per side) — 1,480 sf — $161,441</option>
-              <option value="Polaris Duet|0|336081|2|0|0">The Polaris Duet (Modern, per side) — $336,081</option>
-              <option value="Ashland Duet|0|299994|2|0|0">The Ashland Duet (Modern, per side) — $299,994</option>
-            </optgroup>
-            <optgroup label="Multifamily & Mini">
-              <option value="Arcadia Triplex|0|416231|3|0|0">The Arcadia Triplex (all 3 units) — $416,231</option>
-              <option value="Dayton TH|1372|158400|1|0|0">The Dayton Townhomes (1 unit) — 1,372 sf — $158,400</option>
-              <option value="Franklin TH|1604|163459|1|40|20">The Franklin Townhomes (1 unit) — 1,604 sf — $163,459</option>
-              <option value="Dunkirk|702|104118|1|26|27">The Dunkirk (mini home) — 702 sf — $104,118</option>
-            </optgroup>
           </select>
         </div>
         <div id="plan-info" style="display:none;margin-top:12px;padding:12px;background:var(--teal-dim);border:1px solid rgba(46,156,143,0.25);border-radius:var(--radius-sm)">
@@ -774,8 +728,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
       <div class="card">
         <div class="card-title"><span class="dot"></span>Loan Term by Scenario (months)</div>
         <div class="fr3">
-          <div class="field"><label>Worst Case</label><input type="number" id="term-w" value="12" min="1" max="36" oninput="calcFinancing()"></div>
-          <div class="field"><label>Base Case</label><input type="number" id="term-b" value="9" min="1" max="36" oninput="calcFinancing()"></div>
+          <div class="field"><label>Worst Case</label><input type="number" id="term-w" value="10" min="1" max="36" oninput="calcFinancing()"></div>
+          <div class="field"><label>Base Case</label><input type="number" id="term-b" value="8" min="1" max="36" oninput="calcFinancing()"></div>
           <div class="field"><label>Best Case</label><input type="number" id="term-best" value="6" min="1" max="36" oninput="calcFinancing()"></div>
         </div>
       </div>
@@ -868,12 +822,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
   <!-- SCENARIOS -->
   <div class="sc-grid">
     <div class="sc-card worst">
-      <div class="sc-tag">Worst — <span id="term-w-label">12</span>mo</div>
+      <div class="sc-tag">Worst — <span id="term-w-label">10</span>mo</div>
       <div id="sc-lines-w" style="margin-top:4px"></div>
       <div class="sc-profit"><div class="profit-lbl">Profit / Unit</div><div class="profit-val" id="profit-w">—</div><div class="profit-sub" id="coc-w"></div></div>
     </div>
     <div class="sc-card base">
-      <div class="sc-tag">Base — <span id="term-b-label">9</span>mo</div>
+      <div class="sc-tag">Base — <span id="term-b-label">8</span>mo</div>
       <div id="sc-lines-b" style="margin-top:4px"></div>
       <div class="sc-profit"><div class="profit-lbl">Profit / Unit</div><div class="profit-val" id="profit-b">—</div><div class="profit-sub" id="coc-b"></div></div>
     </div>
@@ -1030,22 +984,75 @@ const CITY_COUNTY={
   'shelby':'Shelby','kings mountain':'Shelby',
   'monroe':'Monroe','indian trail':'Monroe','weddington':'Monroe','stallings':'Monroe',
 };
-const PLANS_FP=[
-  ['Akron',1533,188962,1,0,0],['Arlington (Standard)',1315,147451,1,50.4,31],
-  ['Arlington (Modern)',1315,165380,1,50.4,31],['Aurora',1156,138178,1,20,30],
-  ['Bellville',1627,181267,1,38,28],['Columbus',1311,149875,1,34.5,46],
-  ['Dublin (Standard)',1435,159598,1,42,22],['Dublin 1 Car',1435,173167,1,42,22],
-  ['Dublin 2 Car',1435,182908,1,42,22],['Grandview',1528,162303,1,25,30],
-  ['Granville',1848,199643,1,42,38],['Hampton',2519,247874,1,58,50.4],
-  ['Hilliard',1573,178139,1,41.7,24.5],['Muirfield',1199,146538,1,42.3,30],
-  ['Plumwood',1485,180860,1,58,34],['Seneca',1985,207367,1,43,30],
-  ['Westerville',1108,138927,1,48.4,25],['Worthington',1405,171821,1,46,48],
-  ['Albany',2726,319883,1,45,40],['Galloway',3208,368301,1,60,36],['Linden',2992,358882,1,60,35],
-  ['Arcadia Duet (per side)',1190,142812,2,30,40],['Bexley Duet (per side)',1664,180223,2,53,40],
-  ['Findlay Duet (per side)',1409,167919,2,45,38],['Logan Duet (per side)',1186,138759,2,62,39.5],
-  ['Whitehall Duet (per side)',1854,189738,2,53,45],['Winchester Duet (per side)',1480,161441,2,42.2,39.7],
-  ['Dunkirk (mini)',702,104118,1,26,27],['Franklin TH',1604,163459,1,40,20],
+// ═══════════════════ MASTER PLAN LIBRARY (single source of truth) ═══════════════════
+// Source: "Slate Cost Plus Pricing" sheet — Cost Plus 14 column.
+// w = footprint WIDTH (ft), d = footprint DEPTH (ft).  Slate publishes footprints as
+// (D' x W'); values here are CORRECTED to W/D.  0/0 = no footprint published by Slate yet.
+// t = type (sfh|duet|th|mf).  g = dropdown group.  The dropdown, fit-check grid, and
+// PLAN_KEY_MAP are all GENERATED from this list so they can never drift apart again.
+const PLANS=[
+  {n:'Akron',sf:1533,c:188962,u:1,w:15,d:102,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Arlington (Standard)',sf:1315,c:147451,u:1,w:31,d:50.4,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Arlington (Modern)',sf:1315,c:165380,u:1,w:31,d:50.4,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Aurora',sf:1156,c:138178,u:1,w:30,d:20,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Bellville',sf:1627,c:181267,u:1,w:28,d:38,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Centerville',sf:0,c:197677,u:1,w:0,d:0,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Columbus',sf:1311,c:149875,u:1,w:46,d:34.5,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Cuyahoga',sf:2005,c:209656,u:1,w:0,d:0,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Dublin (Standard)',sf:1435,c:159598,u:1,w:22,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Dublin 1 Car',sf:1435,c:173167,u:1,w:22,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Dublin 2 Car',sf:1435,c:182908,u:1,w:22,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Grandview',sf:1528,c:162303,u:1,w:30,d:25,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Granville',sf:1848,c:199643,u:1,w:38,d:42,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Hampton',sf:2519,c:247874,u:1,w:50.4,d:58,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Hilliard',sf:1573,c:178139,u:1,w:24.5,d:41.7,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Muirfield',sf:1199,c:146538,u:1,w:30,d:42.3,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Plumwood',sf:1485,c:180860,u:1,w:34,d:58,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Seneca',sf:1985,c:207367,u:1,w:30,d:43,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Westerville',sf:1108,c:138927,u:1,w:25,d:48.4,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Worthington',sf:1405,c:171821,u:1,w:48,d:46,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Worthington 2.0',sf:1405,c:183516,u:1,w:48,d:46,t:'sfh',g:'Standard Spec — Single Family'},
+  {n:'Albany',sf:2726,c:319883,u:1,w:40,d:45,t:'sfh',g:'Upgrade Spec — Single Family'},
+  {n:'Galloway',sf:3208,c:368301,u:1,w:36,d:60,t:'sfh',g:'Upgrade Spec — Single Family'},
+  {n:'Linden',sf:2992,c:358882,u:1,w:35,d:60,t:'sfh',g:'Upgrade Spec — Single Family'},
+  {n:'Arcadia (Budget)',sf:1278,c:142942,u:1,w:22,d:30.6,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Hudson (Budget)',sf:0,c:134020,u:1,w:0,d:0,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Laurel (Budget)',sf:1528,c:153360,u:1,w:30,d:25,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Powell (Budget)',sf:1323,c:141902,u:1,w:20,d:38,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Powell One Car',sf:1323,c:152996,u:1,w:32,d:38,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Wildwood (Budget)',sf:1315,c:139763,u:1,w:0,d:0,t:'sfh',g:'Budget Spec — Single Family'},
+  {n:'Arcadia Duet (per side)',sf:1190,c:142812,u:2,w:40,d:30,t:'duet',g:'Duets — Per Side'},
+  {n:'Bexley Duet (per side)',sf:1664,c:180223,u:2,w:40,d:53,t:'duet',g:'Duets — Per Side'},
+  {n:'Findlay Duet (per side)',sf:1409,c:167919,u:2,w:38,d:45,t:'duet',g:'Duets — Per Side'},
+  {n:'Logan Duet (per side)',sf:1186,c:138759,u:2,w:39.5,d:62,t:'duet',g:'Duets — Per Side'},
+  {n:'Whitehall Duet (per side)',sf:1854,c:189738,u:2,w:45,d:53,t:'duet',g:'Duets — Per Side'},
+  {n:'Winchester Duet (per side)',sf:1480,c:161441,u:2,w:39.7,d:42.2,t:'duet',g:'Duets — Per Side'},
+  {n:'Polaris Duet (Modern, per side)',sf:0,c:336081,u:2,w:0,d:0,t:'duet',g:'Duets — Per Side'},
+  {n:'Ashland Duet (Modern, per side)',sf:0,c:299994,u:2,w:0,d:0,t:'duet',g:'Duets — Per Side'},
+  {n:'Arcadia Triplex (all 3 units)',sf:0,c:416231,u:3,w:0,d:0,t:'mf',g:'Multifamily & Mini'},
+  {n:'Dayton Townhomes (1 unit)',sf:1372,c:158400,u:1,w:0,d:0,t:'th',g:'Multifamily & Mini'},
+  {n:'Franklin Townhomes (1 unit)',sf:1604,c:163459,u:1,w:20,d:40,t:'th',g:'Multifamily & Mini'},
+  {n:'Dunkirk (mini home)',sf:702,c:104118,u:1,w:27,d:26,t:'sfh',g:'Multifamily & Mini'},
 ];
+PLANS.forEach(p=>{p.val=`${p.n}|${p.sf}|${p.c}|${p.u}|${p.w}|${p.d}`;});
+const PLAN_KEY_MAP={};PLANS.forEach(p=>{PLAN_KEY_MAP[p.n]=p.val;});
+// Backward-compat positional array: [name, sf, cost, units, fpW, fpD]
+const PLANS_FP=PLANS.map(p=>[p.n,p.sf,p.c,p.u,p.w,p.d]);
+function buildPlanDropdown(){
+  const sel=$('plan-sel');if(!sel)return;
+  while(sel.options.length>1)sel.remove(1); // keep placeholder
+  const groups=[];PLANS.forEach(p=>{if(!groups.includes(p.g))groups.push(p.g);});
+  groups.forEach(g=>{
+    const og=document.createElement('optgroup');og.label=g;
+    PLANS.filter(p=>p.g===g).forEach(p=>{
+      const o=document.createElement('option');
+      o.value=p.val;
+      o.textContent='The '+p.n+(p.sf>0?' — '+p.sf.toLocaleString()+' sf':'')+' — $'+p.c.toLocaleString();
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+}
 const UPGRADES=[
   {id:'lvp',name:'LVP Throughout',cost:2899},{id:'hw',name:'Engineered Hardwoods',cost:13519},
   {id:'quartz',name:'Quartz Countertops',cost:688},{id:'wfall-qtz',name:'Waterfall Quartz',cost:1530},
@@ -1065,6 +1072,8 @@ const selectedUpgrades=new Set();
 
 // Lot mode state
 let lotMode = 'rect'; // 'rect' or 'poly'
+let FIT_SORT='sf-desc'; // fit-check sort key-dir
+function setFitSort(v){FIT_SORT=v;renderFitCheck();}
 let lotSides = []; // [{length, angleDeg}] for irregular mode
 
 // Lot editor canvas snapshot (carried to Step 3)
@@ -2265,37 +2274,6 @@ function initDrag(){
   window.addEventListener('touchend',()=>{planOverlay.dragging=false;});
 }
 
-const PLAN_KEY_MAP={
-  'Akron':'Akron|1533|188962|1|0|0',
-  'Arlington (Standard)':'Arlington Std|1315|147451|1|50.4|31',
-  'Arlington (Modern)':'Arlington Modern|1315|165380|1|50.4|31',
-  'Aurora':'Aurora|1156|138178|1|20|30',
-  'Bellville':'Bellville|1627|181267|1|38|28',
-  'Columbus':'Columbus|1311|149875|1|34.5|46',
-  'Dublin (Standard)':'Dublin Std|1435|159598|1|42|22',
-  'Dublin 1 Car':'Dublin 1Car|1435|173167|1|42|22',
-  'Dublin 2 Car':'Dublin 2Car|1435|182908|1|42|22',
-  'Grandview':'Grandview|1528|162303|1|25|30',
-  'Granville':'Granville|1848|199643|1|42|38',
-  'Hampton':'Hampton|2519|247874|1|58|50.4',
-  'Hilliard':'Hilliard|1573|178139|1|41.7|24.5',
-  'Muirfield':'Muirfield|1199|146538|1|42.3|30',
-  'Plumwood':'Plumwood|1485|180860|1|58|34',
-  'Seneca':'Seneca|1985|207367|1|43|30',
-  'Westerville':'Westerville|1108|138927|1|48.4|25',
-  'Worthington':'Worthington|1405|171821|1|46|48',
-  'Albany':'Albany|2726|319883|1|45|40',
-  'Galloway':'Galloway|3208|368301|1|60|36',
-  'Linden':'Linden|2992|358882|1|60|35',
-  'Arcadia Duet (per side)':'Arcadia Duet|1190|142812|2|30|40',
-  'Bexley Duet (per side)':'Bexley Duet|1664|180223|2|53|40',
-  'Findlay Duet (per side)':'Findlay Duet|1409|167919|2|45|38',
-  'Logan Duet (per side)':'Logan Duet|1186|138759|2|62|39.5',
-  'Whitehall Duet (per side)':'Whitehall Duet|1854|189738|2|53|45',
-  'Winchester Duet (per side)':'Winchester Duet|1480|161441|2|42.2|39.7',
-  'Dunkirk (mini)':'Dunkirk|702|104118|1|26|27',
-  'Franklin TH':'Franklin TH|1604|163459|1|40|20',
-};
 
 function selectPlanFromTile(planKey){
   const sel=$('plan-sel');
@@ -2317,43 +2295,56 @@ function renderFitCheck(){
   const isCorner=$('corner-lot')&&$('corner-lot').checked;
   const polyFt=(lotMode==='poly'&&planOverlay.buildPolyFt&&planOverlay.buildPolyFt.length>=3)
     ?planOverlay.buildPolyFt:null;
-
-  // ptInPolyFt hoisted to module scope
-
-  // minEdgeDist hoisted to module scope
-
-  // planFitsInPolyFt hoisted to module scope below renderFitCheck
-
-  const plansWithFp=PLANS_FP.filter(p=>p[4]>0&&p[5]>0);
-  const fitting=[],tooLarge=[];
-  plansWithFp.forEach(([name,sf,cost,du,fpW,fpD])=>{
-    let cls,badge,msg,selectable=true;
+  const evaluated=PLANS.filter(p=>p.w>0&&p.d>0).map(p=>{
+    const fpW=p.w,fpD=p.d;
+    let cls,badge,selectable=true;
     if(lotMode==='poly'&&polyFt){
       const r=planFitsInPolyFt(fpW,fpD);
-      if(r==='fits'){cls='fit-ok';badge='Fits';msg=`${fpW}'×${fpD}' footprint`;}
-      else if(r==='tight'){cls='fit-warn';badge='Tight — verify';msg=`Fits but within 5 ft of boundary`;}
-      else{cls='fit-no';badge='Too Large';msg=`${fpW}'×${fpD}\' won\'t fit`;selectable=false;}
+      if(r==='fits'){cls='fit-ok';badge='Fits';}
+      else if(r==='tight'){cls='fit-warn';badge='Tight — verify';}
+      else{cls='fit-no';badge='Too Large';selectable=false;}
     }else{
       const bW=pv('lot-w')-((isCorner)?(pv('sb-sides')+pv('sb-corner')):(pv('sb-sides')*2));
       const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
       const fits=bW>=fpW&&bD>=fpD,fitFlipped=bW>=fpD&&bD>=fpW;
       const tight=(fits&&(bW-fpW<5||bD-fpD<5))||(fitFlipped&&(bW-fpD<5||bD-fpW<5));
       const areaOk=buildableArea>=fpW*fpD;
-      if((fits||fitFlipped)&&!tight){cls='fit-ok';badge=fitFlipped&&!fits?'Fits (rotated)':'Fits';msg=`${fpW}'×${fpD}' — ${(fpW*fpD).toLocaleString()} sf`;}
-      else if(fits||fitFlipped){cls='fit-warn';badge='Tight — verify';msg=`Fits but within 5 ft of boundary`;}
-      else if(areaOk){cls='fit-warn';badge='Tight — verify';msg=`Area OK but check dimensions`;}
-      else{cls='fit-no';badge='Too Large';msg=`Needs ${fpW}'×${fpD}'`;selectable=false;}
+      if((fits||fitFlipped)&&!tight){cls='fit-ok';badge=(fitFlipped&&!fits)?'Fits (rotated)':'Fits';}
+      else if(fits||fitFlipped){cls='fit-warn';badge='Tight — verify';}
+      else if(areaOk){cls='fit-warn';badge='Tight — verify';}
+      else{cls='fit-no';badge='Too Large';selectable=false;}
     }
-    const planKey=PLAN_KEY_MAP[name]||'';
-    const isSelected=planKey&&planKey===currentPlanVal;
-    const selectedCls=isSelected?' selected':'';
-    const clickAttr=selectable&&planKey?`onclick="selectPlanFromTile('${planKey.replace(/'/g,"\'")}')"`:'';
-    const card=`<div class="fit-card ${cls}${selectedCls}" ${clickAttr}><div class="fit-name">${name}${isSelected?' ✓':''}</div><div class="fit-detail">${msg}<br>${sf.toLocaleString()} sf · ${fmt(cost)}</div><span class="fit-badge">${badge}</span></div>`;
-    if(selectable)fitting.push(card);else tooLarge.push(card);
+    return {p,name:p.n,sf:p.sf,cost:p.c,fpW,fpD,cls,badge,selectable,area:fpW*fpD};
   });
-  let html=`<div class="fit-grid">${fitting.join('')}</div>`;
+  // Sort (#1)
+  const [skey,sdir]=(FIT_SORT||'sf-desc').split('-');
+  const sval=o=>skey==='fp'?o.area:(skey==='c'?o.cost:o.sf);
+  evaluated.sort((a,b)=>sdir==='asc'?sval(a)-sval(b):sval(b)-sval(a));
+  const fitting=evaluated.filter(o=>o.selectable);
+  const tooLarge=evaluated.filter(o=>!o.selectable);
+  const card=o=>{
+    const planKey=o.p.val;
+    const isSel=planKey===currentPlanVal;
+    const clickAttr=o.selectable?`onclick="selectPlanFromTile('${planKey.replace(/'/g,"\'")}')"`:'';
+    return `<div class="fit-card ${o.cls}${isSel?' selected':''}" ${clickAttr}>`
+      +`<div class="fit-name">${o.name}${isSel?' ✓':''}</div>`
+      +`<div class="fit-detail">Footprint ${o.fpW}'W × ${o.fpD}'D · ${o.area.toLocaleString()} sf`
+      +`<br>Finished ${o.sf>0?o.sf.toLocaleString()+' sf':'—'} · ${fmt(o.cost)}</div>`
+      +`<span class="fit-badge">${o.badge}</span></div>`;
+  };
+  // Group fitting plans by type (#2)
+  const TYPE_LABEL={sfh:'Single Family',duet:'Duets',th:'Townhomes',mf:'Multifamily'};
+  const TYPE_ORDER=['sfh','duet','th','mf'];
+  let html='';
+  TYPE_ORDER.forEach(t=>{
+    const g=fitting.filter(o=>o.p.t===t);
+    if(!g.length)return;
+    html+=`<div class="fit-group-hdr">${TYPE_LABEL[t]} <span>(${g.length})</span></div>`
+      +`<div class="fit-grid">${g.map(card).join('')}</div>`;
+  });
+  if(!fitting.length)html='<div class="note">No plans with footprint data fit the current envelope.</div>';
   if(tooLarge.length>0){
-    html+=`<button class="fit-collapse-btn" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.fit-collapse-arrow').textContent=this.nextElementSibling.classList.contains('open')?'▲':'▼'"><span>Plans that don't fit (${tooLarge.length})</span><span class="fit-collapse-arrow">▼</span></button><div class="fit-collapse-section"><div class="fit-grid" style="opacity:0.6">${tooLarge.join('')}</div></div>`;
+    html+=`<button class="fit-collapse-btn" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.fit-collapse-arrow').textContent=this.nextElementSibling.classList.contains('open')?'▲':'▼'"><span>Plans that don't fit (${tooLarge.length})</span><span class="fit-collapse-arrow">▼</span></button><div class="fit-collapse-section"><div class="fit-grid" style="opacity:0.6">${tooLarge.map(card).join('')}</div></div>`;
   }
   grid.innerHTML=html;
 }
@@ -2476,7 +2467,7 @@ function onPlanChange(){
   const du=parseInt(duStr)||0,fpW=parseFloat(fpWStr)||0,fpD=parseFloat(fpDStr)||0;
   $('plan-info-name').textContent=name;$('plan-info-cost').textContent=fmt(currentPlanCost);
   $('plan-info-sf').textContent=sfPerUnit>0?sfPerUnit.toLocaleString()+' sf':'N/A';
-  $('plan-info-fp').textContent=fpW&&fpD?`${fpW}'×${fpD}'`:'N/A';
+  $('plan-info-fp').textContent=fpW&&fpD?`${fpW}'W×${fpD}'D`:'N/A';
   info.style.display='';
   if(du>0){$('units').value=du;$('units').style.borderColor='var(--teal)';setTimeout(()=>$('units').style.borderColor='',1200);}
   const pfm=$('plan-fit-msg');
@@ -2486,7 +2477,7 @@ function onPlanChange(){
       const r=planFitsInPolyFt(fpW,fpD);
       if(r==='fits')pfm.innerHTML=`<div class="ok">✓ This plan fits the buildable envelope.</div>`;
       else if(r==='tight')pfm.innerHTML=`<div class="warn">⚠ Fits but within 5 ft of boundary — verify.</div>`;
-      else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'×${fpD}') exceeds buildable envelope.</div>`;
+      else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'W×${fpD}'D) exceeds buildable envelope.</div>`;
     } else {
       // Rect mode: dimension comparison
       const isCorner=$('corner-lot')&&$('corner-lot').checked;
@@ -2494,7 +2485,7 @@ function onPlanChange(){
       const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
       if(bW>=fpW&&bD>=fpD)pfm.innerHTML=`<div class="ok">✓ This plan fits the buildable envelope.</div>`;
       else if(bW>=fpD&&bD>=fpW)pfm.innerHTML=`<div class="warn">⚠ Fits if rotated 90°.</div>`;
-      else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'×${fpD}') exceeds buildable envelope.</div>`;
+      else pfm.innerHTML=`<div class="err">✗ Footprint (${fpW}'W×${fpD}'D) exceeds buildable envelope.</div>`;
     }
   }else if(pfm)pfm.innerHTML='';
   const isDuet=val.includes('Duet')||val.includes('Triplex');
@@ -2512,7 +2503,7 @@ function onPlanChange(){
     $('rot-slider').value=0;
     $('rot-val').textContent='0°';
     $('ov-plan-name').textContent=name;
-    $('ov-footprint').textContent=`${fpW}'×${fpD}'`;
+    $('ov-footprint').textContent=`${fpW}'W×${fpD}'D`;
   }else{
     planOverlay.active=false;
     $('plan-overlay-controls').style.display='none';
@@ -2717,6 +2708,7 @@ function renderUpgrades(){
 }
 
 // ═══════════════════ INIT ═══════════════════
+buildPlanDropdown();
 renderUpgrades();
 document.querySelectorAll('#addr-street,#addr-city,#addr-state,#addr-zip,#county-sel').forEach(el=>{
   el.addEventListener('input',updateGISLink);el.addEventListener('change',updateGISLink);
