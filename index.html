@@ -302,6 +302,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 .print-report-wrap { display: none; }
 .print-report-wrap.visible { display: block; }
 
+
+/* Plan comparison (#3) */
+.cmp-pickers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cmp-pickers select{width:100%;background:var(--navy);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px;font-size:12px;font-family:inherit}
+.cmp-table{width:100%;border-collapse:collapse;min-width:560px}
+.cmp-table th,.cmp-table td{padding:8px 10px;text-align:right;font-size:12px;border-bottom:1px solid var(--border)}
+.cmp-table th:first-child,.cmp-table td:first-child{text-align:left;color:var(--text-mid);font-family:'DM Sans',sans-serif}
+.cmp-table thead th{font-family:'DM Serif Display',serif;font-size:14px;color:var(--teal-light);text-align:center;vertical-align:top}
+.cmp-table td{font-family:'DM Mono',monospace;color:var(--text)}
+.cmp-sect td{color:var(--amber);font-weight:600;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:0.05em;font-size:10px;padding-top:14px;border-bottom:1px solid var(--border-bright);text-align:left}
+.cmp-win-col{background:var(--teal-dim)}
+.cmp-winbadge{display:block;background:var(--teal);color:#04201c;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:5px;letter-spacing:0.04em}
+.cmp-arv-input{width:66px;background:var(--input-bg);color:var(--text);border:1px solid var(--border-bright);border-radius:4px;padding:3px 5px;font-size:11px;font-family:'DM Mono',monospace;text-align:right}
+.cmp-neg{color:var(--red)}
 </style>
 </head>
 <body>
@@ -650,6 +664,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
         <div class="fr2" style="margin-top:14px">
           <div class="field"><label>Units</label><input type="number" id="units" value="1" min="1" max="20" oninput="calcAll()"></div>
         </div>
+        <button class="btn btn-ghost" style="margin-top:14px;width:100%" onclick="openCompare()">⚖ Compare Plans Side-by-Side</button>
       </div>
       <div class="card">
         <div class="card-title"><span class="dot"></span>Tap Fees</div>
@@ -2298,22 +2313,10 @@ function renderFitCheck(){
   const evaluated=PLANS.filter(p=>p.w>0&&p.d>0).map(p=>{
     const fpW=p.w,fpD=p.d;
     let cls,badge,selectable=true;
-    if(lotMode==='poly'&&polyFt){
-      const r=planFitsInPolyFt(fpW,fpD);
-      if(r==='fits'){cls='fit-ok';badge='Fits';}
-      else if(r==='tight'){cls='fit-warn';badge='Tight — verify';}
-      else{cls='fit-no';badge='Too Large';selectable=false;}
-    }else{
-      const bW=pv('lot-w')-((isCorner)?(pv('sb-sides')+pv('sb-corner')):(pv('sb-sides')*2));
-      const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
-      const fits=bW>=fpW&&bD>=fpD,fitFlipped=bW>=fpD&&bD>=fpW;
-      const tight=(fits&&(bW-fpW<5||bD-fpD<5))||(fitFlipped&&(bW-fpD<5||bD-fpW<5));
-      const areaOk=buildableArea>=fpW*fpD;
-      if((fits||fitFlipped)&&!tight){cls='fit-ok';badge=(fitFlipped&&!fits)?'Fits (rotated)':'Fits';}
-      else if(fits||fitFlipped){cls='fit-warn';badge='Tight — verify';}
-      else if(areaOk){cls='fit-warn';badge='Tight — verify';}
-      else{cls='fit-no';badge='Too Large';selectable=false;}
-    }
+    const fs=fitStatus(fpW,fpD);
+    if(fs.status==='fits'){cls='fit-ok';badge=fs.rotated?'Fits (rotated)':'Fits';}
+    else if(fs.status==='tight'){cls='fit-warn';badge='Tight — verify';}
+    else{cls='fit-no';badge='Too Large';selectable=false;}
     return {p,name:p.n,sf:p.sf,cost:p.c,fpW,fpD,cls,badge,selectable,area:fpW*fpD};
   });
   // Sort (#1)
@@ -3267,7 +3270,153 @@ function buildOfferHTML(address,amount,date){
   return L.join("");
 }
 
+
+/* ═══════════════════ PLAN COMPARISON (#3) ═══════════════════ */
+function fitStatus(fpW,fpD){
+  if(!(fpW>0&&fpD>0))return{status:'na'};
+  const polyFt=(lotMode==='poly'&&planOverlay.buildPolyFt&&planOverlay.buildPolyFt.length>=3)?planOverlay.buildPolyFt:null;
+  if(lotMode==='poly'&&polyFt){
+    const r=planFitsInPolyFt(fpW,fpD);
+    return{status:r==='fits'?'fits':(r==='tight'?'tight':'no')};
+  }
+  if(!(buildableArea>0))return{status:'na'};
+  const isCorner=$('corner-lot')&&$('corner-lot').checked;
+  const bW=pv('lot-w')-((isCorner)?(pv('sb-sides')+pv('sb-corner')):(pv('sb-sides')*2));
+  const bD=pv('lot-d')-pv('sb-front')-pv('sb-rear');
+  const fits=bW>=fpW&&bD>=fpD,fitFlipped=bW>=fpD&&bD>=fpW;
+  const tight=(fits&&(bW-fpW<5||bD-fpD<5))||(fitFlipped&&(bW-fpD<5||bD-fpW<5));
+  const areaOk=buildableArea>=fpW*fpD;
+  if((fits||fitFlipped)&&!tight)return{status:'fits',rotated:fitFlipped&&!fits};
+  if(fits||fitFlipped)return{status:'tight'};
+  if(areaOk)return{status:'tight'};
+  return{status:'no'};
+}
+
+// Pure per-plan deal math — mirrors calcLoanBase / holdingCost / calcScenarios.
+// Holds land, lot factor, soft costs, tap fee/unit, upgrades/unit and all financing
+// (LTC, rate, points, doc fee, tax, term) constant; loan SIZE and ARV vary by plan.
+function dealForPlan(plan,psf){
+  const landCost=pv('land-cost');
+  const softFixed=pv('survey')+pv('appraisal')+pv('insurance');
+  const tapMuni=$('tap-muni').value;
+  const tapPerUnit=tapMuni==='custom'?pv('custom-tap'):(parseInt(tapMuni)||17340);
+  const existingTaps=$('existing-taps')&&$('existing-taps').checked;
+  const upgPerUnit=Array.from(selectedUpgrades).reduce((acc,id)=>{const u=UPGRADES.find(x=>x.id===id);return acc+(u?u.cost:0);},0);
+  const u=Math.max(1,plan.u||1);
+  const buildTotal=plan.c*u, upgTotal=upgPerUnit*u, tapTot=existingTaps?0:tapPerUnit*u;
+  const allInExL=buildTotal+upgTotal+lotFactor+tapTot+softFixed;
+  const ltcPct=pv('ltc-pct')/100;
+  const loan=ltcPct*(landCost+allInExL)/(1-ltcPct*0.01);
+  const purchaseClosing=loan*0.01;
+  const loanPerUnit=loan/u;
+  const salePct=pv('sale-cost-pct')/100;
+  const allInPerUnit=(allInExL+landCost)/u;
+  const scen={};
+  ['w','b','best'].forEach(k=>{
+    const term=pv(k==='w'?'term-w':k==='b'?'term-b':'term-best');
+    const arvPSF=psf[k]||0;
+    const arv=plan.sf>0&&arvPSF>0?arvPSF*plan.sf:0;
+    const h=holdingCost(loan,term);
+    const holdPerUnit=(h.total+purchaseClosing)/u;
+    const saleCost=arv*salePct;
+    const totalAllIn=allInPerUnit+holdPerUnit+saleCost;
+    const profit=arv-totalAllIn;
+    const coc=loanPerUnit>0?profit/loanPerUnit*100:0;
+    scen[k]={arv,arvPSF,holdPerUnit,saleCost,totalAllIn,profit,total:profit*u,coc,term};
+  });
+  return{plan,u,loan,allInPerUnit,buildTotal,scen};
+}
+
+const CMP=[null,null,null];
+const CMP_ARV=[{w:'',b:'',best:''},{w:'',b:'',best:''},{w:'',b:'',best:''}];
+function openCompare(){
+  const cur=($('plan-sel')||{}).value||'';
+  const curName=cur?cur.split('|')[0]:'';
+  CMP[0]=curName||PLANS[0].n;CMP[1]=null;CMP[2]=null;
+  CMP_ARV.forEach(o=>{o.w='';o.b='';o.best='';});
+  calcAll();
+  buildComparePickers();renderCompare();
+  $('compare-modal').style.display='flex';
+}
+function closeCompare(){$('compare-modal').style.display='none';}
+function buildComparePickers(){
+  const wrap=$('cmp-pickers');if(!wrap)return;
+  const labels=['Plan A','Plan B (optional)','Plan C (optional)'];
+  wrap.innerHTML=[0,1,2].map(i=>{
+    const opts='<option value="">— '+labels[i]+' —</option>'+PLANS.map(p=>'<option value="'+p.n+'"'+(CMP[i]===p.n?' selected':'')+'>'+p.n+'</option>').join('');
+    return '<select onchange="setCmpPlan('+i+',this.value)">'+opts+'</select>';
+  }).join('');
+}
+function setCmpPlan(i,name){CMP[i]=name||null;renderCompare();}
+function onCmpArv(i,k,v){CMP_ARV[i][k]=v;renderCompare();}
+function resolveCmpArv(i){
+  const gB=pv('arv-b'),gW=pv('arv-w'),gBest=pv('arv-best');
+  const b=CMP_ARV[i].b!==''?(parseFloat(CMP_ARV[i].b)||0):gB;
+  const w=CMP_ARV[i].w!==''?(parseFloat(CMP_ARV[i].w)||0):(gW||(b?b*0.9:0));
+  const best=CMP_ARV[i].best!==''?(parseFloat(CMP_ARV[i].best)||0):(gBest||(b?b*1.1:0));
+  return{w,b,best};
+}
+function renderCompare(){
+  const body=$('cmp-body');if(!body)return;
+  const cc=$('cmp-constants');
+  if(cc){
+    const upgPerUnit=Array.from(selectedUpgrades).reduce((acc,id)=>{const u=UPGRADES.find(x=>x.id===id);return acc+(u?u.cost:0);},0);
+    cc.innerHTML='Held constant — Land '+fmt(pv('land-cost'))+' \u00b7 Lot Factor '+fmt(lotFactor)+' \u00b7 Upgrades '+fmt(upgPerUnit)+'/unit \u00b7 LTC '+(pv('ltc-pct')||93)+'% \u00b7 Rate '+(pv('fin-rate')||10)+'% \u00b7 Term '+pv('term-w')+'/'+pv('term-b')+'/'+pv('term-best')+'. Loan size & ARV $/sf vary by plan.';
+  }
+  const cols=[0,1,2].filter(i=>CMP[i]).map(i=>{
+    const plan=PLANS.find(p=>p.n===CMP[i]);if(!plan)return null;
+    const psf=resolveCmpArv(i);
+    return{i,plan,psf,deal:dealForPlan(plan,psf)};
+  }).filter(Boolean);
+  if(!cols.length){body.innerHTML='<div class="note">Pick at least one plan to compare.</div>';return;}
+  let winI=-1,winV=-Infinity;
+  cols.forEach(c=>{if(c.deal.scen.b.arv>0&&c.deal.scen.b.total>winV){winV=c.deal.scen.b.total;winI=c.i;}});
+  const wc=i=>i===winI?' class="cmp-win-col"':'';
+  const money=(v)=>'<span'+(v<0?' class="cmp-neg"':'')+'>'+fmt(v)+'</span>';
+  const fitTxt=p=>{const f=fitStatus(p.w,p.d);return f.status==='fits'?(f.rotated?'Fits (rotated)':'\u2713 Fits'):f.status==='tight'?'Tight \u2014 verify':f.status==='no'?'\u2717 Too large':'No footprint data';};
+  const th=cols.map(c=>'<th'+wc(c.i)+'>'+c.plan.n+(c.i===winI?'<span class="cmp-winbadge">BEST BASE PROFIT</span>':'')+'</th>').join('');
+  const row=(lbl,fn)=>'<tr><td>'+lbl+'</td>'+cols.map(c=>'<td'+wc(c.i)+'>'+fn(c)+'</td>').join('')+'</tr>';
+  const sect=t=>'<tr class="cmp-sect"><td colspan="'+(cols.length+1)+'">'+t+'</td></tr>';
+  const arvInput=(c,k)=>'<input class="cmp-arv-input" type="number" value="'+(CMP_ARV[c.i][k]!==''?CMP_ARV[c.i][k]:'')+'" placeholder="'+(c.psf[k]?Math.round(c.psf[k]):'')+'" onchange="onCmpArv('+c.i+',\''+k+'\',this.value)">';
+  let h='<table class="cmp-table"><thead><tr><th></th>'+th+'</tr></thead><tbody>';
+  h+=sect('Plan');
+  h+=row('Units',c=>c.deal.u);
+  h+=row('Finished SF / unit',c=>c.plan.sf>0?c.plan.sf.toLocaleString()+' sf':'\u2014');
+  h+=row('Footprint (W\u00d7D)',c=>c.plan.w>0?c.plan.w+"'\u00d7"+c.plan.d+"'":'\u2014');
+  h+=row('Fit',c=>fitTxt(c.plan));
+  h+=row('Build Cost (Cost+14%)',c=>fmt(c.plan.c));
+  h+=row('All-In / unit',c=>fmt(c.deal.allInPerUnit));
+  h+=row('Loan Amount',c=>fmt(c.deal.loan));
+  h+=sect('ARV $/sf \u2014 editable');
+  h+=row('Worst $/sf',c=>arvInput(c,'w'));
+  h+=row('Base $/sf',c=>arvInput(c,'b'));
+  h+=row('Best $/sf',c=>arvInput(c,'best'));
+  [['w','Worst'],['b','Base'],['best','Best']].forEach(function(pair){
+    var k=pair[0],lbl=pair[1];
+    h+=sect(lbl+' Case ('+pv(k==='w'?'term-w':k==='b'?'term-b':'term-best')+' mo)');
+    h+=row('ARV / unit',c=>c.deal.scen[k].arv>0?fmt(c.deal.scen[k].arv):'\u2014');
+    h+=row('Holding / unit',c=>fmt(c.deal.scen[k].holdPerUnit));
+    h+=row('Profit / unit',c=>c.deal.scen[k].arv>0?money(c.deal.scen[k].profit):'\u2014');
+    h+=row('Total Project Profit',c=>c.deal.scen[k].arv>0?money(c.deal.scen[k].total):'\u2014');
+    h+=row('Cash-on-Cash',c=>c.deal.scen[k].arv>0?c.deal.scen[k].coc.toFixed(1)+'%':'\u2014');
+  });
+  h+='</tbody></table>';
+  body.innerHTML=h;
+}
 </script>
+
+<!-- PLAN COMPARISON MODAL -->
+<div id="compare-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9998;align-items:flex-start;justify-content:center;overflow-y:auto;padding:24px 12px">
+  <div style="background:var(--navy-mid);border:1px solid rgba(46,156,143,0.35);border-radius:12px;padding:24px;max-width:1100px;width:100%;margin:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--text)">⚖ Plan Comparison</div>
+      <button class="btn btn-ghost" onclick="closeCompare()" style="padding:6px 14px">Close</button>
+    </div>
+    <div id="cmp-constants" class="note" style="margin-bottom:14px"></div>
+    <div class="cmp-pickers" id="cmp-pickers"></div>
+    <div id="cmp-body" style="margin-top:16px;overflow-x:auto"></div>
+  </div>
+</div>
 
 <!-- OFFER LETTER MODAL -->
 <div id="offer-letter-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center">
